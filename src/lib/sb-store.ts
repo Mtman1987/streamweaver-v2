@@ -1,7 +1,7 @@
 import { promises as fsp } from 'fs';
 import * as path from 'path';
 
-export const SB_DIR_PATH = path.resolve(process.cwd(), '..', 'sb');
+export const SB_DIR_PATH = path.resolve(process.cwd(), 'sb');
 export const SB_COMMANDS_FILE_PATH = path.join(SB_DIR_PATH, 'commands.json');
 export const SB_ACTIONS_FILE_PATH = path.join(SB_DIR_PATH, 'actions.json');
 

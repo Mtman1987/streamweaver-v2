@@ -117,7 +117,7 @@ function getActionByTrigger(trigger: string): ActionDefinition | undefined {
 }
 
 function setupAutomationFromSb(): void {
-    const sbDir = resolve(process.cwd(), '..', 'sb');
+    const sbDir = resolve(process.cwd(), 'sb');
 
     automationEngine = new AutomationEngine();
 
@@ -1282,7 +1282,7 @@ async function startServer() {
         // Load chat history once on startup
         await loadChatHistory();
 
-        // Load Streamer.bot-like automation from the workspace root sb/ folder.
+        // Load Streamer.bot-like automation from the app root sb/ folder.
         setupAutomationFromSb();
         
         // For now, start without user ID - will use environment variables
