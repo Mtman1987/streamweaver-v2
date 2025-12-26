@@ -69,7 +69,7 @@ export class CoreLogicHandlers {
         condition = !input || input.trim() === '';
         break;
       case 7: // Is Not Empty
-        condition = input && input.trim() !== '';
+        condition = input.trim() !== '';
         break;
       case 8: // Greater Than
         condition = parseFloat(input) > parseFloat(compareValue);
@@ -226,7 +226,17 @@ export class VariableHandlers {
   static async handleMathOperation(subAction: SubAction, context: ExecutionContext): Promise<SubActionHandlerResult> {
     const operand1 = parseFloat(replaceVariables(String(subAction.operand1 || 0), context));
     const operand2 = parseFloat(replaceVariables(String(subAction.operand2 || 0), context));
-    const operation = subAction.operation as string;
+    const opRaw = (subAction as any).operation;
+    const operation = typeof opRaw === 'number'
+      ? ({
+          0: 'add',
+          1: 'subtract',
+          2: 'multiply',
+          3: 'divide',
+          4: 'modulo',
+          5: 'power',
+        } as Record<number, string>)[opRaw] || String(opRaw)
+      : String(opRaw || 'add');
     const variableName = subAction.variableName || 'mathResult';
     
     let result: number;
@@ -262,7 +272,18 @@ export class VariableHandlers {
 
   static async handleStringOperation(subAction: SubAction, context: ExecutionContext): Promise<SubActionHandlerResult> {
     const input = replaceVariables(subAction.input || '', context);
-    const operation = subAction.operation as string;
+    const opRaw = (subAction as any).operation;
+    const operation = typeof opRaw === 'number'
+      ? ({
+          0: 'uppercase',
+          1: 'lowercase',
+          2: 'trim',
+          3: 'length',
+          4: 'replace',
+          5: 'substring',
+          6: 'split',
+        } as Record<number, string>)[opRaw] || String(opRaw)
+      : String(opRaw || 'trim');
     const param1 = replaceVariables(subAction.param1 || '', context);
     const param2 = replaceVariables(subAction.param2 || '', context);
     const variableName = subAction.variableName || 'stringResult';
@@ -400,8 +421,9 @@ export class NetworkHandlers {
       const headers: Record<string, string> = {};
       
       if (subAction.headers) {
-        const headersStr = replaceVariables(subAction.headers, context);
-        Object.assign(headers, JSON.parse(headersStr));
+        for (const [key, value] of Object.entries(subAction.headers)) {
+          headers[key] = replaceVariables(value, context);
+        }
       }
       
       const options: RequestInit = {
@@ -489,7 +511,15 @@ export class ActionControlHandlers {
 
   static async handleSetActionState(subAction: SubAction, context: ExecutionContext): Promise<SubActionHandlerResult> {
     const actionId = subAction.actionId;
-    const state = subAction.state as 'enable' | 'disable' | 'toggle';
+    const raw = (subAction as any).state;
+    const state: 'enable' | 'disable' | 'toggle' =
+      raw === 'enable' || raw === 'disable' || raw === 'toggle'
+        ? raw
+        : raw === 0
+          ? 'disable'
+          : raw === 1
+            ? 'enable'
+            : 'toggle';
     
     // TODO: Update action state via ActionManager
     console.log(`[Set Action State] Action ID: ${actionId}, State: ${state}`);

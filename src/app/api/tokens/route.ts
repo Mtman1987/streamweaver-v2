@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStoredTokens } from '@/lib/token-utils';
+import { getStoredTokens } from '@/lib/token-utils.server';
 
 export async function GET(request: NextRequest) {
   try {

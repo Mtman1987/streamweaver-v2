@@ -54,7 +54,6 @@ const runCodeFlow = ai.defineFlow(
     const requireableModules = {
       // 'genkit': genkit, // Disabled for build
       'zod': z,
-      '@/ai/flows/generate-shoutout': shoutoutFlow,
       '@/ai/flows/chat-with-athena': athenaFlow,
       '@/ai/flows/conversational-response': { conversationalResponse, conversationalResponseFlow },
       '@/ai/flows/text-to-speech': textToSpeechFlow,
@@ -158,7 +157,6 @@ export async function runCode(input: RunCodeInput): Promise<RunCodeOutput> {
     // Define the modules that can be 'required' inside the sandbox.
     const requireableModules = {
       'zod': z,
-      '@/ai/flows/generate-shoutout': shoutoutFlow,
       '@/ai/flows/chat-with-athena': athenaFlow,
       '@/ai/flows/conversational-response': { conversationalResponse, conversationalResponseFlow },
       '@/ai/flows/text-to-speech': textToSpeechFlow,

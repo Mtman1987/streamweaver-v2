@@ -1,4 +1,4 @@
-import { db } from './firebase-config';
+import { db } from './firebase';
 import { collection, doc, getDoc, setDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { PointsService } from './points-service';
 
@@ -167,7 +167,7 @@ export class RaidTrainService {
     return emergencySlots;
   }
 
-  generateDiscordEmbed(schedule: RaidTrainSchedule): any {
+  async generateDiscordEmbed(schedule: RaidTrainSchedule): Promise<any> {
     const fields = [];
     const emergencySlots = await this.getEmergencySlots();
     

@@ -32,7 +32,7 @@ export class SubActionExecutor {
       let result;
 
       // Core Logic Handlers
-      if (subAction.type === SubActionType.WAIT || subAction.type === 1002) {
+      if (subAction.type === SubActionType.WAIT) {
         result = await SubActionHandlers.Core.handleDelay(subAction, context);
       } else if (subAction.type === SubActionType.BREAK) {
         result = await SubActionHandlers.Core.handleBreak(subAction, context);
@@ -72,20 +72,20 @@ export class SubActionExecutor {
         result = await SubActionHandlers.Variables.handleGetGlobalVariable(subAction, context);
       } else if (subAction.type === SubActionType.SET_ARGUMENT) {
         result = await SubActionHandlers.Variables.handleSetArgument(subAction, context);
-      } else if (subAction.type === 1050) {
+      } else if (subAction.type === SubActionType.SET_USER_VAR) {
         result = await SubActionHandlers.Variables.handleSetUserVariable(subAction, context);
-      } else if (subAction.type === 1051) {
+      } else if (subAction.type === SubActionType.GET_USER_VAR) {
         result = await SubActionHandlers.Variables.handleGetUserVariable(subAction, context);
-      } else if (subAction.type === 1052) {
+      } else if (subAction.type === SubActionType.MATH_OPERATION) {
         result = await SubActionHandlers.Variables.handleMathOperation(subAction, context);
-      } else if (subAction.type === 1053) {
+      } else if (subAction.type === SubActionType.STRING_OPERATION) {
         result = await SubActionHandlers.Variables.handleStringOperation(subAction, context);
       }
       
       // File Handlers
       else if (subAction.type === SubActionType.WRITE_TO_FILE) {
         result = await SubActionHandlers.File.handleWriteToFile(subAction, context);
-      } else if (subAction.type === 4001) {
+      } else if (subAction.type === SubActionType.READ_FROM_FILE) {
         result = await SubActionHandlers.File.handleReadFromFile(subAction, context);
       }
       
@@ -114,15 +114,15 @@ export class SubActionExecutor {
       // Twitch Handlers
       else if (subAction.type === SubActionType.SEND_MESSAGE) {
         result = await TwitchHandlers.handleTwitchSendMessage(subAction, context);
-      } else if (subAction.type === 2001) {
+      } else if (subAction.type === SubActionType.TWITCH_DELETE_MESSAGE) {
         result = await TwitchHandlers.handleTwitchDeleteMessage(subAction, context);
-      } else if (subAction.type === 2002) {
+      } else if (subAction.type === SubActionType.TWITCH_CLEAR_CHAT) {
         result = await TwitchHandlers.handleTwitchClearChat(subAction, context);
-      } else if (subAction.type === 2003) {
+      } else if (subAction.type === SubActionType.TWITCH_TIMEOUT_USER) {
         result = await TwitchHandlers.handleTwitchTimeoutUser(subAction, context);
-      } else if (subAction.type === 2004) {
+      } else if (subAction.type === SubActionType.TWITCH_BAN_USER) {
         result = await TwitchHandlers.handleTwitchBanUser(subAction, context);
-      } else if (subAction.type === 2005) {
+      } else if (subAction.type === SubActionType.TWITCH_UNBAN_USER) {
         result = await TwitchHandlers.handleTwitchUnbanUser(subAction, context);
       } else if (subAction.type === SubActionType.TWITCH_SLOW_MODE) {
         result = await TwitchHandlers.handleTwitchSlowMode(subAction, context);
@@ -132,7 +132,7 @@ export class SubActionExecutor {
         result = await TwitchHandlers.handleTwitchSetGame(subAction, context);
       } else if (subAction.type === SubActionType.TWITCH_CREATE_MARKER) {
         result = await TwitchHandlers.handleTwitchCreateMarker(subAction, context);
-      } else if (subAction.type === 2010) {
+      } else if (subAction.type === SubActionType.TWITCH_RUN_COMMERCIAL) {
         result = await TwitchHandlers.handleTwitchRunCommercial(subAction, context);
       } else if (subAction.type === SubActionType.GET_USER_INFO || subAction.type === SubActionType.GET_USER_INFO_BY_LOGIN) {
         result = await TwitchHandlers.handleTwitchGetUserInfo(subAction, context);
@@ -141,7 +141,7 @@ export class SubActionExecutor {
       // OBS Handlers
       else if (subAction.type === SubActionType.OBS_SET_SCENE) {
         result = await OBSHandlers.handleOBSSetScene(subAction, context);
-      } else if (subAction.type === 3001) {
+      } else if (subAction.type === SubActionType.OBS_GET_CURRENT_SCENE) {
         result = await OBSHandlers.handleOBSGetCurrentScene(subAction, context);
       } else if (subAction.type === SubActionType.OBS_TOGGLE_SOURCE) {
         result = await OBSHandlers.handleOBSSetSourceVisibility(subAction, context);
@@ -151,23 +151,23 @@ export class SubActionExecutor {
         result = await OBSHandlers.handleOBSSetBrowserSource(subAction, context);
       } else if (subAction.type === SubActionType.OBS_SET_MEDIA_SOURCE) {
         result = await OBSHandlers.handleOBSSetMediaSource(subAction, context);
-      } else if (subAction.type === 3010) {
+      } else if (subAction.type === SubActionType.OBS_START_RECORDING) {
         result = await OBSHandlers.handleOBSStartRecording(subAction, context);
-      } else if (subAction.type === 3011) {
+      } else if (subAction.type === SubActionType.OBS_STOP_RECORDING) {
         result = await OBSHandlers.handleOBSStopRecording(subAction, context);
-      } else if (subAction.type === 3020) {
+      } else if (subAction.type === SubActionType.OBS_START_STREAMING) {
         result = await OBSHandlers.handleOBSStartStreaming(subAction, context);
-      } else if (subAction.type === 3021) {
+      } else if (subAction.type === SubActionType.OBS_STOP_STREAMING) {
         result = await OBSHandlers.handleOBSStopStreaming(subAction, context);
       }
       
       // Discord Handlers
-      else if (subAction.type === 5001) {
+      else if (subAction.type === SubActionType.DISCORD_SEND_MESSAGE) {
         result = await DiscordHandlers.handleDiscordSendMessage(subAction, context);
       }
       
       // YouTube Handlers
-      else if (subAction.type === 6001) {
+      else if (subAction.type === SubActionType.YOUTUBE_SEND_MESSAGE) {
         result = await YouTubeHandlers.handleYouTubeSendMessage(subAction, context);
       }
 

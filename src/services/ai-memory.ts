@@ -5,7 +5,7 @@
  */
 
 import { ai, DEFAULT_MODEL } from '@/ai/genkit';
-import { db } from '@/lib/firebase-config';
+import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 interface UserMemory {

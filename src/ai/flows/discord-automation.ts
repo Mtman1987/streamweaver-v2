@@ -191,11 +191,12 @@ const discordAutomationCommandFlow = ai.defineFlow(
       }
     } catch (error) {
       console.error('Discord automation command error:', error);
+      const message = error instanceof Error ? error.message : String(error);
       return {
-        response: `❌ Sorry, I encountered an error: ${error.message}`,
+        response: `❌ Sorry, I encountered an error: ${message}`,
         embed: {
           title: '❌ Error',
-          description: `I couldn't process that command: ${error.message}`,
+          description: `I couldn't process that command: ${message}`,
           color: 0xFF0000
         }
       };
@@ -214,20 +215,31 @@ export async function sendDiscordAutomationResponse(
   channelId: string, 
   response: DiscordAutomationCommandOutput
 ): Promise<void> {
-  if (response.embed) {
-    // Send as embed
-    await sendDiscordMessage({
-      channelId,
-      message: '', // Discord allows embed-only messages
-      embed: response.embed as any
-    });
-  } else {
-    // Send as plain message
-    await sendDiscordMessage({
-      channelId,
-      message: response.response
-    });
+  const parts: string[] = [];
+
+  if (response.response?.trim()) {
+    parts.push(response.response);
   }
+
+  if (response.embed) {
+    parts.push(`\n**${response.embed.title}**`);
+    if (response.embed.description?.trim()) {
+      parts.push(response.embed.description);
+    }
+    if (response.embed.fields && response.embed.fields.length > 0) {
+      for (const field of response.embed.fields) {
+        parts.push(`\n**${field.name}**\n${field.value}`);
+      }
+    }
+    if (response.embed.footer?.text?.trim()) {
+      parts.push(`\n_${response.embed.footer.text}_`);
+    }
+  }
+
+  await sendDiscordMessage({
+    channelId,
+    message: parts.join('\n').trim() || ' ',
+  });
 }
 
 /**

@@ -1,4 +1,4 @@
-import { db } from './firebase-config';
+import { db } from './firebase';
 import { doc, onSnapshot, collection } from 'firebase/firestore';
 import { TwitchStreamTracker } from './twitch-stream-tracker';
 

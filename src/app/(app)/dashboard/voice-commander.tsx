@@ -452,70 +452,15 @@ If no good match, respond with: Could not find matching user`;
 
         // For Twitch/Discord modes, require "athena" prefix
         if (lowerTranscription.startsWith('athena') && lowerTranscription.includes('shout')) {
-            if (destination === 'ai' || destination === 'private') {
-                // Handle shoutout via AI when AI Bot is selected
-                const newMessage: TranscribedMessage = { 
-                    id: Date.now(), 
-                    text: `Voice shoutout: ${transcription}`, 
-                    status: 'pending', 
-                    speaker: 'ai-input' 
-                };
-                setMessages(prev => [newMessage, ...prev.slice(0, 4)]);
-                setIsProcessing(true);
-
-                try {
-                    // Get active chatters for AI to choose from
-                    const chattersResponse = await fetch('/api/chat/chatters');
-                    let chatters = [];
-                    if (chattersResponse.ok) {
-                        const chattersData = await chattersResponse.json();
-                        chatters = chattersData.chatters?.map((c: any) => c.user_display_name || c.user_login) || [];
-                    }
-                    
-                    const aiPrompt = `Voice command: "${transcription}"
-Active chatters: ${chatters.join(', ')}
-
-Find the best matching username from the chatters list and respond with ONLY the shoutout command in this format: !so @username
-
-If no good match, respond with: Could not find matching user`;
-                    
-                    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: aiPrompt }] }],
-                            generationConfig: { temperature: 0.1, maxOutputTokens: 50 }
-                        })
-                    });
-                    
-                    if (aiResponse.ok) {
-                        const aiData = await aiResponse.json();
-                        const reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-                        
-                        if (reply && reply.startsWith('!so @')) {
-                            // Send the shoutout command to Twitch
-                            await sendTwitchMessage({ message: reply, as: 'broadcaster' });
-                        }
-                    }
-                    
-                    setMessages(prev => prev.map(msg => msg.id === newMessage.id ? { ...msg, status: 'sent' } : msg));
-                } catch (error: any) {
-                    console.error("Failed to process AI shoutout:", error);
-                    setMessages(prev => prev.map(msg => msg.id === newMessage.id ? { ...msg, status: 'error' } : msg));
-                } finally {
-                    setIsProcessing(false);
-                }
-            } else {
-                // Send to Twitch for server-side processing when Twitch is selected
-                await sendTwitchMessage({ message: transcription, as: 'broadcaster' });
-                const newMessage: TranscribedMessage = { 
-                    id: Date.now(), 
-                    text: `Voice shoutout: ${transcription}`, 
-                    status: 'sent', 
-                    speaker: 'commander' 
-                };
-                setMessages(prev => [newMessage, ...prev.slice(0, 4)]);
-            }
+            // (destination is twitch/discord here)
+            await sendTwitchMessage({ message: transcription, as: 'broadcaster' });
+            const newMessage: TranscribedMessage = { 
+                id: Date.now(), 
+                text: `Voice shoutout: ${transcription}`, 
+                status: 'sent', 
+                speaker: 'commander' 
+            };
+            setMessages(prev => [newMessage, ...prev.slice(0, 4)]);
             return;
         }
 
@@ -528,48 +473,26 @@ If no good match, respond with: Could not find matching user`;
             setIsProcessing(true);
 
             try {
-                // Only send to Discord if destination is NOT 'ai' or 'private' (for logging purposes)
-                const aiChannelId = (destination !== 'ai' && destination !== 'private') ? (userConfig.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID || null) : null;
+                const aiChannelId = userConfig.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID || null;
                 const username = userConfig.TWITCH_BROADCASTER_USERNAME || 'Commander';
 
                 // Generate AI response
                 console.log('Using personality:', personalityRef.current);
                 let reply: string | undefined;
 
-                if (destination === 'private') {
-                    const resp = await fetch('/api/private-chat/respond', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            username,
-                            message: aiMessage,
-                            personality: personalityRef.current,
-                            historyLimit: 20
-                        })
-                    });
+                const prompt = `${personalityRef.current}\n\nYou are having a voice conversation with your Commander. Respond naturally and conversationally. Keep responses under 400 characters.\n\nCurrent message from Commander: ${aiMessage}\n\nRespond as Athena:`;
+                const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { temperature: 0.8, maxOutputTokens: 150 }
+                    })
+                });
 
-                    if (!resp.ok) {
-                        const err = await resp.json().catch(() => ({}));
-                        throw new Error(err?.error || `Private chat AI failed: ${resp.status}`);
-                    }
-
-                    const data = await resp.json();
-                    reply = data?.response?.trim();
-                } else {
-                    const prompt = `${personalityRef.current}\n\nYou are having a voice conversation with your Commander. Respond naturally and conversationally. Keep responses under 400 characters.\n\nCurrent message from Commander: ${aiMessage}\n\nRespond as Athena:`;
-                    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.8, maxOutputTokens: 150 }
-                        })
-                    });
-
-                    if (aiResponse.ok) {
-                        const aiData = await aiResponse.json();
-                        reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-                    }
+                if (aiResponse.ok) {
+                    const aiData = await aiResponse.json();
+                    reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
                 }
 
                 if (reply) {
@@ -645,123 +568,20 @@ If no good match, respond with: Could not find matching user`;
         // Continue with normal processing based on destination
         let processedText = transcription;
 
-        const speakerForHistory: TranscribedMessage['speaker'] = destination === 'ai' ? 'ai-input' : 'commander';
+        const speakerForHistory: TranscribedMessage['speaker'] = 'commander';
         const newMessage: TranscribedMessage = { id: Date.now(), text: processedText, status: 'pending', speaker: speakerForHistory };
         setMessages(prev => [newMessage, ...prev.slice(0, 4)]);
         setIsProcessing(true);
 
         try {
-            if (destination === 'ai') {
-                // Direct AI conversation with memory
-                const aiChannelId = userConfig.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID;
-                const username = userConfig.TWITCH_BROADCASTER_USERNAME || 'Commander';
-                
-                if (aiChannelId) {
-                    // Get message number for AI chat
-                    const msgNum = await fetch('/api/counter/next', { method: 'POST' })
-                        .then(res => res.json())
-                        .then(data => data.number)
-                        .catch(() => Date.now());
-                    
-                    sendDiscordMessage({ channelId: aiChannelId, message: `[${msgNum}][AI][U1] ${username}: "${transcription}"` }).catch(console.error);
-                }
-                
-                // Fetch recent conversation history for context
-                let conversationContext = '';
-                try {
-                    const historyResponse = await fetch('/api/discord/messages', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            channelId: aiChannelId,
-                            username,
-                            limit: 10
-                        })
-                    });
-                    
-                    if (historyResponse.ok) {
-                        const history = await historyResponse.json();
-                        if (history.messages?.length > 0) {
-                            conversationContext = `\n\nRecent conversation history with ${username}:\n` + 
-                                history.messages.map((msg: any) => `${msg.author}: ${msg.content}`).join('\n');
-                        }
-                    }
-                } catch (error) {
-                    console.log('Could not fetch conversation history:', error);
-                }
-                
-                // Generate AI response with conversation context
-                const prompt = `${personalityRef.current}
+            const speaker: Speaker = sendAsCommander ? 'broadcaster' : 'bot';
 
-You are having a voice conversation with ${username}. Respond naturally and conversationally. Keep responses under 400 characters.${conversationContext}
-
-Current message from ${username}: ${transcription}
-
-Respond as Athena:`;
-                
-                const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { temperature: 0.8, maxOutputTokens: 150 }
-                    })
-                });
-                
-                if (aiResponse.ok) {
-                    const aiData = await aiResponse.json();
-                    const reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-                    
-                    if (reply) {
-                        if (aiChannelId) {
-                            // Get message number for AI response
-                            const msgNum = await fetch('/api/counter/next', { method: 'POST' })
-                                .then(res => res.json())
-                                .then(data => data.number)
-                                .catch(() => Date.now());
-                            
-                            sendDiscordMessage({ channelId: aiChannelId, message: `[${msgNum}][AI][U1] Athena: "${reply}"` }).catch(console.error);
-                        }
-                        
-                        // Generate TTS using ElevenLabs
-                        const voiceMap: Record<string, string> = {
-                            'Rachel': '21m00Tcm4TlvDq8ikWAM', 'Domi': 'AZnzlk1XvdvUeBnXmlld', 'Bella': 'EXAVITQu4vr4xnSDxMaL',
-                            'Antoni': 'ErXwobaYiN019PkySvjV', 'Elli': 'MF3mGyEYCl7XYWbV9V6O', 'Josh': 'TxGEqnHWrfWFTfGW9XjX'
-                        };
-                        const voiceId = voiceMap[voiceRef.current] || '21m00Tcm4TlvDq8ikWAM';
-                        
-                        const ttsResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'audio/mpeg',
-                                'Content-Type': 'application/json',
-                                'xi-api-key': 'aabcaa90af1d148f467dec19e4b1f09b2694967cc29709937fabdb3f6b7a27b4'
-                            },
-                            body: JSON.stringify({
-                                text: reply,
-                                model_id: 'eleven_flash_v2_5',
-                                voice_settings: { stability: 0.5, similarity_boost: 0.5 }
-                            })
-                        });
-                        
-                        if (ttsResponse.ok) {
-                            const audioBuffer = await ttsResponse.arrayBuffer();
-                            const base64Audio = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
-                            setAudioUrl(`data:audio/mpeg;base64,${base64Audio}`);
-                        }
-                    }
-                }
-
-            } else { // destination is 'twitch' or 'discord'
-                const speaker: Speaker = sendAsCommander ? 'broadcaster' : 'bot';
-
-                if (destination === 'twitch') {
-                    await sendTwitchMessage({ message: processedText, as: speaker });
-                } else if (destination === 'discord') {
-                    const shoutoutChannelId = userConfig.NEXT_PUBLIC_DISCORD_SHOUTOUT_CHANNEL_ID;
-                    if (!shoutoutChannelId) throw new Error("Discord shoutout channel ID not configured.");
-                    await sendDiscordMessage({ channelId: shoutoutChannelId, message: processedText });
-                }
+            if (destination === 'twitch') {
+                await sendTwitchMessage({ message: processedText, as: speaker });
+            } else if (destination === 'discord') {
+                const shoutoutChannelId = userConfig.NEXT_PUBLIC_DISCORD_SHOUTOUT_CHANNEL_ID;
+                if (!shoutoutChannelId) throw new Error("Discord shoutout channel ID not configured.");
+                await sendDiscordMessage({ channelId: shoutoutChannelId, message: processedText });
             }
 
             setMessages(prev => prev.map(msg => msg.id === newMessage.id ? { ...msg, status: 'sent' } : msg));

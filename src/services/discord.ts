@@ -67,7 +67,7 @@ export async function uploadFileToDiscord(
     fileContent: string,
     fileName: string,
     messageContent?: string
-) {
+): Promise<{ success: boolean; messageUrl: string; data?: unknown }> {
     const broker = getBrokerConfig();
     if (!broker) return local.uploadFileToDiscord(channelId, fileContent, fileName, messageContent);
     return await brokerRequest('/discord/upload-file', { channelId, fileContent, fileName, messageContent });

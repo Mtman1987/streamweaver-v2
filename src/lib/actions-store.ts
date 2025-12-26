@@ -6,6 +6,9 @@ import { SB_ACTIONS_FILE_PATH } from '@/lib/sb-store';
 
 // sb/actions.json is the source of truth for runtime automation.
 
+// Back-compat for API routes that referenced ACTIONS_FILE_PATH.
+export const ACTIONS_FILE_PATH = SB_ACTIONS_FILE_PATH;
+
 function normalizeAction(raw: any): Action {
   const now = new Date().toISOString();
   return {

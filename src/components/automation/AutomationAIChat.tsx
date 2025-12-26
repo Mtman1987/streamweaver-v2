@@ -149,13 +149,13 @@ export default function AutomationAIChat({
           timestamp: new Date(),
           codeSnippets: [{
             code: result.code,
-            language: result.language,
+            language,
             description: result.explanation
           }]
         };
         
         if (onCodeGenerated) {
-          onCodeGenerated(result.code, result.language);
+          onCodeGenerated(result.code, language);
         }
       } else {
         // General chat
@@ -182,10 +182,11 @@ export default function AutomationAIChat({
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('AI chat error:', error);
+      const message = error instanceof Error ? error.message : String(error);
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `Sorry, I encountered an error: ${error.message}`,
+        content: `Sorry, I encountered an error: ${message}`,
         timestamp: new Date()
       }]);
     } finally {

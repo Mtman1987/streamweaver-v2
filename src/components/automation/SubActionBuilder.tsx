@@ -135,8 +135,8 @@ export function SubActionBuilder({ subAction, onSave, onCancel }: SubActionBuild
               <input
                 type="number"
                 min="0"
-                value={formData.maxValue || 0}
-                onChange={(e) => setFormData({ ...formData, maxValue: parseInt(e.target.value) })}
+                value={formData.maxValue ?? ''}
+                onChange={(e) => setFormData({ ...formData, maxValue: e.target.value })}
                 className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                 title="Max random wait time"
               />

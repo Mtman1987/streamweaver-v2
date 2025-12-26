@@ -2,20 +2,41 @@
 'use server';
 
 import { SpeechClient } from '@google-cloud/speech';
-import serviceAccount from '../../firebase-service-account.json';
 
 let speechClient: SpeechClient | null = null;
 
+type ServiceAccountJson = {
+    project_id?: string;
+    client_email?: string;
+    private_key?: string;
+};
+
+function getServiceAccountFromEnv(): ServiceAccountJson | null {
+    const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON;
+    if (!raw) return null;
+    try {
+        return JSON.parse(raw) as ServiceAccountJson;
+    } catch (error) {
+        console.error('Invalid GOOGLE_SERVICE_ACCOUNT_JSON:', error);
+        return null;
+    }
+}
+
 function getSpeechClient(): SpeechClient {
     if (!speechClient) {
-        // Explicitly use the imported service account credentials
-        speechClient = new SpeechClient({
-            credentials: {
-                client_email: serviceAccount.client_email,
-                private_key: serviceAccount.private_key,
-            },
-            projectId: serviceAccount.project_id,
-        });
+        const serviceAccount = getServiceAccountFromEnv();
+        if (serviceAccount?.client_email && serviceAccount?.private_key) {
+            speechClient = new SpeechClient({
+                credentials: {
+                    client_email: serviceAccount.client_email,
+                    private_key: serviceAccount.private_key,
+                },
+                projectId: serviceAccount.project_id,
+            });
+        } else {
+            // Relies on Application Default Credentials (e.g., GOOGLE_APPLICATION_CREDENTIALS)
+            speechClient = new SpeechClient();
+        }
     }
     return speechClient;
 }
@@ -27,11 +48,10 @@ function getSpeechClient(): SpeechClient {
  */
 export async function transcribeAudio(base64Audio: string): Promise<{ transcription: string, error?: string}> {
     const client = getSpeechClient();
-    
-    const projectId = serviceAccount.project_id;
-    if (!projectId) {
-        console.error("Project ID is missing from service account.");
-        return { transcription: "", error: "Server configuration error: Project ID is missing."};
+    const projectId = getServiceAccountFromEnv()?.project_id;
+    if (!projectId && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+        console.error("Google credentials not configured (set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_SERVICE_ACCOUNT_JSON).");
+        return { transcription: "", error: "Server configuration error: Google credentials not configured."};
     }
     
     const audio = {

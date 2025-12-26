@@ -5,6 +5,7 @@ import AppSidebar from '@/components/layout/sidebar';
 import Header from '@/components/layout/header';
 import { SidebarInset } from '@/components/ui/sidebar';
 import { LogPanel } from '@/components/logs/log-panel';
+import { LogPanelProvider } from '@/components/logs/log-panel-context';
 import { useState, useEffect } from 'react';
 
 export type UserProfile = {
@@ -60,7 +61,7 @@ export default function AppLayout({
   }, []);
 
   return (
-    <>
+    <LogPanelProvider>
       <AppSidebar userProfile={userProfile} />
       <SidebarInset className="bg-background">
         <Header />
@@ -71,6 +72,6 @@ export default function AppLayout({
              <LogPanel />
         </main>
       </SidebarInset>
-    </>
+    </LogPanelProvider>
   )
 }

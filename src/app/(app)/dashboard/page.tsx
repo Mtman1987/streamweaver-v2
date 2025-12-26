@@ -46,7 +46,7 @@ export default function DashboardPage() {
             let fetchedViewers = [];
             if (selectedPlatform !== 'Discord') {
                 fetchedViewers = await Promise.all(
-                    viewersResult.map(async (chatter, index) => {
+                    viewersResult.map(async (chatter: any, index: number) => {
                         let avatar = "https://placehold.co/40x40.png";
                         let displayName = chatter.user_display_name || chatter.user_login || 'Unknown User';
                         

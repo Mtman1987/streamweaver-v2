@@ -1,18 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
-import serviceAccount from '../../../../firebase-service-account.json';
 
 let ttsClient: TextToSpeechClient | null = null;
 
+type ServiceAccountJson = {
+    project_id?: string;
+    client_email?: string;
+    private_key?: string;
+};
+
+function getServiceAccountFromEnv(): ServiceAccountJson | null {
+    const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON;
+    if (!raw) return null;
+    try {
+        return JSON.parse(raw) as ServiceAccountJson;
+    } catch (error) {
+        console.error('Invalid GOOGLE_SERVICE_ACCOUNT_JSON:', error);
+        return null;
+    }
+}
+
 function getTTSClient(): TextToSpeechClient {
     if (!ttsClient) {
-        ttsClient = new TextToSpeechClient({
-            credentials: {
-                client_email: serviceAccount.client_email,
-                private_key: serviceAccount.private_key,
-            },
-            projectId: serviceAccount.project_id,
-        });
+        const serviceAccount = getServiceAccountFromEnv();
+        if (serviceAccount?.client_email && serviceAccount?.private_key) {
+            ttsClient = new TextToSpeechClient({
+                credentials: {
+                    client_email: serviceAccount.client_email,
+                    private_key: serviceAccount.private_key,
+                },
+                projectId: serviceAccount.project_id,
+            });
+        } else {
+            // Relies on Application Default Credentials (e.g., GOOGLE_APPLICATION_CREDENTIALS)
+            ttsClient = new TextToSpeechClient();
+        }
     }
     return ttsClient;
 }

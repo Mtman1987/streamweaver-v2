@@ -179,8 +179,9 @@ export class YouTubeService extends EventEmitter {
       message: snippet.displayMessage || '',
       timestamp: new Date(snippet.publishedAt || Date.now()),
       isSuperChat: snippet.type === 'superChatEvent',
-      superChatAmount: snippet.superChatDetails?.amountMicros ? 
-        snippet.superChatDetails.amountMicros / 1000000 : undefined,
+      superChatAmount: snippet.superChatDetails?.amountMicros
+        ? Number(snippet.superChatDetails.amountMicros) / 1_000_000
+        : undefined,
       isMembership: snippet.type === 'newSponsorEvent',
       membershipLevel: snippet.type === 'newSponsorEvent' ? 
         (snippet as any).memberMilestoneChatDetails?.memberLevel : undefined
@@ -250,7 +251,7 @@ export class YouTubeService extends EventEmitter {
             bannedUserDetails: {
               channelId: channelId
             },
-            banDurationSeconds: permanent ? undefined : 300 // 5 minutes default
+            banDurationSeconds: permanent ? undefined : '300' // 5 minutes default
           }
         }
       });
