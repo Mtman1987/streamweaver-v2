@@ -1,0 +1,31 @@
+{
+  "apps": [
+    {
+      "name": "next-dev",
+      "title": "Next.js Dev Server",
+      "command": "dev:next",
+      "cwd": ".",
+      "port": 3100,
+      "path": "/dashboard"
+    },
+    {
+      "name": "websocket",
+      "title": "WebSocket Server",
+      "command": "dev:ws",
+      "cwd": ".",
+      "port": 8090,
+      "path": null
+    },
+    {
+      "name": "genkit",
+      "title": "Genkit AI Server",
+      "command": "genkit:watch",
+      "cwd": ".",
+      "port": 4000,
+      "path": null
+    }
+  ],
+  "websocket": {
+    "port": 8090
+  }
+}

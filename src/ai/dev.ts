@@ -1,0 +1,22 @@
+'use server';
+
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/explain-command-code.ts';
+import '@/ai/flows/generate-command-suggestions.ts';
+import '@/ai/flows/generate-command-tests.ts';
+import '@/ai/flows/generate-action-code.ts';
+import '@/ai/flows/send-twitch-message.ts';
+import '@/ai/flows/run-code.ts';
+import '@/ai/flows/send-discord-message.ts';
+import '@/ai/flows/export-action-to-discord.ts';
+import '@/ai/flows/get-shared-actions.ts';
+import '@/ai/flows/get-shared-action-content.ts';
+import '@/ai/flows/text-to-speech.ts';
+import '@/ai/flows/conversational-response.ts';
+import '@/ai/flows/chat-with-athena.ts';
+import '@/ai/flows/get-chat-history.ts';
+import '@/ai/flows/get-stream-metrics.ts';
+import '@/ai/flows/sync-stream-metrics.ts';
+import '@/ai/flows/generate-flow-node.ts';

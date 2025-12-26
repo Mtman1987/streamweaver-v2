@@ -1,0 +1,1438 @@
+[
+  {
+    "id": "3e628948-1694-40d4-b939-ca7b60a3ae8e",
+    "name": "StreamUP Currency • Add To All",
+    "command": "!addToAll",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: StreamUP Currency • Add To All",
+    "permissions": [
+      "moderator"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 1047,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "074667bb-6402-4aa7-9420-0e9477339d68",
+    "name": "!cuddle",
+    "command": "!cuddle",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !cuddle",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "0fc282fb-1384-4427-a400-e393d8ec116e",
+    "name": "StreamUP Currency • Set Points",
+    "command": "!setPoints",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: StreamUP Currency • Set Points",
+    "permissions": [
+      "moderator"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 1041,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "bd7ee4a0-ecb4-42bc-89e9-dfe1fdf0b73d",
+    "name": "StreamUP Currency • Set To All",
+    "command": "!setToAll",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: StreamUP Currency • Set To All",
+    "permissions": [
+      "moderator"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 1049617,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "5a4b779f-be8e-434b-b479-d9a142fec60b",
+    "name": "!followage",
+    "command": "!followage",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !followage",
+    "cooldown": {
+      "global": 0,
+      "user": 5
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "25623189-d5aa-4f04-943a-39f2c5a75066",
+    "name": "!coinflip",
+    "command": "!coinflip",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !coinflip",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "9024b57d-bc5d-442e-a6e8-df7cc8147dc4",
+    "name": "!hover",
+    "command": "!hover",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !hover",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "820d0a8d-4adf-4d86-a250-e1a4219c09f6",
+    "name": "!setso",
+    "command": "!setso",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !setso",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "b0b9a1c1-e496-4eee-a0ee-b384ca789927",
+    "name": "!tickle",
+    "command": "!tickle",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !tickle",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "0b4101a4-c66d-4fae-acc1-6951f75592aa",
+    "name": "!deathsreset",
+    "command": "!deathsreset",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !deathsreset",
+    "cooldown": {
+      "global": 1,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Deathcounter",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "cb32064d-4701-4c72-8c92-a54d1b3c536b",
+    "name": "!highfive",
+    "command": "!highfive",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !highfive",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "67ddf22f-8e2c-4e9a-963b-63424b5dc6a5",
+    "name": "athenacall",
+    "command": "(?i).*@?Annie.*",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: athenacall",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": true,
+    "group": "Mustached_Maniac ChatGPT",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "2d45b051-2f57-4580-ac7c-39456f1ec162",
+    "name": "!championstart",
+    "command": "!championstart",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !championstart",
+    "cooldown": {
+      "global": 88,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Channel point redeems (mod overide)",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "f281415b-b178-4a39-9295-71b78ee5de26",
+    "name": "konami code",
+    "command": "(?i).*@?UUDDLRLRAB.*",
+    "enabled": false,
+    "description": "Imported from Streamer.bot: konami code",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": true,
+    "group": "secret commands ",
+    "sources": 17,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "079079a6-2d58-430c-a119-683439d7787a",
+    "name": "!instagram",
+    "command": "!instagram",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !instagram",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "59eeffda-18ca-480e-a8c2-2b3c12d40361",
+    "name": "!discord",
+    "command": "!discord",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !discord",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "d06e287d-240b-4067-8e1c-f92ac6fc0be2",
+    "name": "!unlurk",
+    "command": "!unlurk",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !unlurk",
+    "cooldown": {
+      "global": 0,
+      "user": 60
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "ba56264c-42d4-4127-8dba-80bc45a86d6c",
+    "name": "!emergency",
+    "command": "!emergency",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !emergency",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "0d3a444c-72f0-44f2-bde4-1efd04603c10",
+    "name": "!love",
+    "command": "!love",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !love",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "43b38074-ea81-4988-abb9-100f9abafb65",
+    "name": "!roll",
+    "command": "!roll",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !roll",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "ab5c6463-68ac-4a7a-b4e6-a5d86f7ff8fe",
+    "name": "!hug",
+    "command": "!hug",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !hug",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "139571ca-5d42-4db5-b8c2-41f4dbc5227c",
+    "name": "!deathsset",
+    "command": "!deathsset",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !deathsset",
+    "cooldown": {
+      "global": 2,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Deathcounter",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "0f766f51-c54e-420a-aad2-48a81f472236",
+    "name": "!leader",
+    "command": "!leader",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !leader",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 31,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "96d471c6-4a74-4f69-a02d-b1fdfa9d032e",
+    "name": "!tiktok",
+    "command": "!tiktok",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !tiktok",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "bbc645e2-7b50-4721-ad06-1b781446f7d3",
+    "name": "!youtube",
+    "command": "!youtube",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !youtube",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "30b93edd-f4c3-48a1-be27-a77548d0df86",
+    "name": "(?i).*@?word.*",
+    "command": "(?i).*@?bird.*",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: (?i).*@?word.*",
+    "cooldown": {
+      "global": 180009,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": true,
+    "group": "secret commands ",
+    "sources": 1041,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "4126ecd0-ca0f-4cfa-9496-7e18849077da",
+    "name": "!so",
+    "command": "!so",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !so",
+    "cooldown": {
+      "global": 1,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "acbce1ae-4458-4f92-99d9-28f22fe93d7b",
+    "name": "!fistbump",
+    "command": "!fistbump",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !fistbump",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "34f888e5-3255-41a6-ab33-1b50db1bfd84",
+    "name": "!emergencyover",
+    "command": "!emergencyover",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !emergencyover",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "1a425b0c-5343-412a-bb19-65dcf9980aff",
+    "name": "!dance",
+    "command": "!dance",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !dance",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "01def8f1-8ca9-4ba4-8755-3194f9d7cdd7",
+    "name": "duel",
+    "command": "!duel",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: duel",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 17,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "b400746d-6213-4bfa-8119-17288be94c98",
+    "name": "!boop",
+    "command": "!boop",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !boop",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 31,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "a120ff6c-bca7-4259-8b5f-bf95f504b0ba",
+    "name": "!setgame",
+    "command": "!setgame",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !setgame",
+    "cooldown": {
+      "global": 5,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "38355d88-4a3e-4026-93b2-cf0fd79bb525",
+    "name": "!bitsleader",
+    "command": "!bitsleader",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !bitsleader",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "23a2a0a4-ae2e-4b68-89ee-7859f6316dcf",
+    "name": "!commands",
+    "command": "!commands",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !commands",
+    "cooldown": {
+      "global": 0,
+      "user": 120
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "5da3164e-7f6c-433f-b7b7-419218a20346",
+    "name": "!deaths+",
+    "command": "!deaths+",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !deaths+",
+    "cooldown": {
+      "global": 1,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Deathcounter",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "45e22610-0c26-4b0d-8381-d6db64cb7f05",
+    "name": "Currency Redeem - Example",
+    "command": "!exampleRedeem",
+    "enabled": false,
+    "description": "Imported from Streamer.bot: Currency Redeem - Example",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Currency Redeems",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "f6c7139e-0100-47be-b051-0e298d661d54",
+    "name": "!followers",
+    "command": "!followers",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !followers",
+    "cooldown": {
+      "global": 5,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "fc40c477-0782-415b-905e-961cd4e9d7d7",
+    "name": "!twitter",
+    "command": "!twitter",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !twitter",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "85755235-014b-4a4c-bba5-ffd280b70289",
+    "name": "steal points",
+    "command": "!stealpoints",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: steal points",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "e923ed33-2387-43d9-a9a1-4e5f41ad6ab2",
+    "name": "!merch",
+    "command": "!merch",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !merch",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "8a8398ba-7401-4406-a2d8-07b1bfb4070c",
+    "name": "StreamUP Currency • Add Points",
+    "command": "!addPoints",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: StreamUP Currency • Add Points",
+    "permissions": [
+      "moderator"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 1041,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "d096e3e2-5842-4780-b7b4-083707057a17",
+    "name": "!headpat",
+    "command": "!headpat",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !headpat",
+    "cooldown": {
+      "global": 0,
+      "user": 2
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "d2e90fd3-30bf-4b5f-91e4-3a1c8a659d7e",
+    "name": "trade",
+    "command": "!trade",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: trade",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "df4181fc-651f-4fc3-98ea-4dec9b242836",
+    "name": "[CCG] - !gamble <amount>",
+    "command": "!gamble",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: [CCG] - !gamble <amount>",
+    "aliases": [
+      "!gambel"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 10
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "[CCG] - Classic Chat Gamble",
+    "sources": 1049601,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "29c41d07-5da5-4b08-9542-8586ab06ee93",
+    "name": "!created",
+    "command": "!created",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !created",
+    "cooldown": {
+      "global": 0,
+      "user": 5
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "74129be4-7622-4679-9f7a-623090be261d",
+    "name": "cardleader",
+    "command": "!cleader",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: cardleader",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "11d20e5e-d352-4d90-ada9-866a98bc449c",
+    "name": "StreamUP Currency • Reset All Points",
+    "command": "!resetAllPoints",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: StreamUP Currency • Reset All Points",
+    "permissions": [
+      "moderator",
+      "subscriber"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 1041,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "865f7986-b7e3-4df8-8371-d0da23b43447",
+    "name": "!deathsresettotal",
+    "command": "!deathsresettotal",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !deathsresettotal",
+    "cooldown": {
+      "global": 2,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Deathcounter",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "36b8339b-2276-449d-9d39-96c8a369278e",
+    "name": "!uptime",
+    "command": "!uptime",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !uptime",
+    "cooldown": {
+      "global": 60,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "61d121f1-cfd7-43b2-91b5-061ac40f9195",
+    "name": "badgeleader",
+    "command": "!bleader",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: badgeleader",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 31,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "6166ad9c-8100-493b-a557-fc65a5464601",
+    "name": "watchtimeleader",
+    "command": "!wleader",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: watchtimeleader",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "c33c0ff3-a81b-450c-a771-1ec9e9b37020",
+    "name": "chat call bot",
+    "command": "(?i).*@?athenabot87.*",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: chat call bot",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": true,
+    "group": "Mustached_Maniac ChatGPT",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "7678cd5f-e860-4e9e-9aa7-392a2681de81",
+    "name": "!followed",
+    "command": "!followed",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !followed",
+    "cooldown": {
+      "global": 0,
+      "user": 4
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "096f341b-dfb4-4904-aaa6-101b875eaccd",
+    "name": "!brb",
+    "command": "!brb",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !brb",
+    "cooldown": {
+      "global": 4,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 21,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "d1ba0e52-008a-42a0-bd92-3d2337139021",
+    "name": "!settitle",
+    "command": "!settitle",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !settitle",
+    "cooldown": {
+      "global": 5,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "4831ef91-dd24-4830-b867-c8d589892091",
+    "name": "!stats",
+    "command": "!stats",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !stats",
+    "cooldown": {
+      "global": 120,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "847ea97a-93cf-4167-a694-f05fcf09300a",
+    "name": "!date",
+    "command": "!date",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !date",
+    "cooldown": {
+      "global": 60,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "13ee2504-fc5f-4ce5-8b99-35585a692c05",
+    "name": "!stickers",
+    "command": "(?i).*@?stickers.*",
+    "enabled": false,
+    "description": "Imported from Streamer.bot: !stickers",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": true,
+    "group": "secret commands ",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "3b0a0240-a9e1-479d-94b8-2ffeb0e3e1eb",
+    "name": "!deaths-",
+    "command": "!deaths-",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !deaths-",
+    "cooldown": {
+      "global": 1,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Deathcounter",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "6c9a7796-282b-41ea-8f84-c9bcd09bb5d6",
+    "name": "!no",
+    "command": "!no",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !no",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "ae5db644-210f-4786-b7cc-c3eb75f43da2",
+    "name": "ChatGPT Shoutouts",
+    "command": "!gptso",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: ChatGPT Shoutouts",
+    "permissions": [
+      "moderator"
+    ],
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mustached_Maniac ChatGPT",
+    "sources": 1025,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "4baaca79-cb3e-4280-977f-ced7818c8fce",
+    "name": "!shop",
+    "command": "!shop",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !shop",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "49d8111b-17bb-45a9-8df0-7f353cbcc464",
+    "name": "!givepoints",
+    "command": "!givepoints",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !givepoints",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 31,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "cc628137-5406-4f31-94ed-0dd83933e847",
+    "name": "pointsleader",
+    "command": "!pleader",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: pointsleader",
+    "cooldown": {
+      "global": 15,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "cb7a1215-7ec2-4d83-8498-82d2fd2f4474",
+    "name": "!deaths",
+    "command": "!deaths",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !deaths",
+    "cooldown": {
+      "global": 0,
+      "user": 10
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Deathcounter",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "7d3bf706-3b5e-41d8-bbb6-56ad9885e162",
+    "name": "Watchtime",
+    "command": "!watchtime",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: Watchtime",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Watchtime",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "6db3f896-1ec1-450c-8930-21d48ac0febe",
+    "name": "!setup",
+    "command": "!setup",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !setup",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "secret commands ",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "a6f8c3f9-51b6-45c8-8035-cdc4b8a691c9",
+    "name": "!stretch",
+    "command": "!stretch",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !stretch",
+    "cooldown": {
+      "global": 120,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Channel point redeems (mod overide)",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "b98136dc-afb2-43d1-82d5-e394ebc7e220",
+    "name": "Create Twitch Clip",
+    "command": "!clip",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: Create Twitch Clip",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Twitch",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "726c4151-cd69-40f9-9230-be89ccab47c9",
+    "name": "Chat Call",
+    "command": "(?i).*@?Athena.*",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: Chat Call",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": true,
+    "group": "Mustached_Maniac ChatGPT",
+    "sources": 1049617,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "50d67371-f0b2-4834-b673-198e85a72990",
+    "name": "!T",
+    "command": "!T",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !T",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 31,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "18408acc-bf29-440b-891e-405b03811f3d",
+    "name": "!webpage",
+    "command": "!webpage",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !webpage",
+    "cooldown": {
+      "global": 10,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Links",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "c416d67a-62e5-4a7d-b04a-5c40ad4cb4b4",
+    "name": "!yes",
+    "command": "!yes",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !yes",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 19,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "39ceac5b-c835-4b36-81b6-31f695d00aee",
+    "name": "!show",
+    "command": "!show",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !show",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 23,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "d3bb8b36-75db-46f3-a6d6-661eee95b793",
+    "name": "!raidmessage",
+    "command": "!raidmessage",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !raidmessage",
+    "cooldown": {
+      "global": 5,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "2058c818-e30b-4d80-b217-4eba0ca7841a",
+    "name": "StreamUP Currency • Get Points",
+    "command": "!points",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: StreamUP Currency • Get Points",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "StreamUP Currency",
+    "sources": 1049617,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "a459b5fe-4a6d-453a-8f3d-1e7000dd1d23",
+    "name": "!lurk",
+    "command": "!lurk",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !lurk",
+    "cooldown": {
+      "global": 0,
+      "user": 60
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat actions",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "a8144bf4-4fda-490b-8324-d78b8c6ca302",
+    "name": "!vso",
+    "command": "!vso",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !vso",
+    "permissions": [
+      "moderator"
+    ],
+    "cooldown": {
+      "global": 2,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Mod commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "67e784a0-1559-46f2-8102-8380b596374c",
+    "name": "accept",
+    "command": "!accept",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: accept",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "",
+    "sources": 17,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "3b410cb9-0003-45be-850b-b689e2132d13",
+    "name": "~yup",
+    "command": "!yup",
+    "enabled": false,
+    "description": "Imported from Streamer.bot: ~yup",
+    "cooldown": {
+      "global": 0,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "tiktok",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "edb4a8d3-f1c6-4b6b-b082-e9df0de919d6",
+    "name": "!time",
+    "command": "!time",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !time",
+    "cooldown": {
+      "global": 60,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Chat commands",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  },
+  {
+    "id": "9168d32a-f201-4c5f-9d46-00d5623540a3",
+    "name": "!hydrate",
+    "command": "!hydrate",
+    "enabled": true,
+    "description": "Imported from Streamer.bot: !hydrate",
+    "cooldown": {
+      "global": 120,
+      "user": 0
+    },
+    "caseSensitive": false,
+    "regex": false,
+    "group": "Channel point redeems (mod overide)",
+    "sources": 1,
+    "createdAt": "2025-12-25T08:43:56.728Z",
+    "updatedAt": "2025-12-25T08:43:56.728Z"
+  }
+]
