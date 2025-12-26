@@ -17,7 +17,6 @@
     "lint": "npx next lint",
     "typecheck": "tsc --noEmit",
     "health-check": "node health-check.js",
-    "dashboard:start": "node dashboard-launcher.js",
     "electron": "electron .",
     "electron:dev": "set ELECTRON_IS_DEV=1 && electron .",
     "electron:kill": "taskkill /F /IM node.exe /IM electron.exe",
