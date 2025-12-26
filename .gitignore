@@ -19,6 +19,9 @@
 .env.test.local
 .env.production.local
 
+# Never keep env files under public/ (public is web-served)
+/public/.env
+
 # Logs
 logs
 *.log
