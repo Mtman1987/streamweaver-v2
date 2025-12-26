@@ -2,6 +2,9 @@
 import { config } from 'dotenv';
 config();
 
+import { applyUserConfigToProcessEnvSync } from './src/lib/user-config';
+applyUserConfigToProcessEnvSync();
+
 import { WebSocketServer, WebSocket } from 'ws';
 import * as tmi from 'tmi.js';
 import { getChannelBadges, getTwitchUser } from './src/services/twitch';
@@ -110,10 +113,6 @@ function watchActionsForChanges() {
             console.error('[Actions] Failed to reload after change:', error)
         );
     });
-}
-
-function getActionByTrigger(trigger: string): ActionDefinition | undefined {
-    return Object.values(actionsCache).find((action) => action.trigger === trigger);
 }
 
 function setupAutomationFromSb(): void {

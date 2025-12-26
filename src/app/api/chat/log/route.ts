@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendDiscordMessage } from '@/services/discord';
+import { readUserConfig } from '@/lib/user-config';
 
 export async function POST(request: NextRequest) {
   try {
+    const userConfig = await readUserConfig();
+
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ') || authHeader.split(' ')[1] !== process.env.BOT_SECRET_KEY) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -23,7 +26,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Log to Discord
-    const discordChannelId = process.env.NEXT_PUBLIC_DISCORD_LOG_CHANNEL_ID;
+    const discordChannelId =
+      userConfig.NEXT_PUBLIC_DISCORD_LOG_CHANNEL_ID ||
+      process.env.NEXT_PUBLIC_DISCORD_LOG_CHANNEL_ID;
     if (!discordChannelId) {
       return NextResponse.json({ error: 'Discord log channel not configured' }, { status: 500 });
     }

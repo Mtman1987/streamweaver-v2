@@ -4,8 +4,7 @@
  * Handles voice-activated commands with AI-powered username matching
  */
 
-import { generate } from '@genkit-ai/ai';
-import { gemini20FlashExp } from '@genkit-ai/googleai';
+import { ai, DEFAULT_MODEL } from '@/ai/genkit';
 
 interface VoiceCommandResult {
   success: boolean;
@@ -134,16 +133,16 @@ Respond with ONLY the exact username from the list, or 'NONE' if unclear.`;
    */
   private async getAIUsernameMatch(prompt: string): Promise<string | null> {
     try {
-      const { text } = await generate({
-        model: gemini20FlashExp,
+      const { output } = await ai.generate({
+        model: DEFAULT_MODEL,
         prompt,
         config: {
-          temperature: 0.1, // Low temperature for consistent matching
-          maxOutputTokens: 50
-        }
+          temperature: 0.1,
+          maxOutputTokens: 50,
+        },
       });
 
-      return text()?.trim() || null;
+      return output?.text?.trim() || null;
     } catch (error) {
       console.error('AI username matching failed:', error);
       return null;

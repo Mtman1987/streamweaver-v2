@@ -1,4 +1,4 @@
-import { ai } from '@/ai/genkit';
+import { ai, DEFAULT_MODEL } from '@/ai/genkit';
 import { z } from 'genkit';
 import type { FlowNodeKind } from '@/types/flows';
 
@@ -64,7 +64,7 @@ ${contextLines.join('\n')}
 `;
 
     const { output } = await ai.generate({
-      model: ai.defaultModel,
+      model: DEFAULT_MODEL,
       prompt: userPrompt,
       config: {
         temperature: 0.2,
@@ -106,7 +106,7 @@ ${contextLines.join('\n')}
 `;
 
   const { output } = await ai.generate({
-    model: ai.defaultModel,
+    model: DEFAULT_MODEL,
     prompt: userPrompt,
     config: {
       temperature: 0.2,

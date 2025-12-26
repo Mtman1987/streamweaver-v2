@@ -10,12 +10,22 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Download, Upload, ExternalLink, FileUp, Clipboard, Share, Copy } from 'lucide-react';
+
 type SharedAction = {
   id: string;
   name: string;
   description: string;
   url: string;
 };
+
+function formatTriggerSummary(action: { triggers?: Array<{ type?: unknown }> } | null | undefined): string {
+  const triggers = Array.isArray(action?.triggers) ? action!.triggers : [];
+  if (triggers.length === 0) return '—';
+  const type = triggers[0]?.type;
+  if (typeof type === 'string') return type;
+  if (typeof type === 'number') return String(type);
+  return '—';
+}
 
 export default function CommunityPage() {
   const [sharedActions, setSharedActions] = useState<SharedAction[]>([]);
@@ -25,7 +35,7 @@ export default function CommunityPage() {
   const [commands, setCommands] = useState<any[]>([]);
   
   const activeCommands = useMemo(
-    () => actions.filter((action) => action.status === "Active"),
+    () => actions.filter((action) => action.enabled),
     [actions]
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -345,12 +355,12 @@ export default function CommunityPage() {
               <Card key={action.id} className="flex flex-col">
                 <CardHeader>
                   <CardTitle className="text-lg">{action.name}</CardTitle>
-                  <CardDescription>Trigger: {action.trigger}</CardDescription>
+                  <CardDescription>Trigger: {formatTriggerSummary(action)}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col justify-between">
                   <div className="space-y-2 mb-4">
-                    <Badge variant={action.status === 'active' ? 'default' : 'secondary'}>
-                      {action.status}
+                    <Badge variant={action.enabled ? 'default' : 'secondary'}>
+                      {action.enabled ? 'enabled' : 'disabled'}
                     </Badge>
                     <Badge variant="outline">Action</Badge>
                   </div>
@@ -430,7 +440,7 @@ export default function CommunityPage() {
                 <Card key={index} className="flex flex-col">
                   <CardHeader>
                     <CardTitle className="text-lg">{activeCmd.name}</CardTitle>
-                    <CardDescription>!{activeCmd.trigger} → {activeCmd.type || 'Action'}</CardDescription>
+                    <CardDescription>Trigger: {formatTriggerSummary(activeCmd)}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-1 flex flex-col justify-between">
                     <div className="space-y-2 mb-4">

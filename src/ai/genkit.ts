@@ -14,5 +14,4 @@ export const ai = genkit({
   model: gemini20FlashExp,
 });
 
-// Set default model for easy access
-ai.defaultModel = gemini20FlashExp; 
+export const DEFAULT_MODEL = gemini20FlashExp;

@@ -42,7 +42,21 @@ export default function AppLayout({
         }
     }
 
+    async function ensureConfigured() {
+      try {
+        const response = await fetch('/api/user-config', { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json().catch(() => ({}));
+        if (!data?.complete) {
+          window.location.href = '/setup';
+        }
+      } catch {
+        // ignore
+      }
+    }
+
     fetchUserProfile();
+    ensureConfigured();
   }, []);
 
   return (

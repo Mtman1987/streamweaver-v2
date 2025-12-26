@@ -1,6 +1,6 @@
 'use server';
 
-import { ai } from '@/ai/genkit';
+import { ai, DEFAULT_MODEL } from '@/ai/genkit';
 import { z } from 'genkit';
 
 const AiResponseInputSchema = z.object({
@@ -21,7 +21,7 @@ const aiResponseFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await ai.generate({
-      model: ai.defaultModel,
+      model: DEFAULT_MODEL,
       prompt: input.prompt,
     });
 

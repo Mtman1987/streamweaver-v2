@@ -1,6 +1,8 @@
 'use client';
 
 export default function LoginPage() {
+  const obsCompanionUrl = 'https://github.com/Mtman1987/streamweaver-v2';
+
   return (
     <>
       <style jsx>{`
@@ -89,6 +91,14 @@ export default function LoginPage() {
         .button-discord:hover {
           box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
         }
+
+        .help-text {
+          color: #8b949e;
+          font-size: 13px;
+          line-height: 1.4;
+          margin: 10px 0 20px;
+          text-align: center;
+        }
         
         .status-card {
           background: linear-gradient(135deg, #0f3460, #1e40af);
@@ -134,6 +144,19 @@ export default function LoginPage() {
           
           <a href="/" className="button button-discord">
             🏠 Enter Command Center
+          </a>
+
+          <p className="help-text">
+            Want OBS control in hosted mode? Install the optional OBS Companion (local bridge).
+          </p>
+
+          <a
+            href={obsCompanionUrl}
+            className="button"
+            target="_blank"
+            rel="noreferrer"
+          >
+            📦 Download OBS Companion (GitHub)
           </a>
           
           <div className="status-card">

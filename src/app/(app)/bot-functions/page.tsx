@@ -353,6 +353,7 @@ export default function BotFunctionsPage() {
         className="hidden" 
         accept="application/json"
         onChange={(e) => handleFileChange(e, 'idle')}
+        aria-label="Upload idle animation file"
       />
        <input 
         type="file" 
@@ -360,6 +361,7 @@ export default function BotFunctionsPage() {
         className="hidden" 
         accept="application/json"
         onChange={(e) => handleFileChange(e, 'talking')}
+        aria-label="Upload talking animation file"
       />
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Bot Functions</h1>

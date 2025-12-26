@@ -1,11 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStoredTokens, ensureValidToken } from '@/lib/token-utils.server';
+import { readUserConfig } from '@/lib/user-config';
+import { getTwitchUser } from '@/services/twitch';
 
 export async function GET(request: NextRequest) {
   try {
+    const userConfig = await readUserConfig();
+
     const clientId = process.env.TWITCH_CLIENT_ID;
     const clientSecret = process.env.TWITCH_CLIENT_SECRET;
-    const broadcasterId = process.env.NEXT_PUBLIC_HARDCODED_ADMIN_TWITCH_ID;
+    let broadcasterId =
+      userConfig.NEXT_PUBLIC_HARDCODED_ADMIN_TWITCH_ID ||
+      process.env.NEXT_PUBLIC_HARDCODED_ADMIN_TWITCH_ID ||
+      userConfig.TWITCH_BROADCASTER_ID ||
+      process.env.TWITCH_BROADCASTER_ID;
+
+    if (!broadcasterId) {
+      const username = userConfig.TWITCH_BROADCASTER_USERNAME || process.env.TWITCH_BROADCASTER_USERNAME;
+      if (username) {
+        const twitchUser = await getTwitchUser(username, 'login');
+        broadcasterId = twitchUser?.id;
+      }
+    }
 
     if (!clientId || !clientSecret || !broadcasterId) {
       return NextResponse.json({ error: 'Twitch configuration missing' }, { status: 500 });

@@ -4,8 +4,7 @@
  * Manages per-user conversation history with recent + condensed old context
  */
 
-import { generate } from '@genkit-ai/ai';
-import { gemini20FlashExp } from '@genkit-ai/googleai';
+import { ai, DEFAULT_MODEL } from '@/ai/genkit';
 import { db } from '@/lib/firebase-config';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -167,16 +166,16 @@ Condensed summary:`;
    */
   private async getAIResponse(prompt: string): Promise<string | null> {
     try {
-      const { text } = await generate({
-        model: gemini20FlashExp,
+      const { output } = await ai.generate({
+        model: DEFAULT_MODEL,
         prompt,
         config: {
           temperature: 0.8,
-          maxOutputTokens: 150
-        }
+          maxOutputTokens: 150,
+        },
       });
 
-      return text()?.trim() || null;
+      return output?.text?.trim() || null;
 
     } catch (error) {
       console.error('AI API error:', error);

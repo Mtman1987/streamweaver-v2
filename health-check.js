@@ -8,6 +8,7 @@ console.log('🔍 StreamWeave Health Check\n');
 // Check .env file
 const envPath = path.join(__dirname, '.env');
 const envExamplePath = path.join(__dirname, '.env.example');
+const userConfigPath = path.join(__dirname, 'tokens', 'user-config.json');
 
 console.log('📋 Environment Configuration:');
 if (fs.existsSync(envPath)) {
@@ -17,7 +18,6 @@ if (fs.existsSync(envPath)) {
     const requiredVars = [
         'TWITCH_CLIENT_ID',
         'TWITCH_CLIENT_SECRET', 
-        'NEXT_PUBLIC_HARDCODED_ADMIN_TWITCH_ID',
         'NEXT_PUBLIC_TWITCH_CLIENT_ID'
     ];
     
@@ -28,6 +28,23 @@ if (fs.existsSync(envPath)) {
             console.log(`❌ ${varName} is missing or not configured`);
         }
     });
+
+    // User-specific required settings can come from tokens/user-config.json
+    console.log('\n👤 First-run Setup:');
+    if (fs.existsSync(userConfigPath)) {
+        try {
+            const cfg = JSON.parse(fs.readFileSync(userConfigPath, 'utf8'));
+            if (cfg?.TWITCH_BROADCASTER_USERNAME) {
+                console.log('✅ TWITCH_BROADCASTER_USERNAME is configured (user-config)');
+            } else {
+                console.log('❌ TWITCH_BROADCASTER_USERNAME missing (run app and complete /setup)');
+            }
+        } catch {
+            console.log('❌ user-config.json is corrupted (delete it and re-run setup)');
+        }
+    } else {
+        console.log('⚠️  No user-config found (run app and complete /setup)');
+    }
 } else {
     console.log('❌ .env file not found');
     if (fs.existsSync(envExamplePath)) {

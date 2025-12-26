@@ -1,6 +1,6 @@
 "use server";
 
-import { ai } from '@/ai/genkit';
+import { ai, DEFAULT_MODEL } from '@/ai/genkit';
 import { z } from 'genkit';
 
 export type GenerateActionCodeInput = {
@@ -39,7 +39,7 @@ ${input.description}
 `;
 
     const { output } = await ai.generate({
-      model: ai.defaultModel,
+      model: DEFAULT_MODEL,
       prompt,
       config: {
         temperature: 0.2,

@@ -1,212 +1,86 @@
 
 'use server';
 
-import axios from 'axios';
-import FormData from 'form-data';
+import * as local from './discord-local';
 
-const DISCORD_API_BASE = 'https://discord.com/api/v10';
+type BrokerConfig = {
+    baseUrl: string;
+    apiKey?: string;
+};
 
-function getDiscordHeaders(isFormData = false) {
-    const botToken = process.env.DISCORD_BOT_TOKEN;
-    if (!botToken) {
-        throw new Error('Discord bot token is not provided in environment variables (DISCORD_BOT_TOKEN).');
-    }
-    const headers: any = {
-        'Authorization': `Bot ${botToken}`,
-        'User-Agent': 'StreamWeave-Bot (1.0)',
+function getBrokerConfig(): BrokerConfig | null {
+    const baseUrl = process.env.DISCORD_BROKER_URL?.trim();
+    if (!baseUrl) return null;
+    return {
+        baseUrl: baseUrl.replace(/\/$/, ''),
+        apiKey: process.env.DISCORD_BROKER_API_KEY?.trim() || undefined,
     };
-    if (!isFormData) {
-        headers['Content-Type'] = 'application/json';
-    }
-    return headers;
 }
 
-
-/**
- * Sends a message to a specified Discord channel using a bot token.
- * @param channelId The ID of the Discord channel.
- * @param message The content of the message to send.
- */
-export async function sendDiscordMessage(channelId: string, message: string): Promise<void> {
-  if (!channelId) {
-    throw new Error('Discord channel ID is not provided.');
-  }
-
-  const url = `${DISCORD_API_BASE}/channels/${channelId}/messages`;
-
-  try {
-    await axios.post(
-      url,
-      { content: message },
-      { headers: getDiscordHeaders() }
-    );
-
-    console.log(`Successfully sent message to Discord channel ${channelId}.`);
-  } catch (error: any) {
-    console.error('Error sending message to Discord:', error.response?.data || error.message);
-    if (error.response?.data?.code === 10003) { // Specifically handle "Unknown Channel"
-        throw new Error('Discord Channel ID is invalid or the bot is not a member of that channel.');
+async function brokerRequest<T>(path: string, body: unknown): Promise<T> {
+    const broker = getBrokerConfig();
+    if (!broker) {
+        throw new Error('Discord broker is not configured (missing DISCORD_BROKER_URL).');
     }
-    throw new Error(`Failed to send message to Discord channel. ${error.response?.data?.message || error.message}`);
-  }
-}
 
-/**
- * Fetches a Discord user's profile by their ID.
- * @param userId The ID of the Discord user.
- * @returns The user's profile information or null if not found.
- */
-export async function getDiscordUser(userId: string): Promise<{ username: string; avatarUrl: string; } | null> {
-    if (!userId) {
-        throw new Error('Discord user ID is not provided.');
-    }
-    const url = `${DISCORD_API_BASE}/users/${userId}`;
-
-    try {
-        const response = await axios.get(url, { headers: getDiscordHeaders() });
-        const { id, username, avatar } = response.data;
-
-        const avatarUrl = avatar 
-            ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.png` 
-            : `https://cdn.discordapp.com/embed/avatars/${parseInt(username.split('#')[1] || '0') % 5}.png`; // Default avatar
-
-        return {
-            username,
-            avatarUrl,
-        }
-    } catch (error: any) {
-        console.error('Error fetching Discord user:', error.response?.data || error.message);
-        // Don't throw here, just return null so the UI doesn't break if Discord is down.
-        return null;
-    }
-}
-
-
-/**
- * Uploads a file to a specified Discord channel.
- * @param channelId The ID of the Discord channel.
- * @param fileContent The content of the file as a string.
- * @param fileName The name for the file.
- * @param messageContent Optional message to send along with the file.
- * @returns The message object from Discord API.
- */
-export async function uploadFileToDiscord(channelId: string, fileContent: string, fileName: string, messageContent?: string) {
-    const url = `${DISCORD_API_BASE}/channels/${channelId}/messages`;
-    const form = new FormData();
-    
-    // Append the file
-    form.append('files[0]', Buffer.from(fileContent), {
-        filename: fileName,
-        contentType: 'application/json',
+    const res = await fetch(`${broker.baseUrl}${path}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(broker.apiKey ? { Authorization: `Bearer ${broker.apiKey}` } : {}),
+        },
+        body: JSON.stringify(body),
+        cache: 'no-store',
     });
 
-    // Append the message payload
-    const payload = {
-        content: messageContent || `New file uploaded: ${fileName}`,
-    };
-    form.append('payload_json', JSON.stringify(payload));
-
-    try {
-        const response = await axios.post(url, form, {
-            headers: {
-                ...getDiscordHeaders(true),
-                ...form.getHeaders(),
-            },
-        });
-        
-        const guildId = response.data.guild_id;
-        const messageId = response.data.id;
-        const messageUrl = `https://discord.com/channels/${guildId}/${channelId}/${messageId}`;
-
-        return {
-          success: true,
-          messageUrl: messageUrl,
-          data: response.data,
-        };
-
-    } catch (error: any) {
-        console.error('Error uploading file to Discord:', error.response?.data || error.message);
-        throw new Error(`Failed to upload file to Discord. ${error.response?.data?.message || error.message}`);
+    if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`Discord broker error (${res.status}): ${text || res.statusText}`);
     }
+
+    return (await res.json()) as T;
 }
 
-
-// Rate limiting cache
-const messageCache = new Map<string, { data: any[], timestamp: number }>();
-const CACHE_DURATION = 30000; // 30 seconds
-const rateLimitState = { lastRequest: 0, retryAfter: 0 };
-
 /**
- * Fetches recent messages from a Discord channel with rate limiting and caching.
- * @param channelId The ID of the Discord channel.
- * @param limit The number of messages to fetch (max 100).
- * @returns An array of message objects.
+ * Single entrypoint for privileged Discord actions.
+ *
+ * Today (default): executes locally using DISCORD_BOT_TOKEN.
+ * Future: set DISCORD_BROKER_URL to delegate to a hosted broker service.
  */
+
+export async function sendDiscordMessage(channelId: string, message: string): Promise<void> {
+    const broker = getBrokerConfig();
+    if (!broker) return local.sendDiscordMessage(channelId, message);
+    await brokerRequest('/discord/send-message', { channelId, message });
+}
+
+export async function getDiscordUser(
+    userId: string
+): Promise<{ username: string; avatarUrl: string } | null> {
+    const broker = getBrokerConfig();
+    if (!broker) return local.getDiscordUser(userId);
+    return await brokerRequest('/discord/get-user', { userId });
+}
+
+export async function uploadFileToDiscord(
+    channelId: string,
+    fileContent: string,
+    fileName: string,
+    messageContent?: string
+) {
+    const broker = getBrokerConfig();
+    if (!broker) return local.uploadFileToDiscord(channelId, fileContent, fileName, messageContent);
+    return await brokerRequest('/discord/upload-file', { channelId, fileContent, fileName, messageContent });
+}
+
 export async function getChannelMessages(channelId: string, limit: number = 50) {
-    if (!channelId) {
-        throw new Error('Discord channel ID is not provided.');
-    }
-
-    const cacheKey = `${channelId}:${limit}`;
-    const now = Date.now();
-    
-    // Check cache first
-    const cached = messageCache.get(cacheKey);
-    if (cached && (now - cached.timestamp) < CACHE_DURATION) {
-        return cached.data;
-    }
-
-    // Check rate limit
-    if (now < rateLimitState.retryAfter) {
-        const waitTime = rateLimitState.retryAfter - now;
-        console.log(`[Discord] Rate limited, waiting ${waitTime}ms`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-    }
-
-    const url = `${DISCORD_API_BASE}/channels/${channelId}/messages?limit=${limit}`;
-
-    try {
-        rateLimitState.lastRequest = now;
-        const response = await axios.get(url, { headers: getDiscordHeaders() });
-        
-        // Cache the response
-        messageCache.set(cacheKey, { data: response.data, timestamp: now });
-        
-        return response.data;
-    } catch (error: any) {
-        if (error.response?.status === 429) {
-            const retryAfter = error.response.data?.retry_after || 1;
-            rateLimitState.retryAfter = now + (retryAfter * 1000);
-            console.log(`[Discord] Rate limited, retry after ${retryAfter}s`);
-            
-            // Return cached data if available, even if stale
-            if (cached) {
-                console.log('[Discord] Returning stale cached data due to rate limit');
-                return cached.data;
-            }
-        }
-        
-        console.error('Error fetching Discord channel messages:', error.response?.data || error.message);
-        throw new Error(`Failed to fetch messages from Discord channel. ${error.response?.data?.message || error.message}`);
-    }
+    const broker = getBrokerConfig();
+    if (!broker) return local.getChannelMessages(channelId, limit);
+    return await brokerRequest('/discord/get-channel-messages', { channelId, limit });
 }
-/**
- * Deletes a message from a Discord channel.
- * @param channelId The ID of the Discord channel.
- * @param messageId The ID of the message to delete.
- */
+
 export async function deleteMessage(channelId: string, messageId: string): Promise<void> {
-    if (!channelId || !messageId) {
-        throw new Error('Channel ID and Message ID are required.');
-    }
-
-    const url = `${DISCORD_API_BASE}/channels/${channelId}/messages/${messageId}`;
-
-    try {
-        await axios.delete(url, { headers: getDiscordHeaders() });
-        console.log(`[Discord] Successfully deleted message ${messageId} from channel ${channelId}`);
-    } catch (error: any) {
-        console.error(`[Discord] Error deleting message ${messageId}:`, error.response?.data || error.message);
-        throw new Error(`Failed to delete message. ${error.response?.data?.message || error.message}`);
-    }
+    const broker = getBrokerConfig();
+    if (!broker) return local.deleteMessage(channelId, messageId);
+    await brokerRequest('/discord/delete-message', { channelId, messageId });
 }

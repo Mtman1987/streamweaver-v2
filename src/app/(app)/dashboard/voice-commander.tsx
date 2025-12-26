@@ -22,6 +22,11 @@ import { sendDiscordMessage } from "@/ai/flows/send-discord-message";
 import { conversationalResponse } from "@/ai/flows/conversational-response";
 import { textToSpeech } from "@/ai/flows/text-to-speech";
 
+type UserConfigPayload = {
+    config?: Record<string, string>;
+    complete?: boolean;
+};
+
 type Destination = 'twitch' | 'discord' | 'ai' | 'private';
 type Speaker = 'broadcaster' | 'bot';
 
@@ -45,6 +50,7 @@ export function VoiceCommander({ variant = 'card', className }: VoiceCommanderPr
     const [isRecording, setIsRecording] = useState(false);
     const [isTranscribing, setIsTranscribing] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [userConfig, setUserConfig] = useState<Record<string, string>>({});
     const [messages, setMessages] = useState<TranscribedMessage[]>([]);
     const [destination, setDestination] = useState<Destination>('private');
     const [sendAsCommander, setSendAsCommander] = useState(true);
@@ -57,7 +63,13 @@ export function VoiceCommander({ variant = 'card', className }: VoiceCommanderPr
     const voiceRef = useRef<string>("Algieba");
 
 
-     useEffect(() => {
+      useEffect(() => {
+          // Load user-specific config (saved by /setup) so this works for anyone without editing .env
+          fetch('/api/user-config', { cache: 'no-store' })
+                .then((res) => res.json())
+                .then((data: UserConfigPayload) => setUserConfig(data?.config || {}))
+                .catch(() => setUserConfig({}));
+
         const wsUrl = getBrowserWebSocketUrl();
         if (!wsUrl) return;
 
@@ -298,8 +310,8 @@ If no good match, respond with: Could not find matching user`;
 
             try {
                 // Define variables for Discord logging
-                const aiChannelId = process.env.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID;
-                const username = 'mtman1987';
+                const aiChannelId = userConfig.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID;
+                const username = userConfig.TWITCH_BROADCASTER_USERNAME || 'Commander';
 
                 // For non-private destinations, log to Discord
                 if (destination !== 'private' && aiChannelId) {
@@ -517,8 +529,8 @@ If no good match, respond with: Could not find matching user`;
 
             try {
                 // Only send to Discord if destination is NOT 'ai' or 'private' (for logging purposes)
-                const aiChannelId = (destination !== 'ai' && destination !== 'private') ? process.env.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID : null;
-                const username = 'mtman1987';
+                const aiChannelId = (destination !== 'ai' && destination !== 'private') ? (userConfig.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID || null) : null;
+                const username = userConfig.TWITCH_BROADCASTER_USERNAME || 'Commander';
 
                 // Generate AI response
                 console.log('Using personality:', personalityRef.current);
@@ -641,8 +653,8 @@ If no good match, respond with: Could not find matching user`;
         try {
             if (destination === 'ai') {
                 // Direct AI conversation with memory
-                const aiChannelId = process.env.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID;
-                const username = 'mtman1987'; // Could be dynamic based on user
+                const aiChannelId = userConfig.NEXT_PUBLIC_DISCORD_AI_CHAT_CHANNEL_ID;
+                const username = userConfig.TWITCH_BROADCASTER_USERNAME || 'Commander';
                 
                 if (aiChannelId) {
                     // Get message number for AI chat
@@ -746,7 +758,7 @@ Respond as Athena:`;
                 if (destination === 'twitch') {
                     await sendTwitchMessage({ message: processedText, as: speaker });
                 } else if (destination === 'discord') {
-                    const shoutoutChannelId = process.env.NEXT_PUBLIC_DISCORD_SHOUTOUT_CHANNEL_ID;
+                    const shoutoutChannelId = userConfig.NEXT_PUBLIC_DISCORD_SHOUTOUT_CHANNEL_ID;
                     if (!shoutoutChannelId) throw new Error("Discord shoutout channel ID not configured.");
                     await sendDiscordMessage({ channelId: shoutoutChannelId, message: processedText });
                 }
