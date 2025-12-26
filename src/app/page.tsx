@@ -1,9 +1,24 @@
 import { redirect } from 'next/navigation';
-import { isUserConfigComplete } from '@/lib/user-config';
+import { readUserConfig } from '@/lib/user-config';
+import { getStoredTokens } from '@/lib/token-utils.server';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const isComplete = await isUserConfigComplete();
-  redirect(isComplete ? '/bot-functions' : '/setup');
+  const cfg = await readUserConfig();
+  const tokens = await getStoredTokens();
+
+  const hasTwitchAuth = Boolean(
+    tokens?.broadcasterToken ||
+      tokens?.broadcasterRefreshToken ||
+      tokens?.botToken ||
+      tokens?.botRefreshToken
+  );
+
+  if (!hasTwitchAuth) {
+    redirect('/login');
+  }
+
+  const isConfigured = Boolean(cfg.TWITCH_BROADCASTER_USERNAME);
+  redirect(isConfigured ? '/bot-functions' : '/setup');
 }

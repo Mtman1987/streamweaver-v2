@@ -45,6 +45,7 @@ export default function SettingsPage() {
   const [userValue, setUserValue] = useState("");
 
   const [importing, setImporting] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -182,6 +183,93 @@ export default function SettingsPage() {
       toast({ variant: 'destructive', title: 'Import failed', description: String(error?.message || error) });
     } finally {
       setImporting(false);
+    }
+  };
+
+  const clearBrowserState = async () => {
+    try {
+      window.localStorage?.clear();
+    } catch {
+      // ignore
+    }
+    try {
+      window.sessionStorage?.clear();
+    } catch {
+      // ignore
+    }
+
+    // Best-effort cookie clearing for the current domain.
+    try {
+      const cookies = document.cookie.split(';');
+      for (const cookie of cookies) {
+        const eqPos = cookie.indexOf('=');
+        const name = (eqPos > -1 ? cookie.slice(0, eqPos) : cookie).trim();
+        if (!name) continue;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      }
+    } catch {
+      // ignore
+    }
+
+    // Best-effort Cache Storage cleanup.
+    try {
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k)));
+      }
+    } catch {
+      // ignore
+    }
+
+    // Best-effort IndexedDB cleanup.
+    try {
+      const anyIndexedDb = indexedDB as any;
+      if (typeof anyIndexedDb?.databases === 'function') {
+        const dbs: Array<{ name?: string | null }> = await anyIndexedDb.databases();
+        await Promise.all(
+          dbs
+            .map((d) => d.name)
+            .filter((n): n is string => typeof n === 'string' && n.length > 0)
+            .map(
+              (name) =>
+                new Promise<void>((resolve) => {
+                  const req = indexedDB.deleteDatabase(name);
+                  req.onsuccess = () => resolve();
+                  req.onerror = () => resolve();
+                  req.onblocked = () => resolve();
+                })
+            )
+        );
+      }
+    } catch {
+      // ignore
+    }
+  };
+
+  const resetLocalAppData = async () => {
+    const confirmed = window.confirm(
+      'Reset local app data? This will remove local tokens/config and clear browser storage. You will be sent back to login.'
+    );
+    if (!confirmed) return;
+
+    setResetting(true);
+    try {
+      const res = await fetch('/api/dev/reset', { method: 'POST' });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
+
+      await clearBrowserState();
+
+      toast({ title: 'Local app data reset' });
+      window.location.href = '/login';
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Reset failed',
+        description: String(error?.message || error),
+      });
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -529,6 +617,20 @@ export default function SettingsPage() {
               </Button>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Development</CardTitle>
+          <CardDescription>
+            Reset local auth/config and clear browser storage to simulate a fresh install.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-center gap-2">
+          <Button variant="destructive" onClick={() => void resetLocalAppData()} disabled={resetting}>
+            {resetting ? 'Resetting…' : 'Reset Local App Data'}
+          </Button>
         </CardContent>
       </Card>
     </div>

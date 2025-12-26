@@ -32,7 +32,11 @@ export default function AppLayout({
     async function fetchUserProfile() {
         try {
             const response = await fetch('/api/user-profile');
-            if (response.ok) {
+        if (response.status === 401 || response.status === 404) {
+          window.location.href = '/login';
+          return;
+        }
+        if (response.ok) {
                 const data = await response.json();
                 setUserProfile(data);
             } else {

@@ -4,6 +4,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 import {
   Sidebar,
   SidebarHeader,
@@ -54,8 +55,8 @@ export default function AppSidebar({ userProfile }: AppSidebarProps) {
     <Sidebar>
       <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2">
-          <Bot className="h-6 w-6 text-primary" />
-          <span className="font-bold text-lg group-data-[state=collapsed]:hidden">StreamWeave</span>
+          <Image src="/StreamWeaver.png" alt="StreamWeaver" width={24} height={24} className="rounded-sm" />
+          <span className="font-bold text-lg group-data-[state=collapsed]:hidden">StreamWeaver</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>

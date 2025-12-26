@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const clientId = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
   
   if (!clientId) {
@@ -10,7 +10,16 @@ export async function GET() {
   }
 
   // Construct the Twitch OAuth URL
-  const redirectUri = `${process.env.NEXTAUTH_URL || 'http://localhost:3100'}/auth/twitch/callback`;
+  const originFromRequest = new URL(request.url).origin;
+  const envOrigin = process.env.NEXTAUTH_URL;
+  const preferRequestOrigin = originFromRequest.includes('localhost') || originFromRequest.includes('127.0.0.1');
+  const origin = (preferRequestOrigin ? originFromRequest : envOrigin) || originFromRequest || 'http://localhost:3100';
+  const redirectUri = `${origin}/auth/twitch/callback`;
+
+  console.log('[twitch-oauth] originFromRequest:', originFromRequest);
+  console.log('[twitch-oauth] NEXTAUTH_URL:', envOrigin);
+  console.log('[twitch-oauth] chosen origin:', origin);
+  console.log('[twitch-oauth] redirectUri:', redirectUri);
   const scope = [
     'chat:read',
     'chat:edit',
@@ -27,6 +36,8 @@ export async function GET() {
   authUrl.searchParams.set('response_type', 'code');
   authUrl.searchParams.set('scope', scope);
   authUrl.searchParams.set('state', 'broadcaster');
+
+  console.log('[twitch-oauth] authUrl:', authUrl.toString());
 
   return NextResponse.redirect(authUrl.toString());
 }

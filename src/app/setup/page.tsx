@@ -81,7 +81,9 @@ export default function SetupPage() {
         }),
       });
 
-      router.push('/bot-functions');
+      // Route through the home redirect so we land on /login if tokens are missing,
+      // or /bot-functions if the user is already authenticated.
+      router.push('/');
       router.refresh();
     } finally {
       setSaving(false);

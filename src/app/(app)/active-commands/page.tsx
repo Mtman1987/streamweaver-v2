@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useEffect, useState } from "react";
+import { Suspense, useMemo, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -44,7 +44,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const AutomationAIChat = dynamic(() => import("@/components/automation/AutomationAIChat"), { ssr: false });
 
-export default function ActiveCommandsPage() {
+function ActiveCommandsPageClient() {
   const { actions, isLoading, error, refresh } = useActionsData();
   const { commands, isLoading: commandsLoading, error: commandsError } = useCommandsData();
   const { toast } = useToast();
@@ -1085,6 +1085,20 @@ export default function ActiveCommandsPage() {
         </DialogContent>
       </Dialog>
     </Card>
+  );
+}
+
+export default function ActiveCommandsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
+      }
+    >
+      <ActiveCommandsPageClient />
+    </Suspense>
   );
 }
 

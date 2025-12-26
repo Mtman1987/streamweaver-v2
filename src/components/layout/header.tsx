@@ -36,9 +36,9 @@ export default function Header() {
       </div>
       
       <div className="flex items-center gap-3">
-        <Badge variant="outline" className="flex items-center gap-1 text-green-300 border-green-300">
+        <Badge variant="outline" className="flex items-center gap-1">
           <Orbit className="h-3 w-3" />
-          Managed by Space Mountain
+          Powered by Space Mountain
         </Badge>
         <Badge variant={isDocked ? "default" : "secondary"} className="flex items-center gap-1">
           <Anchor className="h-3 w-3" />

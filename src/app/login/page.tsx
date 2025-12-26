@@ -1,10 +1,16 @@
 'use client';
 
 export default function LoginPage() {
-  const obsCompanionUrl = 'https://github.com/Mtman1987/streamweaver-v2';
-
   return (
     <>
+      <style jsx global>{`
+        html,
+        body {
+          height: 100%;
+          margin: 0;
+          overflow: hidden;
+        }
+      `}</style>
       <style jsx>{`
         * {
           margin: 0;
@@ -17,53 +23,96 @@ export default function LoginPage() {
         }
         
         .container {
-          min-height: 100vh;
+          height: 100dvh;
+          width: 100vw;
           background: linear-gradient(135deg, #0d1117 0%, #1a1a2e 50%, #16213e 100%);
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 20px;
+          padding: 1rem;
+          overflow: hidden;
         }
         
         .card {
           background: rgba(26, 26, 26, 0.9);
           border: 2px solid #333;
           border-radius: 16px;
-          padding: 40px;
+          padding: 0.75rem;
           box-shadow: 0 20px 60px rgba(145, 70, 255, 0.3);
-          max-width: 450px;
-          width: 100%;
+          width: min(420px, calc(100vw - 2rem));
+          max-height: calc(100dvh - 2rem);
+          overflow: hidden;
           backdrop-filter: blur(10px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 0.5rem;
         }
         
         .title {
-          font-size: 2.5rem;
+          font-size: clamp(1.6rem, 4vw, 2.3rem);
           font-weight: bold;
-          margin-bottom: 10px;
+          margin: 0;
+          line-height: 1.05;
           background: linear-gradient(45deg, #9146FF, #00D4FF, #FFD700);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           text-align: center;
         }
+
+        .logo {
+          display: block;
+          width: min(85vw, 420px);
+          height: auto;
+          max-height: 34dvh;
+          margin: 0 auto;
+          object-fit: contain;
+        }
+
+        .about {
+          margin-top: 0;
+          padding: 10px 10px;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: rgba(255, 255, 255, 0.03);
+          color: #e2e8f0;
+        }
+
+        .about-title {
+          font-size: 14px;
+          font-weight: 700;
+          margin-bottom: 4px;
+          color: #58a6ff;
+        }
+
+        .about-list {
+          margin: 0;
+          padding-left: 16px;
+          color: #8b949e;
+          font-size: clamp(12px, 2.2vw, 13px);
+          line-height: 1.35;
+        }
         
         .subtitle {
           color: #8b949e;
-          font-size: 1.2rem;
+          font-size: clamp(0.95rem, 2.4vw, 1.2rem);
           text-align: center;
-          margin-bottom: 40px;
+          margin: 0;
+          line-height: 1.2;
         }
         
         .section-title {
           color: #58a6ff;
-          margin-bottom: 25px;
-          font-size: 1.4rem;
+          margin: 0;
+          font-size: clamp(1.1rem, 2.8vw, 1.4rem);
           text-align: center;
+          line-height: 1.1;
         }
         
         .button {
           background: linear-gradient(45deg, #9146FF, #7c3aed);
           color: white;
-          padding: 15px 25px;
+          padding: 10px 18px;
           border-radius: 10px;
           text-decoration: none;
           display: block;
@@ -71,9 +120,9 @@ export default function LoginPage() {
           text-align: center;
           border: none;
           cursor: pointer;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: bold;
-          margin-bottom: 15px;
+          margin-bottom: 0;
           transition: all 0.3s ease;
           box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4);
         }
@@ -100,75 +149,54 @@ export default function LoginPage() {
           text-align: center;
         }
         
-        .status-card {
-          background: linear-gradient(135deg, #0f3460, #1e40af);
-          padding: 25px;
-          border-radius: 12px;
-          border: 1px solid #1f6feb;
-          margin-top: 30px;
-        }
-        
-        .status-title {
-          margin-bottom: 20px;
-          color: #58a6ff;
-          font-size: 1.2rem;
-        }
-        
-        .status-item {
-          color: #e2e8f0;
-          margin-bottom: 10px;
-          font-size: 15px;
-        }
-        
         .footer {
           text-align: center;
-          margin-top: 25px;
+          margin-top: 0;
           color: #8b949e;
           font-size: 13px;
+        }
+
+        @media (max-height: 560px) {
+          .container {
+            align-items: flex-start;
+          }
+
+          .logo {
+            max-height: 18dvh;
+          }
         }
       `}</style>
       
       <div className="container">
         <div className="card">
-          <h1 className="title">🚀 Space Mountain</h1>
-          <p className="subtitle">StreamWeave Command Center</p>
+          <img className="logo" src="/StreamWeaver.png" alt="StreamWeaver" />
+          <h1 className="title">StreamWeaver</h1>
+          <p className="subtitle">Local streamer automation dashboard</p>
           
-          <h2 className="section-title">🌌 Cosmic Raid Access</h2>
+          <h2 className="section-title">Sign in</h2>
           
           <a 
-            href={`https://id.twitch.tv/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}&redirect_uri=${typeof window !== 'undefined' ? window.location.origin : ''}/auth/twitch/callback&response_type=code&scope=chat%3Aread+chat%3Aedit+moderator%3Aread%3Achatters+channel%3Amanage%3Abroadcast+moderator%3Amanage%3Aannouncements+user%3Awrite%3Achat&state=broadcaster`}
+            href="/api/auth/twitch"
             className="button"
           >
-            🎮 Connect Twitch Account
+            Connect Twitch Account
           </a>
           
           <a href="/" className="button button-discord">
-            🏠 Enter Command Center
+            Open Dashboard
           </a>
 
-          <p className="help-text">
-            Want OBS control in hosted mode? Install the optional OBS Companion (local bridge).
-          </p>
-
-          <a
-            href={obsCompanionUrl}
-            className="button"
-            target="_blank"
-            rel="noreferrer"
-          >
-            📦 Download OBS Companion (GitHub)
-          </a>
-          
-          <div className="status-card">
-            <h3 className="status-title">🛸 Mission Control Status</h3>
-            <div className="status-item">✅ Raid Pile System Active</div>
-            <div className="status-item">✅ Raid Train Operational</div>
-            <div className="status-item">✅ Points System Online</div>
-            <div className="status-item">✅ Auto-Updates Ready</div>
+          <div className="about">
+            <div className="about-title">About StreamWeaver</div>
+            <ul className="about-list">
+              <li>Connect Twitch, Discord, and build automations.</li>
+              <li>Runs locally (your data stays on your machine).</li>
+              <li>Includes Athena AI helpers for workflows and code.</li>
+            </ul>
           </div>
           
           <div className="footer">
-            Managed by Space Mountain • Cosmic Raid Division
+            Powered by Space Mountain — made by Mtman1987
           </div>
         </div>
       </div>

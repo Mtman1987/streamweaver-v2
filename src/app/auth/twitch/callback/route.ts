@@ -22,6 +22,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const originFromRequest = new URL(request.url).origin;
+    const envOrigin = process.env.NEXTAUTH_URL;
+    const preferRequestOrigin = originFromRequest.includes('localhost') || originFromRequest.includes('127.0.0.1');
+    const origin = (preferRequestOrigin ? originFromRequest : envOrigin) || originFromRequest || 'http://localhost:3100';
+    const redirectUri = `${origin}/auth/twitch/callback`;
+
     // Exchange the authorization code for an access token
     const clientId = process.env.TWITCH_CLIENT_ID;
     const clientSecret = process.env.TWITCH_CLIENT_SECRET;
@@ -42,7 +48,7 @@ export async function GET(request: NextRequest) {
         client_secret: clientSecret,
         code: code,
         grant_type: 'authorization_code',
-        redirect_uri: 'http://localhost:3100/auth/twitch/callback'
+        redirect_uri: redirectUri
       })
     });
 
@@ -118,7 +124,7 @@ export async function GET(request: NextRequest) {
     await fs.writeFile(tokensFile, JSON.stringify(tokenStorage, null, 2));
 
     // Redirect back to integrations page with success message
-    return NextResponse.redirect('http://localhost:3100/integrations?success=true');
+    return NextResponse.redirect(`${origin}/integrations?success=true`);
 
   } catch (error) {
     console.error('OAuth callback error:', error);

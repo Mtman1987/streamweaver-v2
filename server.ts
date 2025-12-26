@@ -525,6 +525,7 @@ console.log(`[WebSocket] Server is running on ws://0.0.0.0:${websocketPort}`);
 // --- Twitch Chat Integration ---
 let twitchStatus: 'connected' | 'disconnected' | 'connecting' = 'connecting';
 let twitchClient: tmi.Client;
+let warnedMissingBotAuth = false;
 
 async function sendChatMessage(text: string): Promise<void> {
     try {
@@ -672,7 +673,16 @@ async function setupTwitchClient(userId?: string) {
             botUsername = tokens.botUsername;
 
             broadcasterOauthToken = await ensureValidToken(clientId, clientSecret, 'broadcaster', tokens);
-            botOauthToken = await ensureValidToken(clientId, clientSecret, 'bot', tokens);
+
+            // Bot token is optional. Only attempt refresh if present.
+            if (tokens.botToken && tokens.botRefreshToken) {
+                botOauthToken = await ensureValidToken(clientId, clientSecret, 'bot', tokens);
+            } else {
+                if (!warnedMissingBotAuth) {
+                    warnedMissingBotAuth = true;
+                    console.warn('[Twitch] Bot token not configured yet; continuing with broadcaster auth only.');
+                }
+            }
         }
     } catch (error) {
         console.error('[Twitch] Error ensuring valid tokens:', error);
@@ -683,7 +693,7 @@ async function setupTwitchClient(userId?: string) {
     }
 
     // Validate required variables
-    if (!broadcasterUsername || !botUsername || !broadcasterOauthToken || !botOauthToken) {
+    if (!broadcasterUsername || !broadcasterOauthToken) {
         console.error('[Twitch] Missing required credentials for Twitch chat connection. Retrying in 5 seconds...');
         twitchStatus = 'disconnected';
         broadcast({ type: 'twitch-status', payload: { status: 'disconnected', reason: 'Server configuration error.' } });
