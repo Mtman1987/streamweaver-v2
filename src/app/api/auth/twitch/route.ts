@@ -16,6 +16,9 @@ export async function GET(request: NextRequest) {
   const origin = (preferRequestOrigin ? originFromRequest : envOrigin) || originFromRequest || 'http://localhost:3100';
   const redirectUri = `${origin}/auth/twitch/callback`;
 
+  const roleParam = new URL(request.url).searchParams.get('role');
+  const role = roleParam === 'bot' ? 'bot' : 'broadcaster';
+
   console.log('[twitch-oauth] originFromRequest:', originFromRequest);
   console.log('[twitch-oauth] NEXTAUTH_URL:', envOrigin);
   console.log('[twitch-oauth] chosen origin:', origin);
@@ -35,7 +38,13 @@ export async function GET(request: NextRequest) {
   authUrl.searchParams.set('redirect_uri', redirectUri);
   authUrl.searchParams.set('response_type', 'code');
   authUrl.searchParams.set('scope', scope);
-  authUrl.searchParams.set('state', 'broadcaster');
+  authUrl.searchParams.set('state', role);
+
+  // When authorizing the bot account, force Twitch to show the login prompt
+  // so the user can switch accounts even if already logged in.
+  if (role === 'bot') {
+    authUrl.searchParams.set('force_verify', 'true');
+  }
 
   console.log('[twitch-oauth] authUrl:', authUrl.toString());
 

@@ -12,6 +12,20 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function IntegrationsPage() {
   const { toast } = useToast();
+  const twitchConfigured = !!process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
+  const [twitchStatus, setTwitchStatus] = useState<{
+    loading: boolean;
+    broadcasterConnected: boolean;
+    botConnected: boolean;
+    broadcasterUsername: string | null;
+    botUsername: string | null;
+  }>({
+    loading: true,
+    broadcasterConnected: false,
+    botConnected: false,
+    broadcasterUsername: null,
+    botUsername: null,
+  });
   const [obsSettings, setObsSettings] = useState({
     ip: process.env.NEXT_PUBLIC_OBS_IP || "127.0.0.1",
     port: process.env.NEXT_PUBLIC_OBS_PORT || "4455",
@@ -44,13 +58,65 @@ export default function IntegrationsPage() {
     checkPlatformConfig();
   }, []);
 
+  const refreshTwitchStatus = async () => {
+    try {
+      setTwitchStatus((prev) => ({ ...prev, loading: true }));
+      const res = await fetch('/api/integrations/twitch/status');
+      const data = await res.json();
+      setTwitchStatus({
+        loading: false,
+        broadcasterConnected: !!data?.broadcasterConnected,
+        botConnected: !!data?.botConnected,
+        broadcasterUsername: data?.broadcasterUsername ?? null,
+        botUsername: data?.botUsername ?? null,
+      });
+    } catch {
+      setTwitchStatus((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
+  useEffect(() => {
+    void refreshTwitchStatus();
+  }, []);
+
+  const connectTwitch = (role: 'broadcaster' | 'bot') => {
+    if (!twitchConfigured) {
+      toast({
+        variant: 'destructive',
+        title: 'Twitch not configured',
+        description: 'Missing NEXT_PUBLIC_TWITCH_CLIENT_ID',
+      });
+      return;
+    }
+    window.location.href = `/api/auth/twitch?role=${role}`;
+  };
+
+  const disconnectTwitch = async (role: 'broadcaster' | 'bot') => {
+    try {
+      const res = await fetch('/api/integrations/twitch/disconnect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      await refreshTwitchStatus();
+      toast({ title: 'Disconnected', description: `Twitch ${role} disconnected` });
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Disconnect failed',
+        description: String(error?.message || error),
+      });
+    }
+  };
+
   const platforms = [
     { 
       id: "twitch",
       name: "Twitch", 
       connected: platformStates.twitch, 
       type: "streaming",
-      authType: "token",
+      authType: "oauth",
       description: "Stream to Twitch and interact with your chat"
     },
     { 
@@ -140,77 +206,153 @@ export default function IntegrationsPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           {platforms.map((platform) => (
-            <div key={platform.id} className="flex items-center justify-between p-4 border rounded">
-              <div className="flex items-center gap-3">
-                {platform.connected ? (
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                ) : (
-                  <XCircle className="h-5 w-5 text-gray-400" />
-                )}
-                <div className="flex-1">
-                  <div className="font-medium">{platform.name}</div>
-                  <div className="text-sm text-muted-foreground">{platform.description}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {platform.connected ? (
-                  <>
-                    <Badge className="bg-green-600">Connected</Badge>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => setPlatformStates({...platformStates, [platform.id]: false})}
-                    >
-                      Disconnect
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    {platform.authType === 'oauth' && (
-                      <Button 
-                        size="sm"
-                        onClick={() => {
-                          if (platform.id === 'youtube') {
-                            window.location.href = '/api/auth/youtube';
-                          } else if (platform.id === 'twitch') {
-                            // Build Twitch OAuth URL directly (like old StreamWeaver)
-                            const clientId = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
-                            const redirectUri = `${window.location.origin}/auth/twitch/callback`;
-                            const scope = 'chat:read chat:edit moderator:read:chatters channel:manage:broadcast moderator:manage:announcements channel:read:redemptions user:write:chat';
-                            const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${encodeURIComponent(scope)}&state=broadcaster`;
-                            window.location.href = authUrl;
-                          }
-                        }}
-                      >
-                        Connect via OAuth
-                      </Button>
+            platform.id === 'twitch' ? (
+              <div key={platform.id} className="p-4 border rounded space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {(twitchStatus.broadcasterConnected && twitchStatus.botConnected) ? (
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                    ) : (
+                      <XCircle className="h-5 w-5 text-gray-400" />
                     )}
-                    {platform.authType === 'username' && (
-                      <Button 
-                        size="sm"
-                        onClick={() => {
-                          const username = prompt(`Enter your ${platform.name} username:`);
-                          if (username) {
-                            fetch(`/api/platforms/${platform.id}/connect`, {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ username })
-                            }).then(() => {
-                              setPlatformStates({...platformStates, [platform.id]: true});
-                            });
-                          }
-                        }}
-                      >
+                    <div className="flex-1">
+                      <div className="font-medium">Twitch</div>
+                      <div className="text-sm text-muted-foreground">{platform.description}</div>
+                    </div>
+                  </div>
+                  {twitchConfigured ? (
+                    <Badge variant="outline">OAuth</Badge>
+                  ) : (
+                    <Badge variant="destructive">Missing Client ID</Badge>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between rounded border px-3 py-2">
+                  <div className="flex items-center gap-3">
+                    {twitchStatus.broadcasterConnected ? (
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-gray-400" />
+                    )}
+                    <div>
+                      <div className="text-sm font-medium">Broadcaster</div>
+                      <div className="text-xs text-muted-foreground">
+                        {twitchStatus.broadcasterUsername ? `@${twitchStatus.broadcasterUsername}` : 'Not connected'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {twitchStatus.broadcasterConnected ? (
+                      <>
+                        <Badge className="bg-green-600">Connected</Badge>
+                        <Button size="sm" variant="outline" onClick={() => void disconnectTwitch('broadcaster')}>
+                          Disconnect
+                        </Button>
+                      </>
+                    ) : (
+                      <Button size="sm" onClick={() => connectTwitch('broadcaster')}>
                         Connect
                       </Button>
                     )}
-                    {platform.authType === 'token' && (
-                      <Badge variant="outline">Configured via ENV</Badge>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between rounded border px-3 py-2">
+                  <div className="flex items-center gap-3">
+                    {twitchStatus.botConnected ? (
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-gray-400" />
                     )}
-                  </>
-                )}
+                    <div>
+                      <div className="text-sm font-medium">Bot</div>
+                      <div className="text-xs text-muted-foreground">
+                        {twitchStatus.botUsername ? `@${twitchStatus.botUsername}` : 'Not connected'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {twitchStatus.botConnected ? (
+                      <>
+                        <Badge className="bg-green-600">Connected</Badge>
+                        <Button size="sm" variant="outline" onClick={() => void disconnectTwitch('bot')}>
+                          Disconnect
+                        </Button>
+                      </>
+                    ) : (
+                      <Button size="sm" onClick={() => connectTwitch('bot')}>
+                        Connect
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div key={platform.id} className="flex items-center justify-between p-4 border rounded">
+                <div className="flex items-center gap-3">
+                  {platform.connected ? (
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                  ) : (
+                    <XCircle className="h-5 w-5 text-gray-400" />
+                  )}
+                  <div className="flex-1">
+                    <div className="font-medium">{platform.name}</div>
+                    <div className="text-sm text-muted-foreground">{platform.description}</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {platform.connected ? (
+                    <>
+                      <Badge className="bg-green-600">Connected</Badge>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => setPlatformStates({...platformStates, [platform.id]: false})}
+                      >
+                        Disconnect
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {platform.authType === 'oauth' && (
+                        <Button 
+                          size="sm"
+                          onClick={() => {
+                            if (platform.id === 'youtube') {
+                              window.location.href = '/api/auth/youtube';
+                            }
+                          }}
+                        >
+                          Connect via OAuth
+                        </Button>
+                      )}
+                      {platform.authType === 'username' && (
+                        <Button 
+                          size="sm"
+                          onClick={() => {
+                            const username = prompt(`Enter your ${platform.name} username:`);
+                            if (username) {
+                              fetch(`/api/platforms/${platform.id}/connect`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ username })
+                              }).then(() => {
+                                setPlatformStates({...platformStates, [platform.id]: true});
+                              });
+                            }
+                          }}
+                        >
+                          Connect
+                        </Button>
+                      )}
+                      {platform.authType === 'token' && (
+                        <Badge variant="outline">Configured via ENV</Badge>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            )
           ))}
         </CardContent>
       </Card>
