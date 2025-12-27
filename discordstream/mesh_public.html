@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cosmic Mesh – Public Presence</title>
+  <style>
+    :root {
+      --mesh-bg: #050814;
+      --mesh-bg-alt: #0b1020;
+      --mesh-card-bg: rgba(15, 20, 40, 0.85);
+      --mesh-border: rgba(120, 160, 255, 0.35);
+      --mesh-accent: #65a4ff;
+      --mesh-accent-soft: #3c5fb0;
+      --mesh-text: #f5f7ff;
+      --mesh-text-muted: #9ca8d5;
+      --mesh-danger: #ff5c7a;
+      --mesh-success: #4ee1a0;
+      --mesh-warning: #ffd36a;
+
+      --mesh-radius: 10px;
+      --mesh-radius-pill: 999px;
+      --mesh-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+      --mesh-font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--mesh-font-main);
+      background: radial-gradient(circle at top, #141a3b, #050814 55%, #02040a);
+      color: var(--mesh-text);
+    }
+
+    .mesh-container {
+      min-width: 240px;
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 8px 10px;
+    }
+
+    .mesh-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 6px;
+    }
+
+    .mesh-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .mesh-subtitle {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-section {
+      background: var(--mesh-card-bg);
+      border: 1px solid var(--mesh-border);
+      border-radius: var(--mesh-radius);
+      box-shadow: var(--mesh-shadow-soft);
+      padding: 6px;
+      margin-bottom: 6px;
+    }
+
+    .mesh-section-title {
+      margin: 0 0 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--mesh-text);
+    }
+
+    .mesh-user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-height: 440px;
+      overflow: hidden;
+    }
+
+    .mesh-user {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 5px;
+      border-radius: var(--mesh-radius);
+      background: rgba(10, 14, 30, 0.7);
+    }
+
+    .mesh-user-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mesh-text-muted);
+      flex-shrink: 0;
+    }
+
+    .status-chatting {
+      background: var(--mesh-success);
+    }
+
+    .status-listening {
+      background: var(--mesh-accent);
+    }
+
+    .status-dnd {
+      background: var(--mesh-danger);
+    }
+
+    .status-idle {
+      background: var(--mesh-warning);
+    }
+
+    .status-hidden {
+      background: transparent;
+      border: 1px dashed rgba(150, 160, 220, 0.6);
+    }
+
+    .mesh-user-name {
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+    }
+
+    .mesh-user-badges {
+      margin-left: auto;
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      font-size: 0.7rem;
+    }
+
+    .badge {
+      padding: 1px 5px;
+      border-radius: var(--mesh-radius-pill);
+      background: rgba(100, 140, 255, 0.25);
+      border: 1px solid rgba(120, 160, 255, 0.6);
+    }
+
+    .badge-supporter {
+      color: #ffd36a;
+      border-color: rgba(255, 211, 106, 0.8);
+    }
+
+    .badge-stars {
+      color: #81f5ff;
+      border-color: rgba(129, 245, 255, 0.8);
+    }
+
+    .mesh-footer {
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .mesh-footer-note {
+      font-size: 0.7rem;
+      color: var(--mesh-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh-container">
+    <header class="mesh-header">
+      <div class="mesh-title">Space Mountain – Cosmic Mesh</div>
+      <div class="mesh-subtitle">Live Presence Panel</div>
+    </header>
+
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Viewers in the Mesh</h2>
+      <div class="mesh-user-list" id="mesh-user-list">
+        <!-- Streamer.bot will inject user rows here -->
+
+        <!-- Example row for reference:
+        <div class="mesh-user">
+          <div class="mesh-user-status status-chatting"></div>
+          <div class="mesh-user-name">mtman</div>
+          <div class="mesh-user-badges">
+            <span class="badge badge-supporter">★</span>
+            <span class="badge badge-stars">✦ 140</span>
+          </div>
+        </div>
+        -->
+      </div>
+    </section>
+
+    <footer class="mesh-footer">
+      <div class="mesh-footer-note">
+        Viewers shown are connected via Discord voice mesh.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Phase 1: no dynamic JS required.
+    // Streamer.bot will write fully rendered rows into #mesh-user-list.
+  </script>
+</body>
+</html>

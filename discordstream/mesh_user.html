@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cosmic Mesh – Your Console</title>
+  <style>
+    :root {
+      --mesh-bg: #050814;
+      --mesh-bg-alt: #0b1020;
+      --mesh-card-bg: rgba(15, 20, 40, 0.85);
+      --mesh-border: rgba(120, 160, 255, 0.35);
+      --mesh-accent: #65a4ff;
+      --mesh-accent-soft: #3c5fb0;
+      --mesh-text: #f5f7ff;
+      --mesh-text-muted: #9ca8d5;
+      --mesh-danger: #ff5c7a;
+      --mesh-success: #4ee1a0;
+      --mesh-warning: #ffd36a;
+
+      --mesh-radius: 10px;
+      --mesh-radius-pill: 999px;
+      --mesh-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+      --mesh-font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--mesh-font-main);
+      background: radial-gradient(circle at top, #141a3b, #050814 55%, #02040a);
+      color: var(--mesh-text);
+    }
+
+    .mesh-container {
+      min-width: 320px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 12px 16px;
+    }
+
+    .mesh-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .mesh-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .mesh-subtitle {
+      font-size: 0.8rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-user-self {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mesh-user-avatar-placeholder {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #7e8bff, #252a5c);
+      flex-shrink: 0;
+    }
+
+    .mesh-user-self-name {
+      font-size: 0.9rem;
+    }
+
+    .mesh-user-self-status {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-section {
+      background: var(--mesh-card-bg);
+      border: 1px solid var(--mesh-border);
+      border-radius: var(--mesh-radius);
+      box-shadow: var(--mesh-shadow-soft);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .mesh-section-title {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .mesh-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .mesh-column {
+      flex: 1 1 220px;
+    }
+
+    .mesh-label {
+      font-size: 0.8rem;
+      color: var(--mesh-text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .mesh-small-text {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+      margin-top: 4px;
+    }
+
+    .mesh-status-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .mesh-btn {
+      border: none;
+      outline: none;
+      background: var(--mesh-accent-soft);
+      color: var(--mesh-text);
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: var(--mesh-radius-pill);
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .mesh-btn:hover {
+      background: var(--mesh-accent);
+      transform: translateY(-1px);
+    }
+
+    .mesh-btn-secondary {
+      background: transparent;
+      border: 1px solid var(--mesh-accent);
+    }
+
+    .mesh-btn-small {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+    }
+
+    .mesh-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .mesh-toggle-btn {
+      border-radius: var(--mesh-radius-pill);
+      padding: 3px 10px;
+      border: 1px solid var(--mesh-border);
+      background: rgba(20, 28, 60, 0.8);
+      color: var(--mesh-text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .mesh-toggle-btn[data-state="on"],
+    .mesh-toggle-btn[data-state="public"] {
+      background: var(--mesh-success);
+      border-color: var(--mesh-success);
+      color: #050814;
+    }
+
+    .mesh-toggle-btn[data-state="off"],
+    .mesh-toggle-btn[data-state="private"] {
+      background: rgba(60, 16, 34, 0.9);
+      border-color: var(--mesh-danger);
+      color: #ffdbe3;
+    }
+
+    .mesh-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--mesh-radius-pill);
+      background: rgba(18, 24, 60, 0.9);
+      border: 1px solid rgba(100, 130, 220, 0.7);
+      font-size: 0.8rem;
+    }
+
+    .mesh-group-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .mesh-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 6px;
+      border-radius: var(--mesh-radius);
+      background: rgba(12, 16, 34, 0.9);
+      border: 1px solid rgba(100, 130, 220, 0.5);
+    }
+
+    .mesh-group-main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mesh-group-name {
+      font-size: 0.85rem;
+    }
+
+    .mesh-group-meta {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+
+    /* Room members section */
+    .mesh-room-members {
+      margin-top: 8px;
+      background: rgba(10, 14, 30, 0.9);
+      border-radius: var(--mesh-radius);
+      border: 1px solid rgba(100, 130, 220, 0.6);
+      padding: 6px;
+    }
+
+    .mesh-room-members-title {
+      font-size: 0.8rem;
+      color: var(--mesh-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .mesh-room-member-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .mesh-room-member {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 4px;
+      border-radius: var(--mesh-radius);
+      background: rgba(6, 9, 22, 0.9);
+    }
+
+    .mesh-room-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #7e8bff, #252a5c);
+      flex-shrink: 0;
+    }
+
+    .mesh-room-name {
+      font-size: 0.8rem;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mesh-room-mic {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-mic-icon {
+      width: 10px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(180, 190, 255, 0.8);
+      position: relative;
+    }
+
+    .mesh-mic-icon::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(180, 190, 255, 0.9);
+    }
+
+    .mesh-room-devices {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mesh-select {
+      background: rgba(8, 10, 26, 0.95);
+      border-radius: var(--mesh-radius-pill);
+      border: 1px solid rgba(100, 130, 220, 0.7);
+      color: var(--mesh-text);
+      font-size: 0.75rem;
+      padding: 2px 8px;
+    }
+
+    .mesh-star-wallet {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+    }
+
+    .mesh-star-icon {
+      font-size: 1rem;
+      color: #ffd36a;
+    }
+
+    .mesh-star-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .mesh-twitch-embed {
+      width: 100%;
+      max-width: 260px;
+      height: 60px;
+      border-radius: var(--mesh-radius);
+      overflow: hidden;
+      border: 1px solid rgba(145, 204, 255, 0.6);
+      background: rgba(8, 8, 18, 0.9);
+    }
+
+    .mesh-twitch-embed iframe {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mesh-qotd {
+      background: radial-gradient(circle at top left, rgba(101, 164, 255, 0.3), rgba(5, 8, 20, 0.9));
+      border-radius: var(--mesh-radius);
+      padding: 8px;
+      border: 1px solid rgba(120, 160, 255, 0.6);
+    }
+
+    .mesh-qotd-label {
+      font-size: 0.8rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-qotd-text {
+      font-size: 0.9rem;
+      margin: 4px 0 6px;
+    }
+
+    .mesh-footer {
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .mesh-footer-note {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh-container">
+    <header class="mesh-header">
+      <div>
+        <div class="mesh-title">Cosmic Mesh Console</div>
+        <div class="mesh-subtitle">Control how you exist in the stream.</div>
+      </div>
+      <div class="mesh-user-self">
+        <div class="mesh-user-avatar-placeholder"></div>
+        <div>
+          <div class="mesh-user-self-name" id="selfName">YourNameHere</div>
+          <div class="mesh-user-self-status" id="selfStatusText">Status: Unknown</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Presence & Status</h2>
+      <div class="mesh-row">
+        <div class="mesh-column">
+          <label class="mesh-label">Your status</label>
+          <div class="mesh-status-buttons">
+            <button class="mesh-btn" data-status="chatting">Chatting</button>
+            <button class="mesh-btn" data-status="listening">Listening</button>
+            <button class="mesh-btn" data-status="dnd">Do Not Disturb</button>
+            <button class="mesh-btn" data-status="idle">Idle</button>
+            <button class="mesh-btn" data-status="hidden">Hidden</button>
+          </div>
+          <div class="mesh-small-text">
+            Status here is what the stream sees in the presence panel.
+          </div>
+        </div>
+        <div class="mesh-column">
+          <label class="mesh-label">Broadcaster access</label>
+          <div class="mesh-toggle-row">
+            <span>Allow broadcaster visit</span>
+            <button class="mesh-toggle-btn" id="toggleBroadcasterVisit" data-state="off">
+              OFF
+            </button>
+          </div>
+          <div class="mesh-small-text">
+            When ON, Mt can drop into your room during cosmic walks.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Room & Groups</h2>
+      <div class="mesh-row">
+        <div class="mesh-column">
+          <label class="mesh-label">Current room</label>
+          <div class="mesh-pill" id="currentRoomName">Not in a room</div>
+          <div class="mesh-small-text">
+            This is the voice group you're currently hanging out in.
+          </div>
+        </div>
+        <div class="mesh-column">
+          <label class="mesh-label">Room visibility</label>
+          <div class="mesh-toggle-row">
+            <span>Room is</span>
+            <button class="mesh-toggle-btn" id="toggleRoomVisibility" data-state="public">
+              Public
+            </button>
+          </div>
+          <div class="mesh-small-text">
+            Public rooms may appear on stream. Private rooms are hidden.
+          </div>
+        </div>
+      </div>
+
+      <div class="mesh-room-members">
+        <div class="mesh-room-members-title">People in your room</div>
+        <div class="mesh-room-member-list" id="roomMemberList">
+          <!-- Streamer.bot can inject member rows here -->
+
+          <!-- Example:
+          <div class="mesh-room-member">
+            <div class="mesh-room-avatar"></div>
+            <div class="mesh-room-name">FriendOne</div>
+            <div class="mesh-room-mic">
+              <div class="mesh-mic-icon"></div>
+              <span>Talking</span>
+            </div>
+          </div>
+          -->
+        </div>
+
+        <div class="mesh-room-devices">
+          <select class="mesh-select" id="inputDeviceSelect">
+            <option>Mic Input (placeholder)</option>
+          </select>
+          <select class="mesh-select" id="outputDeviceSelect">
+            <option>Output Device (placeholder)</option>
+          </select>
+        </div>
+        <div class="mesh-small-text">
+          In Phase 1, these are placeholders. Voice routing is driven by the mesh backend.
+        </div>
+      </div>
+
+      <div class="mesh-group-list" id="availableGroups">
+        <!-- Optional: Streamer.bot injects joinable groups here -->
+
+        <!-- Example:
+        <div class="mesh-group">
+          <div class="mesh-group-main">
+            <div class="mesh-group-name">Cosmic Walk A</div>
+            <div class="mesh-group-meta">3 viewers · Public</div>
+          </div>
+          <button class="mesh-btn mesh-btn-small" data-group-id="g1">Join</button>
+        </div>
+        -->
+      </div>
+    </section>
+
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Cosmic Stars & Support</h2>
+      <div class="mesh-row">
+        <div class="mesh-column">
+          <label class="mesh-label">Your Star Wallet</label>
+          <div class="mesh-star-wallet">
+            <span class="mesh-star-icon">✦</span>
+            <span id="starBalance">0</span> Stars
+          </div>
+          <div class="mesh-star-actions">
+            <button class="mesh-btn" id="btnBuyStars">Buy Stars</button>
+          </div>
+          <div class="mesh-small-text">
+            Buying stars loads your wallet. Dropping them happens through chat commands or star emotes.
+          </div>
+        </div>
+        <div class="mesh-column">
+          <label class="mesh-label">Twitch support bar</label>
+          <div class="mesh-twitch-embed">
+            <iframe
+              id="twitchSupport"
+              src="about:blank"
+              title="Twitch Support"
+              frameborder="0"
+            ></iframe>
+          </div>
+          <div class="mesh-small-text">
+            Log into Twitch here to cheer, sub, or gift without leaving the mesh.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Cosmic Prompts</h2>
+      <div class="mesh-qotd">
+        <div class="mesh-qotd-label">Question of the Day</div>
+        <div class="mesh-qotd-text" id="qotdText">
+          What brings you to Space Mountain tonight?
+        </div>
+        <button class="mesh-btn mesh-btn-small" id="btnSubmitQotdAnswer">
+          Share your answer with the mesh
+        </button>
+      </div>
+    </section>
+
+    <footer class="mesh-footer">
+      <div class="mesh-footer-note">
+        You are part of the cosmic mesh. Your voice and choices shape the stream.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Phase 1: JS is for UI feedback only. Streamer.bot is the brain.
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const statusButtons = document.querySelectorAll(".mesh-status-buttons .mesh-btn");
+      const selfStatusText = document.getElementById("selfStatusText");
+      const broadcasterToggle = document.getElementById("toggleBroadcasterVisit");
+      const roomToggle = document.getElementById("toggleRoomVisibility");
+      const starBalanceEl = document.getElementById("starBalance");
+      const btnBuyStars = document.getElementById("btnBuyStars");
+      const twitchFrame = document.getElementById("twitchSupport");
+
+      statusButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const status = btn.dataset.status;
+          selfStatusText.textContent = `Status: ${status}`;
+          console.log("[Mesh] Status changed to:", status);
+          // Streamer.bot can infer status from generated HTML in Phase 1
+        });
+      });
+
+      if (broadcasterToggle) {
+        broadcasterToggle.addEventListener("click", () => {
+          const current = broadcasterToggle.dataset.state;
+          const next = current === "off" ? "on" : "off";
+          broadcasterToggle.dataset.state = next;
+          broadcasterToggle.textContent = next.toUpperCase();
+          console.log("[Mesh] Broadcaster visit set to:", next);
+        });
+      }
+
+      if (roomToggle) {
+        roomToggle.addEventListener("click", () => {
+          const current = roomToggle.dataset.state;
+          const next = current === "public" ? "private" : "public";
+          roomToggle.dataset.state = next;
+          roomToggle.textContent = next === "public" ? "Public" : "Private";
+          console.log("[Mesh] Room visibility set to:", next);
+        });
+      }
+
+      if (btnBuyStars) {
+        btnBuyStars.addEventListener("click", () => {
+          console.log("[Mesh] Buy Stars clicked");
+          // Phase 1: SB can watch for this via logs or later by URL hooks.
+          // You can also eventually do: window.open("https://your-cashapp-or-paypal-link", "_blank");
+        });
+      }
+
+      if (twitchFrame) {
+        // Later: set to real Twitch embed with your domain as parent when hosted.
+        // Example:
+        // twitchFrame.src = "https://www.twitch.tv/embed/YOURCHANNEL/chat?parent=yourdomain.com";
+      }
+    });
+  </script>
+</body>
+</html>
