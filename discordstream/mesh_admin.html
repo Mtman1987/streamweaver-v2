@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cosmic Mesh – Admin Dashboard</title>
+  <style>
+    :root {
+      --mesh-bg: #050814;
+      --mesh-bg-alt: #0b1020;
+      --mesh-card-bg: rgba(15, 20, 40, 0.92);
+      --mesh-border: rgba(120, 160, 255, 0.35);
+      --mesh-accent: #65a4ff;
+      --mesh-accent-soft: #3c5fb0;
+      --mesh-text: #f5f7ff;
+      --mesh-text-muted: #9ca8d5;
+      --mesh-danger: #ff5c7a;
+      --mesh-success: #4ee1a0;
+      --mesh-warning: #ffd36a;
+
+      --mesh-radius: 10px;
+      --mesh-radius-pill: 999px;
+      --mesh-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+      --mesh-font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--mesh-font-main);
+      background: radial-gradient(circle at top, #141a3b, #050814 55%, #02040a);
+      color: var(--mesh-text);
+    }
+
+    .mesh-container {
+      min-width: 360px;
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 12px 16px 16px;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    .mesh-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .mesh-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mesh-subtitle {
+      font-size: 0.8rem;
+      color: var(--mesh-text-muted);
+      margin-top: 2px;
+    }
+
+    .mesh-top-metrics {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .mesh-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--mesh-radius-pill);
+      background: rgba(18, 24, 60, 0.9);
+      border: 1px solid rgba(100, 130, 220, 0.7);
+      font-size: 0.8rem;
+      gap: 4px;
+    }
+
+    .mesh-section {
+      background: var(--mesh-card-bg);
+      border: 1px solid var(--mesh-border);
+      border-radius: var(--mesh-radius);
+      box-shadow: var(--mesh-shadow-soft);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .mesh-section-title {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .mesh-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .mesh-column {
+      flex: 1 1 260px;
+    }
+
+    .mesh-label {
+      font-size: 0.8rem;
+      color: var(--mesh-text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .mesh-small-text {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+      margin-top: 4px;
+    }
+
+    .mesh-select {
+      background: rgba(8, 10, 26, 0.95);
+      border-radius: var(--mesh-radius-pill);
+      border: 1px solid rgba(100, 130, 220, 0.7);
+      color: var(--mesh-text);
+      font-size: 0.8rem;
+      padding: 3px 8px;
+    }
+
+    /* Buttons */
+    .mesh-btn {
+      border: none;
+      outline: none;
+      background: var(--mesh-accent-soft);
+      color: var(--mesh-text);
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: var(--mesh-radius-pill);
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      white-space: nowrap;
+    }
+    .mesh-btn:hover {
+      background: var(--mesh-accent);
+      transform: translateY(-1px);
+    }
+    .mesh-btn-small {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+    }
+    .mesh-btn-mini {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+    }
+    .mesh-btn-secondary {
+      background: transparent;
+      border: 1px solid var(--mesh-accent);
+    }
+    .mesh-btn-disabled {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* Rooms section */
+    .mesh-room-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mesh-room {
+      border-radius: var(--mesh-radius);
+      border: 1px solid rgba(100, 130, 220, 0.6);
+      background: radial-gradient(circle at top left, rgba(101, 164, 255, 0.16), rgba(7, 10, 26, 0.95));
+      overflow: hidden;
+    }
+
+    .mesh-room.system-room {
+      border-color: rgba(255, 211, 106, 0.9);
+      background: radial-gradient(circle at top left, rgba(255, 211, 106, 0.2), rgba(7, 10, 26, 0.98));
+    }
+
+    .mesh-room.onstream-room {
+      border-color: rgba(255, 92, 122, 0.9);
+      background: radial-gradient(circle at top left, rgba(255, 92, 122, 0.18), rgba(7, 10, 26, 0.98));
+    }
+
+    .mesh-room.lobby-room {
+      border-color: rgba(101, 164, 255, 0.9);
+      background: radial-gradient(circle at top left, rgba(101, 164, 255, 0.24), rgba(7, 10, 26, 0.98));
+    }
+
+    .mesh-room-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+      cursor: pointer;
+      background: linear-gradient(
+        90deg,
+        rgba(16, 23, 58, 0.98),
+        rgba(12, 20, 52, 0.9)
+      );
+    }
+
+    .mesh-room.system-room .mesh-room-header {
+      background: linear-gradient(
+        90deg,
+        rgba(75, 65, 15, 0.98),
+        rgba(32, 24, 8, 0.95)
+      );
+    }
+
+    .mesh-room.onstream-room .mesh-room-header {
+      background: linear-gradient(
+        90deg,
+        rgba(90, 25, 40, 0.98),
+        rgba(40, 12, 22, 0.95)
+      );
+    }
+
+    .mesh-room.lobby-room .mesh-room-header {
+      background: linear-gradient(
+        90deg,
+        rgba(18, 34, 90, 0.98),
+        rgba(12, 30, 64, 0.95)
+      );
+    }
+
+    .mesh-room-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mesh-room-toggle {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(140, 170, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: rgba(180, 200, 255, 0.9);
+    }
+
+    .mesh-room.system-room .mesh-room-toggle {
+      border-color: rgba(255, 211, 106, 0.9);
+      color: rgba(255, 240, 200, 0.95);
+    }
+
+    .mesh-room.onstream-room .mesh-room-toggle {
+      border-color: rgba(255, 92, 122, 0.9);
+      color: rgba(255, 210, 220, 0.95);
+    }
+
+    .mesh-room.lobby-room .mesh-room-toggle {
+      border-color: rgba(101, 164, 255, 0.9);
+      color: rgba(210, 230, 255, 0.95);
+    }
+
+    .mesh-room-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mesh-room-name-icon {
+      font-size: 0.9rem;
+    }
+
+    .mesh-room-meta {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-room-header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+    }
+
+    .mesh-room-pill {
+      padding: 2px 8px;
+      border-radius: var(--mesh-radius-pill);
+      background: rgba(10, 16, 40, 0.9);
+      border: 1px solid rgba(120, 150, 240, 0.7);
+    }
+
+    .mesh-room-public {
+      color: var(--mesh-success);
+      border-color: rgba(78, 225, 160, 0.8);
+    }
+
+    .mesh-room-private {
+      color: #ffdbe3;
+      border-color: rgba(255, 92, 122, 0.8);
+    }
+
+    .mesh-room-system-label {
+      color: #ffd36a;
+      border-color: rgba(255, 211, 106, 0.9);
+    }
+
+    .mesh-room-onstream-label {
+      color: #ffb0c2;
+      border-color: rgba(255, 92, 122, 0.9);
+    }
+
+    .mesh-room-controls {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .mesh-room-body {
+      padding: 6px 8px 7px;
+      display: none;
+    }
+
+    .mesh-room-body.open {
+      display: block;
+    }
+
+    /* User blocks */
+    .mesh-user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mesh-user {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 5px;
+      border-radius: var(--mesh-radius);
+      background: rgba(5, 8, 22, 0.96);
+    }
+
+    .mesh-user-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #7e8bff, #252a5c);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .mesh-user-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .mesh-user-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mesh-text-muted);
+      flex-shrink: 0;
+    }
+    .status-chatting { background: var(--mesh-success); }
+    .status-listening { background: var(--mesh-accent); }
+    .status-dnd { background: var(--mesh-danger); }
+    .status-idle { background: var(--mesh-warning); }
+    .status-hidden {
+      background: transparent;
+      border: 1px dashed rgba(150, 160, 220, 0.6);
+    }
+
+    .mesh-user-main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .mesh-user-name {
+      font-size: 0.8rem;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mesh-user-meta {
+      font-size: 0.7rem;
+      color: var(--mesh-text-muted);
+    }
+
+    .mesh-user-economy {
+      font-size: 0.7rem;
+      color: var(--mesh-text-muted);
+      margin-left: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 130px;
+    }
+
+    .mesh-user-economy-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      justify-content: flex-start;
+    }
+
+    .mesh-user-stars {
+      color: #ffd36a;
+    }
+
+    .mesh-user-star-role.active {
+      color: var(--mesh-success);
+    }
+    .mesh-user-star-role.inactive {
+      color: var(--mesh-danger);
+    }
+
+    .mesh-user-roles {
+      font-size: 0.7rem;
+      color: var(--mesh-text-muted);
+      max-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mesh-admin-user-controls {
+      display: flex;
+      gap: 3px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* Metrics section */
+    .mesh-metrics-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mesh-metric-card {
+      flex: 1 1 150px;
+      border-radius: var(--mesh-radius);
+      border: 1px solid rgba(100, 130, 220, 0.6);
+      background: rgba(10, 13, 30, 0.95);
+      padding: 6px 8px;
+    }
+
+    .mesh-metric-label {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+      margin-bottom: 2px;
+    }
+
+    .mesh-metric-value {
+      font-size: 0.95rem;
+    }
+
+    .mesh-metric-subtext {
+      font-size: 0.7rem;
+      color: var(--mesh-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Logs */
+    .mesh-log-list {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+      max-height: 120px;
+      overflow-y: auto;
+      padding-left: 14px;
+      margin: 4px 0 0;
+    }
+
+    .mesh-log-list li {
+      margin-bottom: 2px;
+    }
+
+    .mesh-footer {
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .mesh-footer-note {
+      font-size: 0.75rem;
+      color: var(--mesh-text-muted);
+    }
+
+    /* Source icons */
+    .mesh-viewer-source-icon {
+      font-size: 0.9rem;
+    }
+
+    .source-twitch { color: #9146ff; }
+    .source-discord { color: #5865f2; }
+    .source-cosmic { color: #ffd36a; }
+  </style>
+</head>
+<body>
+  <div class="mesh-container">
+    <!-- HEADER -->
+    <header class="mesh-header">
+      <div>
+        <div class="mesh-title">Cosmic Mesh Admin</div>
+        <div class="mesh-subtitle">Mission control for Space Mountain.</div>
+      </div>
+      <div class="mesh-top-metrics">
+        <span class="mesh-pill">
+          Viewers: <span id="adminViewerCount">0</span>
+        </span>
+        <span class="mesh-pill">
+          Groups: <span id="adminGroupCount">0</span>
+        </span>
+
+        <div class="mesh-pill">
+          <span>Viewer radar</span>
+          <select class="mesh-select" id="viewerSourceSelect">
+            <option value="all">All sources</option>
+            <option value="twitch">Twitch only</option>
+            <option value="discord">Discord only</option>
+            <option value="cosmic">Cosmic mesh UI</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- ROOMS & USERS -->
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Rooms & Voice Clusters</h2>
+      <div class="mesh-small-text">
+        Rooms represent live voice clusters in your mesh. System rooms are always present and hidden from viewers.
+      </div>
+
+      <div class="mesh-room-list" id="roomList">
+        <!-- SYSTEM ROOM: MOD ROOM -->
+        <div class="mesh-room system-room" data-room-id="mod_room">
+          <div class="mesh-room-header" data-toggle="room">
+            <div class="mesh-room-header-left">
+              <div class="mesh-room-toggle">−</div>
+              <div>
+                <div class="mesh-room-name">
+                  <span class="mesh-room-name-icon">🛡</span>
+                  Mod Room
+                </div>
+                <div class="mesh-room-meta">
+                  Private · Staff-only coordination outside Twitch & Discord chat
+                </div>
+              </div>
+            </div>
+            <div class="mesh-room-header-right">
+              <span class="mesh-room-pill mesh-room-private mesh-room-system-label">System · Private</span>
+              <span class="mesh-room-pill">
+                <span id="modRoomCount">0</span> in room
+              </span>
+              <div class="mesh-room-controls">
+                <button class="mesh-btn mesh-btn-mini" data-action="jump" data-room-id="mod_room">
+                  Jump
+                </button>
+                <button class="mesh-btn mesh-btn-mini mesh-btn-secondary mesh-btn-disabled" title="Protected room">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mesh-room-body open">
+            <div class="mesh-user-list" id="modRoomUsers">
+              <!-- Filled by mesh_state.users where room === 'mod_room' -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM ROOM: ON-STREAM ROOM -->
+        <div class="mesh-room onstream-room" data-room-id="on_stream">
+          <div class="mesh-room-header" data-toggle="room">
+            <div class="mesh-room-header-left">
+              <div class="mesh-room-toggle">−</div>
+              <div>
+                <div class="mesh-room-name">
+                  <span class="mesh-room-name-icon">📡</span>
+                  On-Stream Room
+                </div>
+                <div class="mesh-room-meta">
+                  Private · Only guests you move here can be heard on stream
+                </div>
+              </div>
+            </div>
+            <div class="mesh-room-header-right">
+              <span class="mesh-room-pill mesh-room-private mesh-room-onstream-label">System · On-Stream</span>
+              <span class="mesh-room-pill">
+                <span id="onStreamRoomCount">0</span> in room
+              </span>
+              <div class="mesh-room-controls">
+                <button class="mesh-btn mesh-btn-mini" data-action="jump" data-room-id="on_stream">
+                  Jump
+                </button>
+                <button class="mesh-btn mesh-btn-mini mesh-btn-secondary mesh-btn-disabled" title="Protected room">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mesh-room-body open">
+            <div class="mesh-user-list" id="onStreamRoomUsers">
+              <!-- Filled by mesh_state.users where room === 'on_stream' -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM ROOM: LOBBY (root/base Discord VC) -->
+        <div class="mesh-room lobby-room" data-room-id="lobby">
+          <div class="mesh-room-header" data-toggle="room">
+            <div class="mesh-room-header-left">
+              <div class="mesh-room-toggle">−</div>
+              <div>
+                <div class="mesh-room-name">
+                  <span class="mesh-room-name-icon">🌌</span>
+                  Lobby
+                </div>
+                <div class="mesh-room-meta">
+                  Public · Base Discord VC · Lurkers & listeners not in mesh rooms
+                </div>
+              </div>
+            </div>
+            <div class="mesh-room-header-right">
+              <span class="mesh-room-pill mesh-room-public">System · Public</span>
+              <span class="mesh-room-pill">
+                <span id="lobbyRoomCount">0</span> in room
+              </span>
+              <div class="mesh-room-controls">
+                <button class="mesh-btn mesh-btn-mini" data-action="jump" data-room-id="lobby">
+                  Jump
+                </button>
+                <button class="mesh-btn mesh-btn-mini mesh-btn-secondary mesh-btn-disabled" title="Protected room">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mesh-room-body open">
+            <div class="mesh-user-list" id="lobbyRoomUsers">
+              <!-- Filled by mesh_state.users where room === 'lobby' -->
+            </div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC ROOMS -->
+        <div id="dynamicRooms">
+          <!-- Filled from mesh_state.rooms excluding mod_room, on_stream, lobby -->
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Live Mesh Metrics</h2>
+      <div class="mesh-metrics-grid">
+        <div class="mesh-metric-card">
+          <div class="mesh-metric-label">Stars this stream</div>
+          <div class="mesh-metric-value" id="metricStarsStream">0</div>
+          <div class="mesh-metric-subtext">Total dropped across all viewers this session.</div>
+        </div>
+
+        <div class="mesh-metric-card">
+          <div class="mesh-metric-label">Stars lifetime</div>
+          <div class="mesh-metric-value" id="metricStarsLifetime">0</div>
+          <div class="mesh-metric-subtext">All-time cosmic star count.</div>
+        </div>
+
+        <div class="mesh-metric-card">
+          <div class="mesh-metric-label">Most active supporter</div>
+          <div class="mesh-metric-value" id="metricTopSupporter">None</div>
+          <div class="mesh-metric-subtext">By stars dropped this stream.</div>
+        </div>
+
+        <div class="mesh-metric-card">
+          <div class="mesh-metric-label">Most active room</div>
+          <div class="mesh-metric-value" id="metricTopRoom">None</div>
+          <div class="mesh-metric-subtext">By talk activity / membership.</div>
+        </div>
+
+        <div class="mesh-metric-card">
+          <div class="mesh-metric-label">Public vs Private</div>
+          <div class="mesh-metric-value">
+            <span id="metricPublicRooms">0</span> public ·
+            <span id="metricPrivateRooms">0</span> private
+          </div>
+          <div class="mesh-metric-subtext">Quick privacy snapshot.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RITUAL CONTROLS -->
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Cosmic Ritual Controls</h2>
+      <div class="mesh-row">
+        <div class="mesh-column">
+          <label class="mesh-label">Rituals</label>
+          <div class="mesh-small-text">
+            These buttons are placeholders for Streamer.bot actions.
+            In Phase 1 you can trigger them directly from SB; this panel is your future control surface.
+          </div>
+          <div style="margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="mesh-btn mesh-btn-small" onclick="createVoiceRoom()">Create Voice Room</button>
+            <button class="mesh-btn mesh-btn-small" onclick="muteAllVoice()">Mute All Voice</button>
+            <button class="mesh-btn mesh-btn-small mesh-btn-secondary" onclick="openVoiceLobby()">
+              Open Voice Lobby
+            </button>
+          </div>
+        </div>
+        <div class="mesh-column">
+          <label class="mesh-label">Notes</label>
+          <div class="mesh-small-text">
+            When this evolves into a full backend or Activity, these controls will send real commands.
+            For now, use them as a visual map of your show-running powers.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGS -->
+    <section class="mesh-section">
+      <h2 class="mesh-section-title">Recent Mesh Activity</h2>
+      <div class="mesh-row">
+        <div class="mesh-column">
+          <label class="mesh-label">Star drops</label>
+          <ul class="mesh-log-list" id="logStars">
+            <!-- Future: append log entries here -->
+          </ul>
+        </div>
+        <div class="mesh-column">
+          <label class="mesh-label">Room changes</label>
+          <ul class="mesh-log-list" id="logRooms">
+            <!-- Future: append log entries here -->
+          </ul>
+        </div>
+        <div class="mesh-column">
+          <label class="mesh-label">Status & admin actions</label>
+          <ul class="mesh-log-list" id="logStatus">
+            <!-- Future: append log entries here -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mesh-footer">
+      <div class="mesh-footer-note">
+        Admin view only. Use with care – every change affects live viewers.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const MESH_URL = "https://mesh.mtman1987.stream/mesh/mesh_state.json";
+    let meshState = null;
+    let voiceWs = null;
+
+    // Connect to voice server for admin controls
+    function connectVoiceAdmin() {
+      voiceWs = new WebSocket('ws://localhost:8080');
+      voiceWs.onopen = () => {
+        voiceWs.send(JSON.stringify({ type: 'admin_connect' }));
+      };
+      voiceWs.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'admin_update') {
+          // Voice room updates handled here
+        }
+      };
+      voiceWs.onclose = () => {
+        setTimeout(connectVoiceAdmin, 2000);
+      };
+    }
+
+    function createVoiceRoom() {
+      const roomName = prompt('Voice room name:');
+      if (roomName && voiceWs) {
+        voiceWs.send(JSON.stringify({
+          type: 'admin_create_room',
+          payload: { roomName }
+        }));
+      }
+    }
+
+    function muteAllVoice() {
+      if (voiceWs) {
+        voiceWs.send(JSON.stringify({ type: 'admin_mute_all' }));
+      }
+    }
+
+    function openVoiceLobby() {
+      window.open('voice-lobby.html', '_blank');
+    }
+
+    function moveUser(userId) {
+      const roomId = prompt('Move to room (lobby, mod_room, on_stream):');
+      if (roomId && voiceWs) {
+        voiceWs.send(JSON.stringify({
+          type: 'admin_move_user',
+          payload: { userId, roomId }
+        }));
+      }
+    }
+
+    function kickUser(userId) {
+      if (confirm('Kick this user from voice?') && voiceWs) {
+        voiceWs.send(JSON.stringify({
+          type: 'admin_kick_user',
+          payload: { userId }
+        }));
+      }
+    }
+
+    function moveToOnStream(userId) {
+      if (voiceWs) {
+        voiceWs.send(JSON.stringify({
+          type: 'admin_move_user',
+          payload: { userId, roomId: 'on_stream' }
+        }));
+      }
+    }
+
+    function closeRoom(roomId) {
+      if (confirm(`Close room ${roomId}?`) && voiceWs) {
+        voiceWs.send(JSON.stringify({
+          type: 'admin_close_room',
+          payload: { roomId }
+        }));
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Collapsible rooms
+      document.addEventListener("click", (ev) => {
+        const header = ev.target.closest(".mesh-room-header");
+        if (!header || !header.dataset.toggle) return;
+
+        const room = header.closest(".mesh-room");
+        if (!room) return;
+
+        const body = room.querySelector(".mesh-room-body");
+        const toggle = room.querySelector(".mesh-room-toggle");
+
+        if (!body || !toggle) return;
+
+        const isOpen = body.classList.contains("open");
+        if (isOpen) {
+          body.classList.remove("open");
+          toggle.textContent = "+";
+        } else {
+          body.classList.add("open");
+          toggle.textContent = "−";
+        }
+      });
+
+      // Ritual intent buttons (placeholders)
+      const intentButtons = document.querySelectorAll("[data-intent]");
+      intentButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const intent = btn.dataset.intent;
+          console.log("[Mesh Admin] Intent:", intent);
+        });
+      });
+
+      // Viewer source filter (visual placeholder only for now)
+      const viewerSourceSelect = document.getElementById("viewerSourceSelect");
+      if (viewerSourceSelect) {
+        viewerSourceSelect.addEventListener("change", () => {
+          const value = viewerSourceSelect.value;
+          console.log("[Mesh Admin] Viewer source filter changed to:", value);
+          // Future: dim/hide users not matching the source
+        });
+      });
+
+      // Admin action buttons (log only for now)
+      document.addEventListener("click", (ev) => {
+        const btn = ev.target.closest("[data-action]");
+        if (!btn) return;
+
+        const action = btn.dataset.action;
+        const userId = btn.dataset.userId || null;
+        const roomId = btn.dataset.roomId || null;
+
+        console.log("[Mesh Admin] Action:", action, "user:", userId, "room:", roomId);
+        // Future: hook into Streamer.bot
+      });
+
+      // Start polling
+      connectVoiceAdmin();
+      pollMesh();
+    });
+
+    async function pollMesh() {
+      try {
+        const res = await fetch(MESH_URL, { cache: "no-store" });
+        const data = await res.json();
+        meshState = data;
+        updateFromMeshState(data);
+      } catch (err) {
+        console.error("[Mesh Admin] Failed to fetch mesh state:", err);
+      } finally {
+        setTimeout(pollMesh, 5000);
+      }
+    }
+
+    function updateFromMeshState(state) {
+      if (!state) return;
+
+      const rooms = state.rooms || {};
+      const users = state.users || {};
+
+      const roomIds = Object.keys(rooms);
+      const userIds = Object.keys(users);
+
+      // Top header counts
+      setText("adminViewerCount", String(userIds.length));
+      setText("adminGroupCount", String(roomIds.length));
+
+      // Clear system room containers
+      clearElement("modRoomUsers");
+      clearElement("onStreamRoomUsers");
+      clearElement("lobbyRoomUsers");
+      // Clear dynamic rooms container
+      clearElement("dynamicRooms");
+
+      // Build a quick index of users per room
+      const usersByRoom = {};
+      userIds.forEach((uid) => {
+        const u = users[uid];
+        const roomId = u.room || "lobby";
+        if (!usersByRoom[roomId]) usersByRoom[roomId] = [];
+        usersByRoom[roomId].push({ id: uid, data: u });
+      });
+
+      // System rooms: mod_room, on_stream, lobby
+      updateSystemRoom("mod_room", "modRoomUsers", "modRoomCount", usersByRoom);
+      updateSystemRoom("on_stream", "onStreamRoomUsers", "onStreamRoomCount", usersByRoom);
+      updateSystemRoom("lobby", "lobbyRoomUsers", "lobbyRoomCount", usersByRoom);
+
+      // Dynamic rooms: everything else in rooms
+      const dynamicContainer = document.getElementById("dynamicRooms");
+      let publicCount = 0;
+      let privateCount = 0;
+
+      roomIds.forEach((roomId) => {
+        if (roomId === "mod_room" || roomId === "on_stream" || roomId === "lobby") return;
+
+        const room = rooms[roomId];
+        const roomUsers = usersByRoom[roomId] || [];
+        const roomName = room.name || roomId;
+        const isPrivate = false; // you can evolve this later
+
+        const roomDiv = document.createElement("div");
+        roomDiv.className = "mesh-room";
+        roomDiv.dataset.roomId = roomId;
+
+        roomDiv.innerHTML = `
+          <div class="mesh-room-header" data-toggle="room">
+            <div class="mesh-room-header-left">
+              <div class="mesh-room-toggle">−</div>
+              <div>
+                <div class="mesh-room-name">
+                  <span class="mesh-room-name-icon">🌌</span>
+                  ${escapeHtml(roomName)}
+                </div>
+                <div class="mesh-room-meta">
+                  ${roomUsers.length} viewer${roomUsers.length === 1 ? "" : "s"}
+                </div>
+              </div>
+            </div>
+            <div class="mesh-room-header-right">
+              <span class="mesh-room-pill ${isPrivate ? "mesh-room-private" : "mesh-room-public"}">
+                ${isPrivate ? "Private" : "Public"}
+              </span>
+              <span class="mesh-room-pill">
+                ${roomUsers.length} in room
+              </span>
+              <div class="mesh-room-controls">
+                <button class="mesh-btn mesh-btn-mini" data-action="jump" data-room-id="${roomId}">Jump</button>
+                <button class="mesh-btn mesh-btn-mini" data-action="spotlight" data-room-id="${roomId}">Spotlight</button>
+                <button class="mesh-btn mesh-btn-mini mesh-btn-secondary" onclick="closeRoom('${roomId}')">Close</button>
+              </div>
+            </div>
+          </div>
+          <div class="mesh-room-body open">
+            <div class="mesh-user-list" id="roomUsers-${roomId}"></div>
+          </div>
+        `;
+        dynamicContainer.appendChild(roomDiv);
+
+        // Fill users for this dynamic room
+        const listEl = roomDiv.querySelector(`#roomUsers-${CSS.escape(roomId)}`);
+        roomUsers.forEach(({ id, data }) => {
+          const card = createUserCard(id, data);
+          listEl.appendChild(card);
+        });
+
+        if (isPrivate) privateCount++;
+        else publicCount++;
+      });
+
+      // Add system rooms into public/private snapshot
+      // We'll treat mod_room + on_stream as private, lobby as public
+      privateCount += 2; // mod_room + on_stream
+      publicCount += 1; // lobby
+
+      setText("metricPublicRooms", String(publicCount));
+      setText("metricPrivateRooms", String(privateCount));
+
+      // Metrics from stars
+      updateStarMetrics(users, rooms, usersByRoom);
+    }
+
+    function updateSystemRoom(roomId, usersContainerId, countId, usersByRoom) {
+      const roomUsers = usersByRoom[roomId] || [];
+      setText(countId, String(roomUsers.length));
+      const container = document.getElementById(usersContainerId);
+      if (!container) return;
+      container.innerHTML = "";
+
+      if (roomUsers.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "mesh-small-text";
+        empty.textContent = "No crew here yet.";
+        container.appendChild(empty);
+        return;
+      }
+
+      roomUsers.forEach(({ id, data }) => {
+        const card = createUserCard(id, data);
+        container.appendChild(card);
+      });
+    }
+
+    function createUserCard(userId, userData) {
+      const name = userData.name || userId;
+      const stars = Number.isInteger(userData.stars) ? userData.stars : 0;
+      const roles = Array.isArray(userData.roles) ? userData.roles : [];
+      const avatar = userData.avatar || "";
+      const source = (userData.source || "").toLowerCase();
+
+      const userEl = document.createElement("div");
+      userEl.className = "mesh-user";
+      userEl.dataset.userId = userId;
+
+      const avatarEl = document.createElement("div");
+      avatarEl.className = "mesh-user-avatar";
+      if (avatar) {
+        const img = document.createElement("img");
+        img.src = avatar;
+        img.alt = "";
+        avatarEl.appendChild(img);
+      }
+
+      const statusDot = document.createElement("div");
+      statusDot.className = "mesh-user-status-dot status-listening"; // default assumption
+
+      const main = document.createElement("div");
+      main.className = "mesh-user-main";
+      const nameEl = document.createElement("div");
+      nameEl.className = "mesh-user-name";
+      nameEl.textContent = name;
+
+      const metaEl = document.createElement("div");
+      metaEl.className = "mesh-user-meta";
+      metaEl.textContent = sourceLabel(source);
+
+      main.appendChild(nameEl);
+      main.appendChild(metaEl);
+
+      const econ = document.createElement("div");
+      econ.className = "mesh-user-economy";
+
+      const econRow1 = document.createElement("div");
+      econRow1.className = "mesh-user-economy-row";
+      const starsSpan = document.createElement("span");
+      starsSpan.className = "mesh-user-stars";
+      starsSpan.textContent = `✦ ${stars}`;
+      const starRoleSpan = document.createElement("span");
+      starRoleSpan.className = "mesh-user-star-role " + (stars > 0 ? "active" : "inactive");
+      starRoleSpan.textContent = "Star role";
+
+      econRow1.appendChild(starsSpan);
+      econRow1.appendChild(starRoleSpan);
+
+      const econRow2 = document.createElement("div");
+      econRow2.className = "mesh-user-economy-row";
+      econRow2.innerHTML = `<span>Sub: –</span><span>Watch: –</span>`;
+
+      const rolesDiv = document.createElement("div");
+      rolesDiv.className = "mesh-user-roles";
+      rolesDiv.textContent = roles.length > 0 ? `Roles: ${roles.join(", ")}` : "Roles: –";
+
+      econ.appendChild(econRow1);
+      econ.appendChild(econRow2);
+      econ.appendChild(rolesDiv);
+
+      const controls = document.createElement("div");
+      controls.className = "mesh-admin-user-controls";
+
+      const moveBtn = document.createElement("button");
+      moveBtn.className = "mesh-btn mesh-btn-mini";
+      moveBtn.dataset.action = "move";
+      moveBtn.dataset.userId = userId;
+      moveBtn.textContent = "Move";
+      moveBtn.onclick = () => moveUser(userId);
+
+      const kickBtn = document.createElement("button");
+      kickBtn.className = "mesh-btn mesh-btn-mini";
+      kickBtn.dataset.action = "kick";
+      kickBtn.dataset.userId = userId;
+      kickBtn.textContent = "Kick";
+      kickBtn.onclick = () => kickUser(userId);
+
+      const onStreamBtn = document.createElement("button");
+      onStreamBtn.className = "mesh-btn mesh-btn-mini";
+      onStreamBtn.dataset.action = "on_stream";
+      onStreamBtn.dataset.userId = userId;
+      onStreamBtn.textContent = "On Stream";
+      onStreamBtn.onclick = () => moveToOnStream(userId);
+
+      controls.appendChild(moveBtn);
+      controls.appendChild(kickBtn);
+      controls.appendChild(onStreamBtn);
+
+      userEl.appendChild(avatarEl);
+      userEl.appendChild(statusDot);
+      userEl.appendChild(main);
+      userEl.appendChild(econ);
+      userEl.appendChild(controls);
+
+      return userEl;
+    }
+
+    function updateStarMetrics(users, rooms, usersByRoom) {
+      const userEntries = Object.entries(users);
+      if (userEntries.length === 0) {
+        setText("metricStarsStream", "0");
+        setText("metricStarsLifetime", "0");
+        setText("metricTopSupporter", "None");
+        setText("metricTopRoom", "None");
+        return;
+      }
+
+      let totalStars = 0;
+      let topSupporter = null;
+      let topSupporterStars = -1;
+
+      userEntries.forEach(([uid, u]) => {
+        const s = Number.isInteger(u.stars) ? u.stars : 0;
+        totalStars += s;
+        if (s > topSupporterStars) {
+          topSupporterStars = s;
+          topSupporter = u.name || uid;
+        }
+      });
+
+      setText("metricStarsStream", String(totalStars));
+      setText("metricStarsLifetime", String(totalStars)); // same for now
+      setText("metricTopSupporter", topSupporterStars > 0 ? topSupporter : "None");
+
+      // Top room by membership
+      let topRoomName = null;
+      let topRoomCount = -1;
+      Object.entries(rooms).forEach(([rid, r]) => {
+        const count = (usersByRoom[rid] || []).length;
+        if (count > topRoomCount) {
+          topRoomCount = count;
+          topRoomName = r.name || rid;
+        }
+      });
+
+      setText("metricTopRoom", topRoomCount > 0 ? topRoomName : "None");
+    }
+
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function clearElement(id) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = "";
+    }
+
+    function sourceLabel(src) {
+      if (!src) return "Source: –";
+      const s = src.toLowerCase();
+      if (s === "twitch") return "Twitch · Connected";
+      if (s === "discord") return "Discord · Connected";
+      if (s === "cosmic") return "Cosmic Mesh UI · Connected";
+      return `${src} · Connected`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

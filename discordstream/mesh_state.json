@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-12-27T20:08:46.2912598Z",
+  "viewer_source": "twitch",
+  "status": "idle",
+  "rooms": {
+    "lobby": {
+      "name": "Lobby",
+      "users": []
+    },
+    "on_stream": {
+      "name": "On Stream",
+      "users": []
+    },
+    "mod_room": {
+      "name": "Mod Room",
+      "users": []
+    }
+  },
+  "users": {},
+  "version": "1.0"
+}

@@ -20,12 +20,12 @@ import {
   Terminal,
   Zap,
   Link2,
-  Server,
   Settings,
   Bot,
   FileText,
   Rocket,
-  Users
+  Users,
+  Mic
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { UserProfile } from "@/app/(app)/layout"
@@ -38,9 +38,9 @@ const navItems = [
   { href: "/actions", icon: Zap, label: "Actions" },
   { href: "/bot-functions", icon: Bot, label: "Bot Functions" },
   { href: "/community", icon: Users, label: "Community" },
+  { href: "https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/mesh/mesh_user.html", icon: Mic, label: "Voice Mesh", external: true },
   { href: "/debug/data-files", icon: FileText, label: "Live Files" },
   { href: "/integrations", icon: Link2, label: "Integrations" },
-  { href: "/api-settings", icon: Server, label: "API" },
 ]
 
 interface AppSidebarProps {
@@ -64,14 +64,21 @@ export default function AppSidebar({ userProfile }: AppSidebarProps) {
           {navItems.map((item) => (
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
-                asChild
+                asChild={!item.external}
                 isActive={pathname.startsWith(item.href)}
                 tooltip={item.label}
               >
-                <Link href={item.href}>
-                  <item.icon />
-                  <span>{item.label}</span>
-                </Link>
+                {item.external ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer">
+                    <item.icon />
+                    <span>{item.label}</span>
+                  </a>
+                ) : (
+                  <Link href={item.href}>
+                    <item.icon />
+                    <span>{item.label}</span>
+                  </Link>
+                )}
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
