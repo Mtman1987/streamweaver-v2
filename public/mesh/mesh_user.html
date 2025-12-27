@@ -538,7 +538,7 @@ async function joinVoice(roomId) {
     
     try {
         // Connect to voice server via Cloudflare Tunnel
-        const voiceServerUrl = 'wss://voice.mtman1987.stream'; // Your Cloudflare Tunnel URL
+        const voiceServerUrl = 'wss://lime-easier-cad-vhs.trycloudflare.com'; // Your Cloudflare Tunnel URL
         
         await voiceClient.connect(voiceServerUrl);
         currentUserId = 'user_' + Date.now();

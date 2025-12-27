@@ -38,7 +38,7 @@ const navItems = [
   { href: "/actions", icon: Zap, label: "Actions" },
   { href: "/bot-functions", icon: Bot, label: "Bot Functions" },
   { href: "/community", icon: Users, label: "Community" },
-  { href: "https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/mesh/mesh_user.html", icon: Mic, label: "Voice Mesh", external: true },
+  { href: "https://mtman1987.github.io/streamweaver-v2/mesh/mesh_user.html", icon: Mic, label: "Voice Mesh", external: true },
   { href: "/debug/data-files", icon: FileText, label: "Live Files" },
   { href: "/integrations", icon: Link2, label: "Integrations" },
 ]
