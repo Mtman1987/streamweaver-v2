@@ -9,6 +9,33 @@ const PUBLIC_MESH_STATE_FILE = path.join(__dirname, '..', 'public', 'mesh', 'mes
 
 // Create HTTP server for serving files
 const server = http.createServer((req, res) => {
+  // Enable CORS for all requests
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200);
+    res.end();
+    return;
+  }
+  
+  // Serve mesh_state.json directly
+  if (req.url === '/mesh_state.json') {
+    try {
+      const data = fs.readFileSync(MESH_STATE_FILE, 'utf8');
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.writeHead(200);
+      res.end(data);
+      return;
+    } catch (err) {
+      res.writeHead(404);
+      res.end('File not found');
+      return;
+    }
+  }
+  
   if (req.url === '/') {
     res.writeHead(302, { 'Location': '/mesh_user.html' });
     res.end();

@@ -462,7 +462,7 @@ async function joinVoice(roomId) {
     }
     
     try {
-        const voiceServerUrl = 'wss://voice.mtman1987.stream'; // Permanent Cloudflare tunnel
+        const voiceServerUrl = 'wss://voice.mtman1987.stream';
         
         await voiceClient.connect(voiceServerUrl);
         currentUserId = 'user_' + Date.now();
@@ -480,7 +480,8 @@ async function joinVoice(roomId) {
 
 async function pollMesh() {
     try {
-        const response = await fetch("/mesh/mesh_state.json", { cache: "no-store" });
+        // Fetch from local voice server, not GitHub Pages
+        const response = await fetch("https://voice.mtman1987.stream/mesh_state.json", { cache: "no-store" });
         const data = await response.json();
         updateMeshUI(data);
     } catch (err) {

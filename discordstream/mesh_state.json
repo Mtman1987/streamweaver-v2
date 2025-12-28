@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-28T03:33:10.158Z",
+  "timestamp": "2025-12-28T03:50:17.348Z",
   "viewer_source": "twitch",
   "status": "idle",
   "rooms": {
@@ -158,6 +158,19 @@
     },
     "user_1766892782423": {
       "name": "MT",
+      "room": "lobby",
+      "avatar": null,
+      "source": "voice",
+      "stars": 0,
+      "roles": [
+        "Voice User"
+      ],
+      "voiceConnected": true,
+      "muted": false,
+      "deafened": false
+    },
+    "user_1766893747920": {
+      "name": "vcv",
       "room": "lobby",
       "avatar": null,
       "source": "voice",
