@@ -2,8 +2,10 @@
 'use server';
 
 import { SpeechClient } from '@google-cloud/speech';
+import { getBrokerAuthHeaders, getBrokerBaseUrl, joinBrokerUrl } from '@/lib/broker';
 
 let speechClient: SpeechClient | null = null;
+let warnedMissingGoogleCreds = false;
 
 type ServiceAccountJson = {
     project_id?: string;
@@ -47,12 +49,46 @@ function getSpeechClient(): SpeechClient {
  * @returns The transcription text.
  */
 export async function transcribeAudio(base64Audio: string): Promise<{ transcription: string, error?: string}> {
-    const client = getSpeechClient();
-    const projectId = getServiceAccountFromEnv()?.project_id;
-    if (!projectId && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-        console.error("Google credentials not configured (set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_SERVICE_ACCOUNT_JSON).");
-        return { transcription: "", error: "Server configuration error: Google credentials not configured."};
+    const brokerBaseUrl = getBrokerBaseUrl();
+    if (brokerBaseUrl) {
+        try {
+            const upstream = await fetch(joinBrokerUrl(brokerBaseUrl, '/v1/speech-to-text'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(await getBrokerAuthHeaders()),
+                },
+                body: JSON.stringify({ base64Audio }),
+            });
+
+            const data = await upstream.json().catch(() => null);
+            if (!upstream.ok) {
+                return {
+                    transcription: '',
+                    error: (data as any)?.error || `Broker STT failed (HTTP ${upstream.status})`,
+                };
+            }
+
+            const transcription = (data as any)?.transcription;
+            return { transcription: typeof transcription === 'string' ? transcription : '' };
+        } catch (error: any) {
+            return { transcription: '', error: `Broker STT request failed: ${error?.message || String(error)}` };
+        }
     }
+
+    const projectId = getServiceAccountFromEnv()?.project_id;
+    const hasAdcPath = Boolean(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    if (!projectId && !hasAdcPath) {
+        if (!warnedMissingGoogleCreds) {
+            warnedMissingGoogleCreds = true;
+            console.warn(
+                'Google credentials not configured (set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_SERVICE_ACCOUNT_JSON), and BROKER_BASE_URL is not set.'
+            );
+        }
+        return { transcription: '', error: 'Server configuration error: Google credentials not configured.' };
+    }
+
+    const client = getSpeechClient();
     
     const audio = {
         content: base64Audio,

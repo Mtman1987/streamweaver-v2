@@ -3,8 +3,9 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 8080;
+const PORT = 8082;
 const MESH_STATE_FILE = path.join(__dirname, 'mesh_state.json');
+const PUBLIC_MESH_STATE_FILE = path.join(__dirname, '..', 'public', 'mesh', 'mesh_state.json');
 
 // Create HTTP server for serving files
 const server = http.createServer((req, res) => {
@@ -396,23 +397,25 @@ function findUserSocket(userId) {
 
 async function updateMeshState() {
   try {
+    console.log('[Voice] Updating mesh state...');
     let meshState = {};
     if (fs.existsSync(MESH_STATE_FILE)) {
       meshState = JSON.parse(fs.readFileSync(MESH_STATE_FILE, 'utf8'));
+      console.log('[Voice] Loaded existing mesh state');
     }
-    
+
     // Initialize rooms structure
     if (!meshState.rooms) {
       meshState.rooms = {};
     }
-    
+
     // Update rooms from voice server
     rooms.forEach((clients, roomId) => {
       if (!meshState.rooms[roomId]) {
         meshState.rooms[roomId] = { name: roomId.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()) };
       }
     });
-    
+
     // Update with voice users
     const voiceUsers = {};
     for (const [ws, user] of users.entries()) {
@@ -428,12 +431,20 @@ async function updateMeshState() {
         deafened: user.deafened || false
       };
     }
-    
+
     // Merge with existing users
     meshState.users = { ...meshState.users, ...voiceUsers };
     meshState.timestamp = new Date().toISOString();
-    
+
+    console.log(`[Voice] Writing to ${MESH_STATE_FILE} with ${Object.keys(voiceUsers).length} voice users`);
     fs.writeFileSync(MESH_STATE_FILE, JSON.stringify(meshState, null, 2));
+
+    // Also write to public directory for web access
+    if (PUBLIC_MESH_STATE_FILE) {
+      console.log(`[Voice] Writing to ${PUBLIC_MESH_STATE_FILE}`);
+      fs.writeFileSync(PUBLIC_MESH_STATE_FILE, JSON.stringify(meshState, null, 2));
+    }
+    console.log('[Voice] Mesh state updated successfully');
   } catch (err) {
     console.error('[Voice] Failed to update mesh state:', err);
   }

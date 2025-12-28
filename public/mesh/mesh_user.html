@@ -462,7 +462,7 @@ async function joinVoice(roomId) {
     }
     
     try {
-        const voiceServerUrl = 'ws://localhost:8082';
+        const voiceServerUrl = 'wss://voice.mtman1987.stream'; // Permanent Cloudflare tunnel
         
         await voiceClient.connect(voiceServerUrl);
         currentUserId = 'user_' + Date.now();

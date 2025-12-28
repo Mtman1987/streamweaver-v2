@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
+import { getBrokerAuthHeaders, getBrokerBaseUrl, joinBrokerUrl } from '@/lib/broker';
 
 let ttsClient: TextToSpeechClient | null = null;
 
@@ -45,6 +46,25 @@ export async function POST(request: NextRequest) {
 
         if (!text) {
             return NextResponse.json({ error: 'Text is required' }, { status: 400 });
+        }
+
+        const brokerBaseUrl = getBrokerBaseUrl();
+        if (brokerBaseUrl) {
+            const upstream = await fetch(joinBrokerUrl(brokerBaseUrl, '/v1/google-tts'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(await getBrokerAuthHeaders()),
+                },
+                body: JSON.stringify({ text, voice }),
+            });
+
+            const contentType = upstream.headers.get('content-type') || 'application/json';
+            const payload = await upstream.text();
+            return new NextResponse(payload, {
+                status: upstream.status,
+                headers: { 'Content-Type': contentType },
+            });
         }
 
         const client = getTTSClient();

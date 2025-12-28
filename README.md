@@ -28,6 +28,7 @@ npm install
 2. Fill in the keys you plan to use (start minimal; you can add later).
 
 Important notes:
+
 - `.env` is intentionally local-only and should not be committed.
 - Some values are not kept in `.env` anymore and are instead collected on first run.
 
@@ -40,6 +41,7 @@ Run:
 ```
 
 Then open:
+
 - Dashboard: `http://localhost:3100`
 
 To stop:
@@ -61,6 +63,7 @@ This avoids having end users edit config files manually.
 ### Twitch (OAuth)
 
 The app uses Twitch OAuth flows for user access. You’ll need at minimum:
+
 - `TWITCH_CLIENT_ID`
 - `TWITCH_CLIENT_SECRET`
 - matching `NEXT_PUBLIC_TWITCH_CLIENT_ID`
@@ -71,10 +74,12 @@ Tokens are stored locally under `tokens/`.
 
 There are two categories of Discord actions:
 
-1) **User OAuth actions** (user-level, limited)
+1. **User OAuth actions** (user-level, limited)
+
 - Useful for basic identity/authorization and user-scoped features.
 
-2) **Bot actions** (posting/reading/deleting messages, uploading files)
+1. **Bot actions** (posting/reading/deleting messages, uploading files)
+
 - These require a **Discord bot token** (`DISCORD_BOT_TOKEN`) in the current local-first setup.
 
 #### Future option: Hosted Discord “Broker”
@@ -100,6 +105,21 @@ OBS control uses OBS WebSocket (default: `127.0.0.1:4455`). Cloud-hosted backend
   - user OAuth tokens stored locally, and/or
   - a small hosted broker for privileged actions.
 
+### Optional: Hosted Broker (single switch)
+
+StreamWeaver can run in a local-first mode today (secrets in `.env`), and later switch to a hosted broker by setting a single value:
+
+- Set `BROKER_BASE_URL` (example: `https://your-broker.example.com`)
+
+When `BROKER_BASE_URL` is set, these routes will forward to the broker instead of using local machine secrets:
+
+- `POST /api/ai/generate` (Gemini)
+- `POST /api/google-tts` (Google Cloud TTS)
+- `POST /api/tts` (ElevenLabs)
+- Speech-to-Text (Google Cloud STT) calls will forward to `POST {BROKER_BASE_URL}/v1/speech-to-text`
+
+This lets you keep the app working as-is during development, and later flip to hosted without changing client code.
+
 ## Common Troubleshooting
 
 - **Ports already in use**: StreamWeaver uses `3100` (dashboard) and `8090` (WS). Close other apps using these ports.
@@ -108,10 +128,14 @@ OBS control uses OBS WebSocket (default: `127.0.0.1:4455`). Cloud-hosted backend
   - Bot must be in the server.
   - Channel IDs must be correct.
   - `DISCORD_BOT_TOKEN` must be set if you are not using a broker.
+- **Google Speech/TTS credential errors**:
+  - Set `GOOGLE_APPLICATION_CREDENTIALS` to a service account key JSON path (recommended), or set `GOOGLE_SERVICE_ACCOUNT_JSON`.
+  - On Windows, avoid a leading `/...` path (it resolves to the drive root). Prefer an absolute path like `C:\\...\\key.json` or a project-relative path like `./key.json`.
 
 ## Developer Notes
 
 Useful scripts:
+
 - `npm run dev` (runs Next + WS + Genkit tooling)
 - `npm run dev:ws` (runs only the WS server)
 - `npm run dev:next` (runs only the dashboard)

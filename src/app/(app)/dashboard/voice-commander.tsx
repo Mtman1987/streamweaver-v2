@@ -206,18 +206,19 @@ Find the best matching username from the chatters list and respond with ONLY the
 
 If no good match, respond with: Could not find matching user`;
                         
-                        const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
+                        const aiResponse = await fetch('/api/ai/generate', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                                contents: [{ parts: [{ text: aiPrompt }] }],
-                                generationConfig: { temperature: 0.1, maxOutputTokens: 50 }
+                                prompt: aiPrompt,
+                                temperature: 0.1,
+                                maxOutputTokens: 50,
                             })
                         });
                         
                         if (aiResponse.ok) {
                             const aiData = await aiResponse.json();
-                            const reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                            const reply = aiData?.text?.trim();
                             
                             if (reply && reply.startsWith('!so @')) {
                                 await sendTwitchMessage({ message: reply, as: 'broadcaster' });
@@ -273,18 +274,19 @@ Find the best matching username from the chatters list and respond with ONLY the
 
 If no good match, respond with: Could not find matching user`;
                     
-                    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
+                    const aiResponse = await fetch('/api/ai/generate', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            contents: [{ parts: [{ text: aiPrompt }] }],
-                            generationConfig: { temperature: 0.1, maxOutputTokens: 50 }
+                            prompt: aiPrompt,
+                            temperature: 0.1,
+                            maxOutputTokens: 50,
                         })
                     });
                     
                     if (aiResponse.ok) {
                         const aiData = await aiResponse.json();
-                        const reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                        const reply = aiData?.text?.trim();
                         
                         if (reply && reply.startsWith('!so @')) {
                             await sendTwitchMessage({ message: reply, as: 'broadcaster' });
@@ -348,18 +350,19 @@ If no good match, respond with: Could not find matching user`;
                     reply = data?.response?.trim();
                 } else {
                     const prompt = `${personalityRef.current}\n\nYou are having a voice conversation with your Commander. Respond naturally and conversationally. Keep responses under 400 characters.\n\nCurrent message from Commander: ${aiMessage}\n\nRespond as Athena:`;
-                    const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
+                    const aiResponse = await fetch('/api/ai/generate', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.8, maxOutputTokens: 150 }
+                            prompt,
+                            temperature: 0.8,
+                            maxOutputTokens: 150,
                         })
                     });
 
                     if (aiResponse.ok) {
                         const aiData = await aiResponse.json();
-                        reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                        reply = aiData?.text?.trim();
                     }
                 }
                 
@@ -381,24 +384,15 @@ If no good match, respond with: Could not find matching user`;
                             };
                             const voiceId = voiceMap[voiceRef.current] || '21m00Tcm4TlvDq8ikWAM';
                             
-                            const ttsResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+                            const ttsResponse = await fetch('/api/tts', {
                                 method: 'POST',
-                                headers: {
-                                    'Accept': 'audio/mpeg',
-                                    'Content-Type': 'application/json',
-                                    'xi-api-key': 'aabcaa90af1d148f467dec19e4b1f09b2694967cc29709937fabdb3f6b7a27b4'
-                                },
-                                body: JSON.stringify({
-                                    text: reply,
-                                    model_id: 'eleven_flash_v2_5',
-                                    voice_settings: { stability: 0.5, similarity_boost: 0.5 }
-                                })
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ text: reply, voice: voiceRef.current })
                             });
-                            
+
                             if (ttsResponse.ok) {
-                                const audioBuffer = await ttsResponse.arrayBuffer();
-                                const base64Audio = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
-                                setAudioUrl(`data:audio/mpeg;base64,${base64Audio}`);
+                                const { audioDataUri } = await ttsResponse.json();
+                                if (audioDataUri) setAudioUrl(audioDataUri);
                             } else {
                                 console.error('TTS API failed:', ttsResponse.status, ttsResponse.statusText);
                                 // Fallback to Google Cloud TTS
@@ -408,7 +402,7 @@ If no good match, respond with: Could not find matching user`;
                                         headers: { 'Content-Type': 'application/json' },
                                         body: JSON.stringify({ text: reply, voice: 'en-US-Wavenet-F' })
                                     });
-                                    
+
                                     if (googleTTSResponse.ok) {
                                         const { audioContent } = await googleTTSResponse.json();
                                         setAudioUrl(`data:audio/mp3;base64,${audioContent}`);
@@ -481,18 +475,19 @@ If no good match, respond with: Could not find matching user`;
                 let reply: string | undefined;
 
                 const prompt = `${personalityRef.current}\n\nYou are having a voice conversation with your Commander. Respond naturally and conversationally. Keep responses under 400 characters.\n\nCurrent message from Commander: ${aiMessage}\n\nRespond as Athena:`;
-                const aiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyCNHgvpgRRe_qbvy81He7kUO3PXkN4iEMI'}`, {
+                const aiResponse = await fetch('/api/ai/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { temperature: 0.8, maxOutputTokens: 150 }
+                        prompt,
+                        temperature: 0.8,
+                        maxOutputTokens: 150,
                     })
                 });
 
                 if (aiResponse.ok) {
                     const aiData = await aiResponse.json();
-                    reply = aiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+                    reply = aiData?.text?.trim();
                 }
 
                 if (reply) {
@@ -526,24 +521,15 @@ If no good match, respond with: Could not find matching user`;
                                 };
                                 const voiceId = voiceMap[voiceRef.current] || '21m00Tcm4TlvDq8ikWAM';
                                 
-                                const ttsResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+                                const ttsResponse = await fetch('/api/tts', {
                                     method: 'POST',
-                                    headers: {
-                                        'Accept': 'audio/mpeg',
-                                        'Content-Type': 'application/json',
-                                        'xi-api-key': 'aabcaa90af1d148f467dec19e4b1f09b2694967cc29709937fabdb3f6b7a27b4'
-                                    },
-                                    body: JSON.stringify({
-                                        text: reply,
-                                        model_id: 'eleven_flash_v2_5',
-                                        voice_settings: { stability: 0.5, similarity_boost: 0.5 }
-                                    })
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ text: reply, voice: voiceRef.current })
                                 });
-                                
+
                                 if (ttsResponse.ok) {
-                                    const audioBuffer = await ttsResponse.arrayBuffer();
-                                    const base64Audio = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
-                                    setAudioUrl(`data:audio/mpeg;base64,${base64Audio}`);
+                                    const { audioDataUri } = await ttsResponse.json();
+                                    if (audioDataUri) setAudioUrl(audioDataUri);
                                     console.log('Using ElevenLabs TTS (fallback)');
                                 } else {
                                     console.error('ElevenLabs TTS fallback also failed:', ttsResponse.status);

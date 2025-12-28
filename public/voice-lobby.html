@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Space Mountain Voice Lobby</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --bg: #050714;
+            --bg-alt: #0b0f24;
+            --accent: #7b5cff;
+            --text-main: #f4f4ff;
+            --text-muted: #a3a5c3;
+            --border-soft: #25284a;
+            --success: #4ee1a0;
+            --danger: #ff5c7a;
+            --warning: #ffd36a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #181b3a 0, #050714 60%);
+            color: var(--text-main);
+        }
+
+        .shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(3, 4, 12, 0.92);
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            padding: 16px 18px 20px;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            border-bottom: 1px solid var(--border-soft);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(123, 92, 255, 0.3), rgba(0, 230, 255, 0.15));
+            border: 1px solid rgba(123, 92, 255, 0.7);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .badge.voice-connected {
+            background: linear-gradient(90deg, rgba(78, 225, 160, 0.3), rgba(0, 255, 128, 0.15));
+            border-color: rgba(78, 225, 160, 0.7);
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #40ffb7;
+            box-shadow: 0 0 10px #40ffb7;
+        }
+
+        .voice-panel {
+            background: var(--bg-alt);
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+
+        .voice-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            margin: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .voice-btn:hover { background: #8b6cff; }
+        .voice-btn.secondary { background: transparent; border: 1px solid var(--border-soft); color: var(--text-muted); }
+        .voice-btn.danger { background: var(--danger); }
+        .voice-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .voice-input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-soft);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--text-main);
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .room-card {
+            background: radial-gradient(circle at top left, rgba(123, 92, 255, 0.18), rgba(5, 7, 20, 0.96));
+            border-radius: 8px;
+            border: 1px solid rgba(123, 92, 255, 0.4);
+            padding: 12px;
+        }
+
+        .room-card h3 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            background: rgba(3, 4, 12, 0.9);
+            border-radius: 6px;
+            border: 1px solid rgba(57, 62, 115, 0.9);
+        }
+
+        .user-item.voice-active {
+            border-color: var(--success);
+            background: rgba(78, 225, 160, 0.1);
+        }
+
+        .user-item.voice-muted {
+            border-color: var(--warning);
+        }
+
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .status-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <div class="header">
+        <div>
+            <div class="title">Space Mountain Voice Lobby</div>
+            <div class="subtitle">Connect with your crew via voice chat</div>
+        </div>
+        <div class="badge" id="voice-status-badge">
+            <span class="badge-dot"></span>
+            <span id="voice-status-text">VOICE DISCONNECTED</span>
+        </div>
+    </div>
+
+    <!-- Join Voice Panel -->
+    <div class="voice-panel">
+        <div id="join-form">
+            <h3 style="margin: 0 0 8px; font-size: 14px;">🎤 Join Voice Chat</h3>
+            <div style="background: rgba(123, 92, 255, 0.1); border: 1px solid rgba(123, 92, 255, 0.3); border-radius: 6px; padding: 8px; margin-bottom: 8px; font-size: 11px;">
+                🎤 <strong>Microphone Required:</strong> Your browser will ask for microphone permission. Click "Allow" to enable voice chat.
+            </div>
+            <input type="text" class="voice-input" id="user-name" placeholder="Enter your name">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="voice-btn" id="join-lobby">Join Lobby</button>
+                <button class="voice-btn" id="join-silent">Join Silent (Muted)</button>
+            </div>
+        </div>
+
+        <div id="voice-controls" style="display: none;">
+            <div class="status-text" id="voice-status">Connected to voice</div>
+            <div style="display: flex; gap: 8px;">
+                <button class="voice-btn secondary" id="toggle-mute">🎤 Unmuted</button>
+                <button class="voice-btn danger" id="leave-voice">Leave Voice</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Rooms -->
+    <div class="room-grid" id="voice-rooms">
+        <div class="room-card">
+            <h3>🌌 Lobby</h3>
+            <div class="user-list" id="lobby-users">
+                <div style="font-size: 11px; color: var(--text-muted); font-style: italic;">No one here yet</div>
+            </div>
+        </div>
+        <div class="room-card">
+            <h3>👁️ Silent Watch</h3>
+            <div class="user-list" id="silent-users">
+                <div style="font-size: 11px; color: var(--text-muted); font-style: italic;">No one here yet</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Voice state
+let voiceConnected = false;
+let currentUser = null;
+let currentRoom = null;
+let localStream = null;
+let muted = false;
+let ws = null;
+
+// UI elements
+const joinForm = document.getElementById('join-form');
+const voiceControls = document.getElementById('voice-controls');
+const voiceStatusBadge = document.getElementById('voice-status-badge');
+const voiceStatusText = document.getElementById('voice-status-text');
+const userNameInput = document.getElementById('user-name');
+const joinLobbyBtn = document.getElementById('join-lobby');
+const joinSilentBtn = document.getElementById('join-silent');
+const toggleMuteBtn = document.getElementById('toggle-mute');
+const leaveVoiceBtn = document.getElementById('leave-voice');
+const voiceStatus = document.getElementById('voice-status');
+
+// Connect to StreamWeaver WebSocket
+function connectToStreamWeaver() {
+    const wsUrl = `ws://localhost:8090`;
+    ws = new WebSocket(wsUrl);
+    
+    ws.onopen = () => {
+        console.log('[Voice] Connected to StreamWeaver');
+    };
+    
+    ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'voice-user-update') {
+            updateVoiceRooms(message.payload);
+        }
+    };
+    
+    ws.onclose = () => {
+        console.log('[Voice] Disconnected from StreamWeaver');
+        setTimeout(connectToStreamWeaver, 2000);
+    };
+}
+
+// Join voice chat
+async function joinVoice(roomId) {
+    const userName = userNameInput.value.trim();
+    if (!userName) {
+        alert('Please enter your name');
+        return;
+    }
+
+    try {
+        // Get microphone access
+        localStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true
+            },
+            video: false
+        });
+
+        // Set up user
+        currentUser = {
+            id: 'voice_' + Date.now(),
+            name: userName,
+            room: roomId
+        };
+        currentRoom = roomId;
+        voiceConnected = true;
+
+        // Auto-mute if joining silent
+        if (roomId === 'silent') {
+            setMuted(true);
+        }
+
+        // Update UI
+        joinForm.style.display = 'none';
+        voiceControls.style.display = 'block';
+        updateVoiceStatus();
+
+        // Notify StreamWeaver
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({
+                type: 'voice-join',
+                payload: currentUser
+            }));
+        }
+
+        console.log(`[Voice] Joined ${roomId} as ${userName}`);
+
+    } catch (err) {
+        console.error('[Voice] Failed to join:', err);
+        let errorMsg = 'Failed to access microphone. ';
+        if (err.name === 'NotAllowedError') {
+            errorMsg += 'Please allow microphone access and try again.';
+        } else if (err.name === 'NotFoundError') {
+            errorMsg += 'No microphone found.';
+        } else {
+            errorMsg += err.message;
+        }
+        alert(errorMsg);
+    }
+}
+
+// Leave voice chat
+function leaveVoice() {
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+    }
+
+    // Notify StreamWeaver
+    if (ws && ws.readyState === WebSocket.OPEN && currentUser) {
+        ws.send(JSON.stringify({
+            type: 'voice-leave',
+            payload: currentUser
+        }));
+    }
+
+    voiceConnected = false;
+    currentUser = null;
+    currentRoom = null;
+    muted = false;
+
+    joinForm.style.display = 'block';
+    voiceControls.style.display = 'none';
+    updateVoiceStatus();
+
+    console.log('[Voice] Left voice chat');
+}
+
+// Toggle mute
+function setMuted(newMuted) {
+    muted = newMuted;
+    
+    if (localStream) {
+        localStream.getAudioTracks().forEach(track => {
+            track.enabled = !muted;
+        });
+    }
+
+    toggleMuteBtn.textContent = muted ? '🔇 Muted' : '🎤 Unmuted';
+    toggleMuteBtn.className = muted ? 'voice-btn secondary' : 'voice-btn secondary';
+    
+    updateVoiceStatus();
+
+    // Notify StreamWeaver
+    if (ws && ws.readyState === WebSocket.OPEN && currentUser) {
+        ws.send(JSON.stringify({
+            type: 'voice-mute',
+            payload: { ...currentUser, muted }
+        }));
+    }
+}
+
+// Update voice status badge
+function updateVoiceStatus() {
+    if (voiceConnected) {
+        voiceStatusBadge.className = 'badge voice-connected';
+        voiceStatusText.textContent = muted ? 'VOICE MUTED' : 'VOICE ACTIVE';
+        voiceStatus.textContent = `Connected to ${currentRoom === 'lobby' ? 'Lobby' : 'Silent Watch'}`;
+    } else {
+        voiceStatusBadge.className = 'badge';
+        voiceStatusText.textContent = 'VOICE DISCONNECTED';
+    }
+}
+
+// Update voice rooms display
+function updateVoiceRooms(users) {
+    const lobbyUsers = document.getElementById('lobby-users');
+    const silentUsers = document.getElementById('silent-users');
+    
+    // Clear existing users
+    lobbyUsers.innerHTML = '';
+    silentUsers.innerHTML = '';
+    
+    const lobbyList = users.filter(u => u.room === 'lobby');
+    const silentList = users.filter(u => u.room === 'silent');
+    
+    // Populate lobby
+    if (lobbyList.length === 0) {
+        lobbyUsers.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); font-style: italic;">No one here yet</div>';
+    } else {
+        lobbyList.forEach(user => {
+            const userDiv = document.createElement('div');
+            userDiv.className = 'user-item';
+            if (user.muted) userDiv.classList.add('voice-muted');
+            else userDiv.classList.add('voice-active');
+            
+            userDiv.innerHTML = `
+                <div class="avatar"></div>
+                <span>${user.name}</span>
+                <span style="margin-left: auto; font-size: 10px;">${user.muted ? '🔇' : '🎤'}</span>
+            `;
+            lobbyUsers.appendChild(userDiv);
+        });
+    }
+    
+    // Populate silent
+    if (silentList.length === 0) {
+        silentUsers.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); font-style: italic;">No one here yet</div>';
+    } else {
+        silentList.forEach(user => {
+            const userDiv = document.createElement('div');
+            userDiv.className = 'user-item voice-muted';
+            
+            userDiv.innerHTML = `
+                <div class="avatar"></div>
+                <span>${user.name}</span>
+                <span style="margin-left: auto; font-size: 10px;">🔇</span>
+            `;
+            silentUsers.appendChild(userDiv);
+        });
+    }
+}
+
+// Event listeners
+joinLobbyBtn.addEventListener('click', () => joinVoice('lobby'));
+joinSilentBtn.addEventListener('click', () => joinVoice('silent'));
+toggleMuteBtn.addEventListener('click', () => setMuted(!muted));
+leaveVoiceBtn.addEventListener('click', leaveVoice);
+
+// Initialize
+connectToStreamWeaver();
+updateVoiceStatus();
+</script>
+</body>
+</html>

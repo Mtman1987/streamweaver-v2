@@ -400,9 +400,6 @@ export default function SettingsPage() {
             <Button asChild variant="outline">
               <Link href="/integrations">Go to Integrations</Link>
             </Button>
-            <Button asChild variant="outline">
-              <Link href="/api-settings">Go to API Settings</Link>
-            </Button>
           </div>
 
           <div className="text-sm text-muted-foreground">

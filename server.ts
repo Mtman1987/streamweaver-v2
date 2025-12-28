@@ -1261,6 +1261,33 @@ async function startServer() {
                         // Send message via Twitch IRC
                         await twitchClient.say(channel, text);
                         console.log(`[WebSocket] Message sent to Twitch as ${as}: ${text}`);
+                    } else if (message.type === 'voice-join') {
+                        const { id, name, room } = message.payload;
+                        console.log(`[Voice] ${name} joined ${room}`);
+                        
+                        // Broadcast to all clients
+                        broadcast({
+                            type: 'voice-user-joined',
+                            payload: { id, name, room, muted: room === 'silent' }
+                        });
+                    } else if (message.type === 'voice-leave') {
+                        const { id, name, room } = message.payload;
+                        console.log(`[Voice] ${name} left ${room}`);
+                        
+                        // Broadcast to all clients
+                        broadcast({
+                            type: 'voice-user-left',
+                            payload: { id, name, room }
+                        });
+                    } else if (message.type === 'voice-mute') {
+                        const { id, name, room, muted } = message.payload;
+                        console.log(`[Voice] ${name} ${muted ? 'muted' : 'unmuted'}`);
+                        
+                        // Broadcast to all clients
+                        broadcast({
+                            type: 'voice-user-muted',
+                            payload: { id, name, room, muted }
+                        });
                     } else if (message.type === 'update-bot-settings') {
                         // Update global bot personality and voice
                         const { personality, voice } = message.payload;

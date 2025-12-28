@@ -1,8 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getBrokerAuthHeaders, getBrokerBaseUrl, joinBrokerUrl } from '@/lib/broker';
 
 export async function POST(request: NextRequest) {
   try {
     const { text, voice } = await request.json();
+
+    const brokerBaseUrl = getBrokerBaseUrl();
+    if (brokerBaseUrl) {
+      const upstream = await fetch(joinBrokerUrl(brokerBaseUrl, '/v1/tts'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(await getBrokerAuthHeaders()),
+        },
+        body: JSON.stringify({ text, voice }),
+      });
+
+      const contentType = upstream.headers.get('content-type') || 'application/json';
+      const payload = await upstream.text();
+      return new NextResponse(payload, {
+        status: upstream.status,
+        headers: { 'Content-Type': contentType },
+      });
+    }
+
     const elevenlabsKey = process.env.ELEVENLABS_API_KEY;
     if (!elevenlabsKey) {
       return NextResponse.json({ error: 'ELEVENLABS_API_KEY not configured' }, { status: 500 });

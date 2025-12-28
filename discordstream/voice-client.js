@@ -48,6 +48,15 @@ class VoiceClient {
       this.ws.onmessage = (event) => {
         this.handleMessage(JSON.parse(event.data));
       };
+
+      // Request admin updates to get room list
+      setTimeout(() => {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+          this.ws.send(JSON.stringify({
+            type: 'admin_connect'
+          }));
+        }
+      }, 1000);
     });
   }
   
@@ -160,6 +169,9 @@ class VoiceClient {
       case 'voice_state_changed':
         this.handleVoiceStateChanged(payload);
         break;
+      case 'admin_update':
+        this.handleAdminUpdate(payload);
+        break;
     }
   }
   
@@ -229,6 +241,12 @@ class VoiceClient {
     if (this.onVoiceStateChanged) {
       this.onVoiceStateChanged({ userId, muted, deafened });
     }
+  }
+
+  handleAdminUpdate(payload) {
+    // Store room list for UI
+    this.availableRooms = payload.rooms || [];
+    console.log('[Voice] Available rooms:', this.availableRooms);
   }
   
   async createPeerConnection(userId, isInitiator) {
