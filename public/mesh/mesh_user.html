@@ -480,8 +480,14 @@ async function joinVoice(roomId) {
 
 async function pollMesh() {
     try {
-        // Fetch from local StreamWeaver server (port 3100)
-        const response = await fetch("http://localhost:3100/api/mesh-state", { cache: "no-store" });
+        // Try local first, fallback to tunnel
+        let response;
+        try {
+            response = await fetch("http://localhost:3100/api/mesh-state", { cache: "no-store" });
+        } catch {
+            // Fallback to tunnel if local fails
+            response = await fetch("https://streamweaver.mtman1987.stream/api/mesh-state", { cache: "no-store" });
+        }
         const data = await response.json();
         updateMeshUI(data);
     } catch (err) {
