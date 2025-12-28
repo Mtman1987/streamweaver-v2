@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-12-28T02:09:12.808Z",
+  "viewer_source": "twitch",
+  "status": "active",
+  "rooms": {
+    "lobby": {
+      "name": "Lobby",
+      "users": []
+    },
+    "on_stream": {
+      "name": "On Stream",
+      "users": []
+    },
+    "mod_room": {
+      "name": "Mod Room",
+      "users": []
+    },
+    "test": {
+      "name": "Test Room"
+    },
+    "silent_watch": {
+      "name": "Silent Watch"
+    }
+  },
+  "users": {
+    "user_demo1": {
+      "name": "DemoUser1",
+      "room": "lobby",
+      "avatar": null,
+      "source": "twitch",
+      "stars": 2,
+      "roles": ["Viewer"],
+      "voiceConnected": false,
+      "muted": false,
+      "deafened": false
+    },
+    "user_demo2": {
+      "name": "DemoUser2",
+      "room": "test",
+      "avatar": null,
+      "source": "discord",
+      "stars": 1,
+      "roles": ["Member"],
+      "voiceConnected": true,
+      "muted": false,
+      "deafened": false
+    }
+  },
+  "version": "1.0"
+}

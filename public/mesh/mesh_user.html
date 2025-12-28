@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Space Mountain Mesh – User View</title>
+    <title>Space Mountain Voice Mesh</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
@@ -10,15 +10,12 @@
             --bg: #050714;
             --bg-alt: #0b0f24;
             --accent: #7b5cff;
-            --accent-soft: rgba(123, 92, 255, 0.2);
             --text-main: #f4f4ff;
             --text-muted: #a3a5c3;
             --border-soft: #25284a;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -114,6 +111,45 @@
             box-shadow: 0 0 10px #40ffb7;
         }
 
+        .voice-join-panel {
+            background: var(--bg-alt);
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+        
+        .voice-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            margin: 4px;
+        }
+        
+        .voice-btn:hover { background: #8b6cff; }
+        .voice-btn.secondary { background: transparent; border: 1px solid var(--border-soft); }
+        .voice-btn.danger { background: #ff5c7a; }
+        
+        .voice-input {
+            padding: 8px;
+            border: 1px solid var(--border-soft);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--text-main);
+            width: 100%;
+            margin: 4px 0;
+        }
+        
+        .voice-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin: 4px 0;
+        }
+
         .layout {
             display: grid;
             grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
@@ -154,7 +190,6 @@
             color: var(--text-muted);
         }
 
-        /* Rooms */
         #mesh-rooms {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -189,7 +224,6 @@
             font-style: italic;
         }
 
-        /* User cards */
         .user-card {
             display: flex;
             gap: 7px;
@@ -198,6 +232,16 @@
             border-radius: 7px;
             background: rgba(3, 4, 12, 0.9);
             border: 1px solid rgba(57, 62, 115, 0.9);
+        }
+
+        .user-card.voice-active {
+            border-color: #4ee1a0;
+            background: rgba(78, 225, 160, 0.1);
+        }
+
+        .user-card.voice-muted {
+            border-color: #ffd36a;
+            background: rgba(255, 211, 106, 0.1);
         }
 
         .avatar {
@@ -240,7 +284,6 @@
             color: var(--text-muted);
         }
 
-        /* Viewer list */
         #viewer-dropdown {
             display: flex;
             flex-direction: column;
@@ -273,65 +316,6 @@
             color: var(--text-muted);
         }
 
-        /* Voice Controls */
-        .voice-join-panel {
-            background: var(--bg-alt);
-            border-radius: 8px;
-            border: 1px solid var(--border-soft);
-            padding: 12px;
-            margin-bottom: 14px;
-        }
-        
-        .voice-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            background: var(--accent);
-            color: white;
-            margin: 4px;
-        }
-        
-        .voice-btn:hover { background: #8b6cff; }
-        .voice-btn.secondary { background: transparent; border: 1px solid var(--border-soft); }
-        .voice-btn.danger { background: #ff5c7a; }
-        
-        .voice-input {
-            padding: 8px;
-            border: 1px solid var(--border-soft);
-            border-radius: 6px;
-            background: var(--bg);
-            color: var(--text-main);
-            width: 100%;
-            margin: 4px 0;
-        }
-        
-        .voice-status {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin: 4px 0;
-        }
-        
-        .room-block.voice-enabled {
-            border-color: #4ee1a0;
-            cursor: pointer;
-        }
-        
-        .room-block.voice-enabled:hover {
-            background: radial-gradient(circle at top left, rgba(78, 225, 160, 0.2), rgba(5, 7, 20, 0.96));
-        }
-        
-        .user-card.voice-active {
-            border-color: #4ee1a0;
-            background: rgba(78, 225, 160, 0.1);
-        }
-        
-        .user-card.voice-muted {
-            border-color: #ffd36a;
-            background: rgba(255, 211, 106, 0.1);
-        }
-        /* Tiny scrollbars */
         #viewer-dropdown::-webkit-scrollbar,
         body::-webkit-scrollbar {
             width: 7px;
@@ -347,7 +331,7 @@
 <div class="shell">
     <div class="header">
         <div class="title-block">
-            <div class="title">Space Mountain Voice Lobby</div>
+            <div class="title">Space Mountain Voice Mesh</div>
             <div class="subtitle">Live voice chat with mesh coordination</div>
         </div>
         <div class="meta">
@@ -366,79 +350,6 @@
         </div>
     </div>
 
-    <!-- Voice Join Panel -->
-    <div class="voice-join-panel" id="voice-panel">
-        <h3 style="margin: 0 0 8px; font-size: 14px;">🎤 Join Voice Chat</h3>
-        <div style="background: rgba(123, 92, 255, 0.1); border: 1px solid rgba(123, 92, 255, 0.3); border-radius: 6px; padding: 8px; margin-bottom: 8px; font-size: 11px;">
-            🎤 <strong>Microphone Required:</strong> Your browser will ask for microphone permission. Click "Allow" to enable voice chat.
-        </div>
-        <div id="voice-join-form">
-            <input type="text" class="voice-input" id="voice-name" placeholder="Enter your name to join voice">
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <button class="voice-btn" id="join-silent">Join Silent (Auto-muted)</button>
-                <button class="voice-btn" id="join-lobby">Join Lobby</button>
-            </div>
-        </div>
-        <div id="voice-controls" style="display: none;">
-            <div class="voice-status" id="voice-status">Connected to voice</div>
-            <div style="display: flex; gap: 8px;">
-                <button class="voice-btn secondary" id="toggle-mute">🎤 Unmuted</button>
-                <button class="voice-btn danger" id="leave-voice">Leave Voice</button>
-            </div>
-        </div>
-    </div>ollbar-thumb {
-            background: rgba(123, 92, 255, 0.7);
-            border-radius: 999px;
-        }
-</head>
-<body>
-<div class="shell">
-    <div class="header">
-        <div class="title-block">
-            <div class="title">Space Mountain Mesh</div>
-            <div class="subtitle">Live presence map for crew on Twitch + Discord</div>
-        </div>
-        <div class="meta">
-            <div class="badge">
-                <span class="badge-dot"></span>
-                <span>MESH LINKED</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Source</span>
-                <span class="meta-value" id="mesh-viewer-source">–</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Status</span>
-                <span class="meta-value" id="mesh-status">–</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Last update</span>
-                <span class="meta-value" id="mesh-timestamp">–</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="layout">
-        <!-- Rooms / Map -->
-        <div class="panel">
-            <div class="panel-header">
-                <div class="panel-title">Rooms</div>
-                <div class="panel-extra" id="mesh-room-count">0 rooms</div>
-            </div>
-            <div id="mesh-rooms"></div>
-        </div>
-
-        <!-- Viewer list -->
-        <div class="panel">
-            <div class="panel-header">
-                <div class="panel-title">Crew Online</div>
-                <div class="panel-extra" id="mesh-viewer-count">0 viewers</div>
-            </div>
-            <div id="viewer-dropdown"></div>
-        </div>
-    </div>
-
-    <!-- Voice Join Panel -->
     <div class="voice-join-panel" id="voice-panel">
         <h3 style="margin: 0 0 8px; font-size: 14px;">🎤 Join Voice Chat</h3>
         <div id="voice-join-form">
@@ -457,16 +368,32 @@
             </div>
         </div>
     </div>
+
+    <div class="layout">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">Rooms</div>
+                <div class="panel-extra" id="mesh-room-count">0 rooms</div>
+            </div>
+            <div id="mesh-rooms"></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">Crew Online</div>
+                <div class="panel-extra" id="mesh-viewer-count">0 viewers</div>
+            </div>
+            <div id="viewer-dropdown"></div>
+        </div>
+    </div>
 </div>
 
 <script src="voice-client.js"></script>
 <script>
-// Voice integration
 let voiceClient = null;
 let currentUserId = null;
 let voiceConnected = false;
 
-// Voice UI elements
 const voiceNameInput = document.getElementById('voice-name');
 const joinSilentBtn = document.getElementById('join-silent');
 const joinLobbyBtn = document.getElementById('join-lobby');
@@ -477,7 +404,6 @@ const toggleMuteBtn = document.getElementById('toggle-mute');
 const leaveVoiceBtn = document.getElementById('leave-voice');
 const voiceStatus = document.getElementById('voice-status');
 
-// Initialize voice client
 if (typeof VoiceClient !== 'undefined') {
     voiceClient = new VoiceClient();
     
@@ -494,7 +420,6 @@ if (typeof VoiceClient !== 'undefined') {
     };
 }
 
-// Voice button handlers
 if (joinSilentBtn) {
     joinSilentBtn.addEventListener('click', () => joinVoice('silent_watch'));
 }
@@ -537,8 +462,7 @@ async function joinVoice(roomId) {
     }
     
     try {
-        // Connect to voice server via Cloudflare Tunnel
-        const voiceServerUrl = 'wss://lime-easier-cad-vhs.trycloudflare.com'; // Your Cloudflare Tunnel URL
+        const voiceServerUrl = 'ws://localhost:8082';
         
         await voiceClient.connect(voiceServerUrl);
         currentUserId = 'user_' + Date.now();
@@ -554,62 +478,37 @@ async function joinVoice(roomId) {
     }
 }
 
-// Room click to join
-document.addEventListener('click', (e) => {
-    const roomBlock = e.target.closest('.room-block');
-    if (roomBlock && voiceConnected) {
-        const roomName = roomBlock.querySelector('h3').textContent;
-        if (confirm(`Switch to ${roomName}?`)) {
-            const roomId = roomName.toLowerCase().replace(/\s+/g, '_');
-            voiceClient.leaveVoice();
-            setTimeout(() => {
-                voiceClient.joinVoice(currentUserId, voiceNameInput.value, roomId);
-            }, 500);
-        }
-    }
-});
-
-// =========================
-// Original mesh polling code
-// =========================
-// =========================
-// 1. Polling Loop
-// =========================
 async function pollMesh() {
-    const url = "https://mesh.mtman1987.stream/mesh/mesh_state.json";
-
     try {
-        const response = await fetch(url, { cache: "no-store" });
+        const response = await fetch("/mesh/mesh_state.json", { cache: "no-store" });
         const data = await response.json();
         updateMeshUI(data);
     } catch (err) {
         console.error("Mesh poll failed:", err);
     }
 
-    setTimeout(pollMesh, 5000); // matches your backend timer
+    setTimeout(pollMesh, 5000);
 }
 
 pollMesh();
 
-
-// =========================
-// 2. UI Update Function
-// =========================
 function updateMeshUI(data) {
-    // ---- Basic info ----
     setText("mesh-timestamp", data.timestamp || "–");
-    setText("mesh-viewer-source", (data.viewer_source || "unknown").toUpperCase());
     setText("mesh-status", (data.status || "idle").toUpperCase());
 
-    // ---- Rooms container ----
     const roomsContainer = document.getElementById("mesh-rooms");
     roomsContainer.innerHTML = "";
 
     const roomIds = Object.keys(data.rooms || {});
     setText("mesh-room-count", `${roomIds.length} room${roomIds.length === 1 ? "" : "s"}`);
 
+    const users = data.users || {};
+    const userIds = Object.keys(users);
+    setText("mesh-viewer-count", `${userIds.length} viewer${userIds.length === 1 ? "" : "s"}`);
+
     roomIds.forEach(roomId => {
         const room = data.rooms[roomId];
+        const roomUsers = userIds.filter(uid => users[uid].room === roomId);
 
         const roomDiv = document.createElement("div");
         roomDiv.className = "room-block";
@@ -622,12 +521,6 @@ function updateMeshUI(data) {
         roomsContainer.appendChild(roomDiv);
     });
 
-    // ---- Users into rooms ----
-    const users = data.users || {};
-    const userIds = Object.keys(users);
-    setText("mesh-viewer-count", `${userIds.length} viewer${userIds.length === 1 ? "" : "s"}`);
-
-    // Fill viewer dropdown
     const dropdown = document.getElementById("viewer-dropdown");
     dropdown.innerHTML = "";
 
@@ -644,7 +537,6 @@ function updateMeshUI(data) {
         dropdown.appendChild(ddItem);
     });
 
-    // Place cards in rooms
     userIds.forEach(userId => {
         const u = users[userId];
         const roomDiv = document.getElementById(`room-${u.room}`);
@@ -654,7 +546,6 @@ function updateMeshUI(data) {
         const card = document.createElement("div");
         card.className = "user-card";
         
-        // Add voice status classes
         if (u.voiceConnected) {
             card.classList.add('voice-active');
         }
@@ -680,7 +571,6 @@ function updateMeshUI(data) {
         roomDiv.appendChild(card);
     });
 
-    // Mark empty rooms
     roomIds.forEach(roomId => {
         const roomDiv = document.getElementById(`room-${roomId}`);
         if (roomDiv && roomDiv.children.length === 0) {
@@ -692,10 +582,6 @@ function updateMeshUI(data) {
     });
 }
 
-
-// =========================
-// 3. Helper Functions
-// =========================
 function setText(id, value) {
     const el = document.getElementById(id);
     if (el) el.innerText = value;
@@ -706,6 +592,7 @@ function sourceIcon(src) {
     const s = src.toLowerCase();
     if (s === "twitch") return "🎮";
     if (s === "discord") return "💬";
+    if (s === "voice") return "🎤";
     return "🌌";
 }
 
@@ -714,6 +601,7 @@ function sourceLabel(src) {
     const s = src.toLowerCase();
     if (s === "twitch") return "Twitch";
     if (s === "discord") return "Discord";
+    if (s === "voice") return "Voice";
     return "";
 }
 
