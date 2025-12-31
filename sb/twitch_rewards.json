@@ -1,0 +1,464 @@
+{
+  "collapsedGroups": [],
+  "version": 2,
+  "t": "2025-12-20T23:08:36.6754605-06:00",
+  "rewards": [
+    {
+      "id": "5429948c-cf0c-4cac-88b4-02ceb5c7c4ce",
+      "name": "1000c DANCE PARTY",
+      "prompt": "View the sound meme on Blerp - https://blerp.com/soundbites/663985f1f3c020407b7e4c88",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#D2D2E6"
+    },
+    {
+      "id": "3a447de0-0a76-44c2-ba85-7723fe3fa9a6",
+      "name": "1500c No cursing",
+      "prompt": "I keep it family-friendly for 15 minutes 1500c",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#2174FF"
+    },
+    {
+      "id": "15532283-ff01-4e69-81c9-112bd8997c2e",
+      "name": "1000c Drop it!",
+      "prompt": "Make me drop an item. it has to be something i just got this stream.(i hold the right to veto if its needed to complete a task)",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#D2D2E6"
+    },
+    {
+      "id": "b764515b-63e6-42d7-a9fd-eb5a02ecbe4e",
+      "name": "BLERPS(300c)Category D3: Audio and Rep",
+      "prompt": "Category D3: Audio and Replies - Continued\nD50: the boys all wanna taste\n\nD52: uwu\n\nD53: valhalla\n\nD59: you took my father's sword",
+      "group": "",
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "2f7699a6-bdeb-494d-b01f-c30e52f98ba2",
+      "name": "🍊: Spawn Tangia Dungeon",
+      "prompt": "",
+      "group": null,
+      "cost": 500,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#F75B27"
+    },
+    {
+      "id": "ef3d7bab-e95c-48a9-8b8c-1ed8b874e5f5",
+      "name": "1000c change my hero",
+      "prompt": "Choose which hero I play with(diffrent from \"change my appearance\") you choose from my selection of available players/appearances ",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#D2D2E6"
+    },
+    {
+      "id": "6c0d2302-d0e2-4d99-a0d5-8add78a33909",
+      "name": "BLERPS(300c)Cat. C: Greetings and Farewells",
+      "prompt": "Category C: Greetings and Farewells\nC2: ashley\n\nC19: goodbye therapy\n\nC22: Hi friends\n\nC32: nice to meet ya",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "8ae22d15-d0ad-4f06-a1fe-d8c1c4c6f859",
+      "name": " is the Champion of the Hill",
+      "prompt": "play the champion of the hill chat game, its fun and easy you just gotta get gud no mames LUL join the fight !join 1500c",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": true,
+      "backgroundColor": "#DF8EFA"
+    },
+    {
+      "id": "7408074b-cdf3-4312-938a-db2c0ac364a6",
+      "name": "BLERPS(300c)Category B2: Laughter and Fun",
+      "prompt": "Category B2: Laughter and Fun\nB29: mommy@ sorry!\n\nB34: oh my!\n\nB48: swedish chef\n\nB49: swedish chef 2\n\nB54: Victory screech\n\nB55: woop\n\nB56: woow\n\nB57: yeah glo\n\nB58: yes daddy!",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "ef0263e4-c9d3-4ba2-adda-1b347cee0361",
+      "name": "2000c personal shout out!",
+      "prompt": "Add a shout out for yourself ot someone else 1500c",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#00F593"
+    },
+    {
+      "id": "d203c28d-cd4d-4a89-9d06-e1563aa80885",
+      "name": "300c Streeeeeeeeeetch",
+      "prompt": "I stretch and keep my joints happy - thanks!",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": true,
+      "persistUserCounter": false,
+      "backgroundColor": "#0AB928"
+    },
+    {
+      "id": "c6917dde-76e9-4763-8ca0-852d8b58283d",
+      "name": "BLERPS(300c)Category A2: Rhythm and Moves",
+      "prompt": "Category A2: Rhythm and Moves\nA43: sexy pondy\n\nA44: sexy sax\n\nA51: tricky",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "0e7cd56e-f5bd-4864-932b-e21d297c9636",
+      "name": "menuMode",
+      "prompt": "Free! Search the stream like a computer. ",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#B42FFA"
+    },
+    {
+      "id": "2f0a3fc0-ae81-4bd6-ab8f-359fc7a058cf",
+      "name": "Fantasy Fight: Skip cooldown",
+      "prompt": "",
+      "group": null,
+      "cost": 1000,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#FF6600"
+    },
+    {
+      "id": "6ed28b62-3510-4b71-936b-3b999ae6086d",
+      "name": "pokecard viewer(still under construction)",
+      "prompt": "you can view any card in here as long as you type it in this forman \"name\" \"set\" \"number\" like this \"Abra BS 43\" and it will retreive and display that card!",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#E7D866"
+    },
+    {
+      "id": "9a3ed8f9-acc4-48e3-a714-eba5d6df0c19",
+      "name": "omg",
+      "prompt": "[ress 1",
+      "group": "",
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#820388"
+    },
+    {
+      "id": "7eb8e7fa-fb00-47fd-905a-cf1914a694e0",
+      "name": "420c Smokey Mountain, lets get HIGH",
+      "prompt": "!toke  for VIP MODS AND TEIR 2 & 3 ",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": true,
+      "persistUserCounter": true,
+      "backgroundColor": "#B5ABF5"
+    },
+    {
+      "id": "527ef5a7-362f-4abe-be26-afe162bcf0d5",
+      "name": "1500c ban in game action",
+      "prompt": "ban me from doing something in the game for 15 min",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#DF8EFA"
+    },
+    {
+      "id": "91dae8a5-29e5-4fec-aaac-695fb90b9496",
+      "name": "7000c Pick a Game for Me",
+      "prompt": "Choose which game I should play next(if more then 1 has been redeemed there will be a raffle Friday. Winner announced via discord) must be on xbox game pass!",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#BEFAE1"
+    },
+    {
+      "id": "32702d0a-a365-4842-b6af-c24278a0a2c0",
+      "name": "500c Turn My Cam On",
+      "prompt": "This turns my cam on for 30 mins if it gets 3 usesd in one streamits triggered for the entire next stream!",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#10E305"
+    },
+    {
+      "id": "ebf395b9-f744-4dab-88d4-9f6d080d49af",
+      "name": "1500c NMS change my appearance ",
+      "prompt": "(No mans sky only) I will go to appearance modifier location and you will help me build a new character! use chang my hero redeem for other games ",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#FF38DB"
+    },
+    {
+      "id": "28655b6e-fd5d-4f2c-a3f7-df8fb9f07ffc",
+      "name": "BLERPS(300c)Category D2: Audio and Replies",
+      "prompt": "\nD36: party people\n\nD37: pokecard\n\nD38: pokemon battle\n\nD39: puffles\n\nD40: queen is never late\n\nD41: sad titanic\n\nD42: say that again\n\nD45: shout out\n\nD46: shoutout2\n\nD47: stretch\n",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "57d4dd2f-a92d-46ee-b761-26c3d48d5b10",
+      "name": "🍊: Dungeon Duel",
+      "prompt": "",
+      "group": null,
+      "cost": 500,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#F75B27"
+    },
+    {
+      "id": "5e2dbbff-e409-4c93-a45b-663dc200e418",
+      "name": "merch give away",
+      "prompt": "the 15th of every month we will be giving away a 20 percent off cupon for MtMan1987 and SpaceMountain and ESports teams(name TBA)",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#50E44E"
+    },
+    {
+      "id": "fd4b3869-dd21-4d07-ab7c-c5ea86ec158b",
+      "name": "BLERPS(300c)Category A: Dance and Style",
+      "prompt": "Category A: Dance and Style\nA1: 321 drop it\n\nA9: dance party (austin powers)\n\nA10: dance party (we like to party)\n\nA12: drop it hard\n\nA13: drop it like it's hot\n\nA15: fashion\n\nA26: islandboi",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "53151893-2cbc-4fe2-96dd-8d71d8ff4fc9",
+      "name": "Partner Check Ins ",
+      "prompt": "1.Swordsman 2.UncleDaddyHero2k  3.SparkyBoi52 4.FurryandAlan 5. CoriumBoy98 6.AkhiTeddy  7.Puffles 8.HSV 9.TGG 10.LadyPheonexrising 11.BrotherDavid09 12.MamaFeisty 13.Msfeisty 14. DifferentDecree",
+      "group": "",
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": true,
+      "persistUserCounter": true,
+      "backgroundColor": "#B52F2F"
+    },
+    {
+      "id": "2f70061f-1f72-4b1d-afc8-bb1830ea89f8",
+      "name": "BLERPS(300c) D: Sound Effects and Reactions",
+      "prompt": "\nD6: call someone who cares\n\n**D11****: don't do it please\n\nD17: freeeeee\n\nD24: i know what love is\n\nD25: i'm the best there is\n\nD27: lurk\n\nD28: lurkkkky\n\nD35: one hour later",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "42ae97c9-9d18-472a-823a-6f93fa68d85f",
+      "name": "1000c WHOOP DANCE PARTY",
+      "prompt": "View the sound meme on Blerp - https://blerp.com/soundbites/67394db04acc42578774958a",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#D2D2E6"
+    },
+    {
+      "id": "ea073de4-b440-458e-9cd8-714ee1494305",
+      "name": "300c hydrate!",
+      "prompt": "chugging contest who can hydrate faster!! just kidding thanks for looking out for me ",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": true,
+      "persistUserCounter": false,
+      "backgroundColor": "#0AB928"
+    },
+    {
+      "id": "ae74c9a4-936f-487b-bdda-1e3399a6dc6f",
+      "name": "500c NMS Name anything you want",
+      "prompt": "You get to name a animal plant or planet in the game. tell me the name and what you want to name(PG13 please)500c",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#FACDCD"
+    },
+    {
+      "id": "f1475c71-5513-4b6f-b843-e92e9445cb88",
+      "name": "Fantasy Fight: Revenge",
+      "prompt": "",
+      "group": null,
+      "cost": 1000,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#FF6600"
+    },
+    {
+      "id": "35cde0d1-7be3-421e-b814-3b041e6c5e75",
+      "name": "Fantasy Fight: Skip queue",
+      "prompt": "",
+      "group": null,
+      "cost": 1000,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#FF6600"
+    },
+    {
+      "id": "3b0634a5-cf9c-4b75-9d1e-163d928e36ac",
+      "name": "First (bonus 500c)",
+      "prompt": "You made it first (bonus 500c)",
+      "group": "",
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": true,
+      "backgroundColor": "#38FF9B"
+    },
+    {
+      "id": "8e103c16-93b6-426d-b3cc-77d418bba0c9",
+      "name": "BLERPS(300c)Category B: Humor and Memes",
+      "prompt": "Category B: Humor and Memes\nB4: bruh\n\nB7: clam slam\n\nB8: crickets\n\nB14: emotional damage\n\nB18: god no!\n\nB21: hell no!\n\nB23: i have a jar of dirt",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "3f45300f-1967-4c1d-8fca-1677c75c022b",
+      "name": "200c Redeem PokéCard card (1) ",
+      "prompt": "one pokecard 200c feel free to hit this multiple times a booster back will be avalable soon",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#0013A3"
+    },
+    {
+      "id": "f1bd0ab7-1c9a-48a4-9ae3-a96fcfa5f7f4",
+      "name": "1000c NEW DANCE PARTY ",
+      "prompt": "View the sound meme on Blerp - https://blerp.com/soundbites/665e0c949312323c25db8ca4",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#D2D2E6"
+    },
+    {
+      "id": "8615084c-070a-410a-a42c-df84c62d9250",
+      "name": "BLERPS(300)Category E: Miscellaneous",
+      "prompt": "Category E: Miscellaneous\nE3: barelmancy\n\nE5: cake made of strawberry\n\nE16: filelist.txt\n\nE20: hawk tuah\n\nE30: mtman intro\n\nE31: mtman outro\n\nE33: no cursing",
+      "group": "",
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#3686EB"
+    },
+    {
+      "id": "fd41b9d1-3bb7-406b-a9bd-77892e958edf",
+      "name": "20000c very important person!",
+      "prompt": "Get the vip badge! ",
+      "group": null,
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#5C16C5"
+    },
+    {
+      "id": "78711026-2af6-4d1c-9da5-8cc0a9938d64",
+      "name": "gift sub giveaway",
+      "prompt": "5 GIFT SUBS WILL BE DRAWN THE 15 th OF EVERY MONTH AND THERE IS NO LIMIT TO HOW MANY TICKETS YOU CAN GET",
+      "group": null,
+      "cost": 1,
+      "userInput": false,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#AA9F64"
+    },
+    {
+      "id": "fe72eb33-e57e-448a-819f-6ab9e3903596",
+      "name": "PokePack",
+      "prompt": "Base Set = 1 Jungle 2 Fossil 3 Base Set 2 = 4 Team Rocket 5",
+      "group": "",
+      "cost": 1,
+      "userInput": true,
+      "persistCounter": false,
+      "persistUserCounter": false,
+      "backgroundColor": "#91892B"
+    }
+  ],
+  "autoRewards": [
+    {
+      "type": "celebration",
+      "cost": 0,
+      "userInput": false
+    },
+    {
+      "type": "gigantify_an_emote",
+      "cost": 0,
+      "userInput": false
+    },
+    {
+      "type": "message_effect",
+      "cost": 0,
+      "userInput": false
+    }
+  ]
+}

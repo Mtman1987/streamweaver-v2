@@ -35,16 +35,6 @@ if exist ".next" rmdir /s /q ".next" >nul 2>&1
 if exist ".turbo" rmdir /s /q ".turbo" >nul 2>&1
 timeout /t 1 /nobreak >nul
 
-REM Start Voice Server in background
-echo Starting Voice Server...
-start "Voice-Server" cmd /k "cd /d %~dp0\discordstream && node voice-server.js"
-timeout /t 2 /nobreak >nul
-
-REM Start Cloudflare Tunnel for Voice Server (using permanent tunnel)
-echo Starting Cloudflare Tunnel (permanent)...
-start "Cloudflare-Tunnel" cmd /k "cloudflared tunnel --config "C:\Users\%USERNAME%\.cloudflared\config.yml" run voice-server"
-timeout /t 3 /nobreak >nul
-
 REM Start WebSocket Server in background
 echo Starting WebSocket Server...
 start "StreamWeaver-WebSocket" cmd /k "cd /d %~dp0 && npx tsx server.ts"
@@ -61,8 +51,6 @@ echo StreamWeaver Started!
 echo ====================================
 echo WebSocket Server: http://localhost:8090
 echo Dashboard: http://localhost:3100
-echo Voice Server: http://localhost:8080
-echo Voice Tunnel: Check Cloudflare-Tunnel window for public URL
 echo.
 echo Discord to Twitch forwarding is active.
 echo.
