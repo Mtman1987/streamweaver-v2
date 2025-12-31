@@ -30,7 +30,7 @@ import {
     getAllActions,
     watchActionsFile,
 } from './src/lib/actions-store';
-import { loadCounter, getNextMessageNumber, cleanupOldMessages } from './src/lib/message-counter';
+import { loadCounter, getNextMessageNumber, storeMessageId, cleanupOldMessages } from './src/lib/message-counter';
 import { PortManager } from './src/lib/port-manager';
 
 const METRICS_FILE_PATH = resolve(process.cwd(), 'src', 'data', 'stream-metrics.json');
@@ -792,14 +792,30 @@ async function setupTwitchClient(userId?: string) {
             }
         });
 
-        // Log every message to Discord with message counter
+        // Log every message to Discord with rolling message counter
         if (logChannelId && tags['display-name'] && !message.startsWith('[Discord]')) {
-            getNextMessageNumber().then(async (msgNum) => {
-                await sendDiscordMessage(logChannelId, `[${msgNum}][Twitch] ${tags['display-name']}: ${message}`);
+            getNextMessageNumber(logChannelId).then(async (result) => {
+                const { number: msgNum, shouldDelete } = result;
                 
-                // Cleanup old messages every 10 messages (only for Twitch chat, not AI chat)
-                if (msgNum % 10 === 0) {
-                    cleanupOldMessages(logChannelId).catch(console.error);
+                // Delete old message if we're at capacity
+                if (shouldDelete) {
+                    try {
+                        const { deleteMessage } = require('./src/services/discord');
+                        await deleteMessage(logChannelId, shouldDelete);
+                        console.log(`[Counter] Deleted old message ${shouldDelete} to make room for new #${msgNum}`);
+                    } catch (error) {
+                        console.error(`[Counter] Failed to delete old message:`, error);
+                    }
+                }
+                
+                // Send new message
+                const messageContent = `${msgNum}. [Twitch] ${tags['display-name']}: ${message}`;
+                const { sendDiscordMessage } = require('./src/services/discord');
+                const response = await sendDiscordMessage(logChannelId, messageContent);
+                
+                // Store the message ID for future deletion
+                if (response && response.id) {
+                    await storeMessageId(logChannelId, response.id, msgNum);
                 }
             }).catch(console.error);
         }

@@ -25,7 +25,7 @@ function getDiscordHeaders(isFormData = false) {
  * @param channelId The ID of the Discord channel.
  * @param message The content of the message to send.
  */
-export async function sendDiscordMessage(channelId: string, message: string): Promise<void> {
+export async function sendDiscordMessage(channelId: string, message: string): Promise<{ id: string } | void> {
   if (!channelId) {
     throw new Error('Discord channel ID is not provided.');
   }
@@ -33,9 +33,10 @@ export async function sendDiscordMessage(channelId: string, message: string): Pr
   const url = `${DISCORD_API_BASE}/channels/${channelId}/messages`;
 
   try {
-    await axios.post(url, { content: message }, { headers: getDiscordHeaders() });
+    const response = await axios.post(url, { content: message }, { headers: getDiscordHeaders() });
 
     console.log(`Successfully sent message to Discord channel ${channelId}.`);
+    return { id: response.data.id };
   } catch (error: any) {
     console.error('Error sending message to Discord:', error.response?.data || error.message);
     if (error.response?.data?.code === 10003) {
